@@ -202,38 +202,51 @@
                 <Grid>
                     <Grid x:Name="pageServers" Margin="12,12,384,12">
                         <Grid ColumnDefinitions="Auto,*">
-                            <ScrollViewer
+                            <Border
                                 x:Name="configActions"
-                                Width="280"
-                                Margin="0,0,12,0"
-                                HorizontalScrollBarVisibility="Disabled"
+                                Width="300"
+                                Margin="0,4,12,4"
+                                Padding="0"
+                                Classes="soft-pane"
                                 IsVisible="False">
-                                <StackPanel>
+                                <DockPanel>
                                     <TextBlock
-                                        Margin="4,0,0,8"
-                                        Classes="section-title"
+                                        Classes="pane-label"
+                                        DockPanel.Dock="Top"
                                         Text="{x:Static shell:ShellStrings.AddProfileTitle}" />
-                                    <Button x:Name="menuAddServerViaClipboard" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
-                                    <Button x:Name="menuAddServerViaScan" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddServerViaScan}" />
-                                    <Button x:Name="menuAddServerViaImage" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddServerViaImage}" />
-                                    <Button x:Name="menuAddCustomServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddCustomServer}" />
-                                    <Button x:Name="menuAddPolicyGroupServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddPolicyGroupServer}" />
-                                    <Button x:Name="menuAddProxyChainServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddProxyChainServer}" />
-                                    <Button x:Name="menuAddCustomOutboundServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddCustomOutboundServer}" />
-                                    <Button x:Name="menuAddVmessServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddVmessServer}" />
-                                    <Button x:Name="menuAddVlessServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddVlessServer}" />
-                                    <Button x:Name="menuAddShadowsocksServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddShadowsocksServer}" />
-                                    <Button x:Name="menuAddTrojanServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddTrojanServer}" />
-                                    <Button x:Name="menuAddHysteria2Server" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddHysteria2Server}" />
-                                    <Button x:Name="menuAddWireguardServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddWireguardServer}" />
-                                    <Button x:Name="menuAddMasqueServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddMasqueServer}" />
-                                    <Button x:Name="menuAddSocksServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddSocksServer}" />
-                                    <Button x:Name="menuAddHttpServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddHttpServer}" />
-                                    <Button x:Name="menuAddTuicServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddTuicServer}" />
-                                    <Button x:Name="menuAddAnytlsServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddAnytlsServer}" />
-                                    <Button x:Name="menuAddNaiveServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddNaiveServer}" />
-                                </StackPanel>
-                            </ScrollViewer>
+                                    <ScrollViewer
+                                        Classes="soft"
+                                        HorizontalScrollBarVisibility="Disabled"
+                                        VerticalScrollBarVisibility="Auto">
+                                        <ScrollViewer.Resources>
+                                            <x:Double x:Key="ScrollBarSize">6</x:Double>
+                                            <SolidColorBrush x:Key="ScrollBarThumbBackgroundColor" Color="#665C574E" />
+                                            <SolidColorBrush x:Key="ScrollBarTrackFill" Color="Transparent" />
+                                        </ScrollViewer.Resources>
+                                        <StackPanel>
+                                            <Button x:Name="menuAddServerViaClipboard" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
+                                            <Button x:Name="menuAddServerViaScan" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddServerViaScan}" />
+                                            <Button x:Name="menuAddServerViaImage" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddServerViaImage}" />
+                                            <Button x:Name="menuAddCustomServer" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddCustomServer}" />
+                                            <Button x:Name="menuAddPolicyGroupServer" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddPolicyGroupServer}" />
+                                            <Button x:Name="menuAddProxyChainServer" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddProxyChainServer}" />
+                                            <Button x:Name="menuAddCustomOutboundServer" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddCustomOutboundServer}" />
+                                            <Button x:Name="menuAddVmessServer" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddVmessServer}" />
+                                            <Button x:Name="menuAddVlessServer" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddVlessServer}" />
+                                            <Button x:Name="menuAddShadowsocksServer" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddShadowsocksServer}" />
+                                            <Button x:Name="menuAddTrojanServer" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddTrojanServer}" />
+                                            <Button x:Name="menuAddHysteria2Server" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddHysteria2Server}" />
+                                            <Button x:Name="menuAddWireguardServer" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddWireguardServer}" />
+                                            <Button x:Name="menuAddMasqueServer" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddMasqueServer}" />
+                                            <Button x:Name="menuAddSocksServer" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddSocksServer}" />
+                                            <Button x:Name="menuAddHttpServer" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddHttpServer}" />
+                                            <Button x:Name="menuAddTuicServer" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddTuicServer}" />
+                                            <Button x:Name="menuAddAnytlsServer" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddAnytlsServer}" />
+                                            <Button x:Name="menuAddNaiveServer" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddNaiveServer}" />
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </DockPanel>
+                            </Border>
                             <ContentControl x:Name="profilesHost" Grid.Column="1" />
                         </Grid>
                     </Grid>
