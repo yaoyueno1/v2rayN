@@ -80,6 +80,16 @@
                 Classes="settings-row"
                 Command="{Binding RegionalPresetIranCmd}"
                 Content="{x:Static shell:ShellStrings.SettingsPresetIran}" />
+            <Button
+                Classes="settings-row"
+                Command="{Binding RebootAsAdminCmd}"
+                Content="{x:Static shell:ShellStrings.SettingsRebootAdmin}"
+                IsVisible="{Binding BlIsWindows}" />
+            <Button
+                x:Name="btnUwp"
+                Classes="settings-row"
+                Content="{x:Static shell:ShellStrings.SettingsUwp}"
+                IsVisible="{Binding BlIsWindows}" />
         </StackPanel>
     </ScrollViewer>
 </UserControl>

@@ -13,7 +13,7 @@
     Title="v2rayN"
     Width="1280"
     Height="840"
-    MinWidth="960"
+    MinWidth="1100"
     MinHeight="640"
     x:DataType="vms:MainWindowViewModel"
     Design.DataContext="{x:Static dd:DesignData.MainWindow}"
@@ -86,267 +86,210 @@
                         </TextBox.InnerRightContent>
                     </TextBox>
 
-                    <StackPanel
+                    <Button
+                        x:Name="btnNewUpdate"
                         Grid.Column="2"
-                        Orientation="Horizontal"
-                        Spacing="8"
-                        VerticalAlignment="Center">
-                        <Button
-                            x:Name="btnNewUpdate"
-                            Classes="tonal"
-                            Content="{x:Static resx:ResUI.menuNewUpdate}"
-                            IsVisible="False" />
-                        <Button
-                            x:Name="btnTheme"
-                            Width="44"
-                            Height="44"
-                            Padding="0"
-                            Classes="outline"
-                            CornerRadius="22">
-                            <PathIcon
-                                Width="18"
-                                Height="18"
-                                Data="{StaticResource IconMoon}" />
-                        </Button>
-                        <Button x:Name="btnConnect" Classes="connect">
-                            <StackPanel Orientation="Horizontal" Spacing="6">
-                                <PathIcon
-                                    Width="16"
-                                    Height="16"
-                                    Data="{StaticResource IconPlug}"
-                                    Foreground="{DynamicResource MyOnPrimary}" />
-                                <TextBlock Text="{x:Static shell:ShellStrings.Connect}" />
-                            </StackPanel>
-                        </Button>
-                        <Button Classes="outline" Content="{x:Static shell:ShellStrings.More}">
-                            <Button.Flyout>
-                                <MenuFlyout Placement="BottomEdgeAlignedRight">
-                                    <MenuFlyout.FlyoutPresenterTheme>
-                                        <ControlTheme TargetType="MenuFlyoutPresenter" BasedOn="{StaticResource {x:Type MenuFlyoutPresenter}}">
-                                            <Setter Property="MinWidth" Value="240" />
-                                            <Setter Property="MaxWidth" Value="360" />
-                                            <Setter Property="Background" Value="{DynamicResource MyCard}" />
-                                            <Setter Property="Padding" Value="6,8" />
-                                            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-                                            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-                                            <Setter Property="ItemsPanel">
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Vertical" />
-                                                </ItemsPanelTemplate>
-                                            </Setter>
-                                        </ControlTheme>
-                                    </MenuFlyout.FlyoutPresenterTheme>
-                                        <MenuItem Header="{x:Static resx:ResUI.menuServers}">
-                                            <MenuItem.Icon>
-                                                <PathIcon Width="18" Height="18" Data="{StaticResource IconConfig}" />
-                                            </MenuItem.Icon>
-                                            <MenuItem
-                                                x:Name="menuAddServerViaClipboard"
-                                                Header="{x:Static resx:ResUI.menuAddServerViaClipboard}"
-                                                InputGesture="Ctrl+V" />
-                                            <MenuItem
-                                                x:Name="menuAddServerViaScan"
-                                                Header="{x:Static resx:ResUI.menuAddServerViaScan}"
-                                                InputGesture="Ctrl+S" />
-                                            <MenuItem x:Name="menuAddServerViaImage" Header="{x:Static resx:ResUI.menuAddServerViaImage}" />
-                                            <Separator />
-                                            <MenuItem x:Name="menuAddCustomServer" Header="{x:Static resx:ResUI.menuAddCustomServer}" />
-                                            <MenuItem x:Name="menuAddPolicyGroupServer" Header="{x:Static resx:ResUI.menuAddPolicyGroupServer}" />
-                                            <MenuItem x:Name="menuAddProxyChainServer" Header="{x:Static resx:ResUI.menuAddProxyChainServer}" />
-                                            <MenuItem x:Name="menuAddCustomOutboundServer" Header="{x:Static resx:ResUI.menuAddCustomOutboundServer}" />
-                                            <Separator />
-                                            <MenuItem x:Name="menuAddVmessServer" Header="{x:Static resx:ResUI.menuAddVmessServer}" />
-                                            <MenuItem x:Name="menuAddVlessServer" Header="{x:Static resx:ResUI.menuAddVlessServer}" />
-                                            <MenuItem x:Name="menuAddShadowsocksServer" Header="{x:Static resx:ResUI.menuAddShadowsocksServer}" />
-                                            <MenuItem x:Name="menuAddTrojanServer" Header="{x:Static resx:ResUI.menuAddTrojanServer}" />
-                                            <MenuItem x:Name="menuAddHysteria2Server" Header="{x:Static resx:ResUI.menuAddHysteria2Server}" />
-                                            <MenuItem x:Name="menuAddWireguardServer" Header="{x:Static resx:ResUI.menuAddWireguardServer}" />
-                                            <MenuItem x:Name="menuAddMasqueServer" Header="{x:Static resx:ResUI.menuAddMasqueServer}" />
-                                            <MenuItem x:Name="menuAddSocksServer" Header="{x:Static resx:ResUI.menuAddSocksServer}" />
-                                            <MenuItem x:Name="menuAddHttpServer" Header="{x:Static resx:ResUI.menuAddHttpServer}" />
-                                            <Separator />
-                                            <MenuItem x:Name="menuAddTuicServer" Header="{x:Static resx:ResUI.menuAddTuicServer}" />
-                                            <MenuItem x:Name="menuAddAnytlsServer" Header="{x:Static resx:ResUI.menuAddAnytlsServer}" />
-                                            <MenuItem x:Name="menuAddNaiveServer" Header="{x:Static resx:ResUI.menuAddNaiveServer}" />
-                                        </MenuItem>
-                                        <MenuItem Header="{x:Static resx:ResUI.menuSubscription}">
-                                            <MenuItem.Icon>
-                                                <PathIcon Width="18" Height="18" Data="{StaticResource IconSub}" />
-                                            </MenuItem.Icon>
-                                            <MenuItem x:Name="menuSubSetting" Header="{x:Static resx:ResUI.menuSubSetting}" />
-                                            <Separator />
-                                            <MenuItem x:Name="menuSubUpdate" Header="{x:Static resx:ResUI.menuSubUpdate}" />
-                                            <MenuItem x:Name="menuSubUpdateViaProxy" Header="{x:Static resx:ResUI.menuSubUpdateViaProxy}" />
-                                            <MenuItem x:Name="menuSubGroupUpdate" Header="{x:Static resx:ResUI.menuSubGroupUpdate}" />
-                                            <MenuItem x:Name="menuSubGroupUpdateViaProxy" Header="{x:Static resx:ResUI.menuSubGroupUpdateViaProxy}" />
-                                        </MenuItem>
-                                        <MenuItem Header="{x:Static resx:ResUI.menuSetting}">
-                                            <MenuItem.Icon>
-                                                <PathIcon Width="18" Height="18" Data="{StaticResource IconSettings}" />
-                                            </MenuItem.Icon>
-                                            <MenuItem x:Name="menuOptionSetting" Header="{x:Static resx:ResUI.menuOptionSetting}" />
-                                            <MenuItem x:Name="menuRoutingSetting" Header="{x:Static resx:ResUI.menuRoutingSetting}" />
-                                            <MenuItem x:Name="menuDNSSetting" Header="{x:Static resx:ResUI.menuDNSSetting}" />
-                                            <MenuItem x:Name="menuFullConfigTemplate" Header="{x:Static resx:ResUI.menuFullConfigTemplate}" />
-                                            <MenuItem
-                                                x:Name="menuGlobalHotkeySetting"
-                                                Header="{x:Static resx:ResUI.menuGlobalHotkeySetting}"
-                                                IsVisible="{Binding BlIsWindows}" />
-                                            <Separator />
-                                            <MenuItem
-                                                x:Name="menuRebootAsAdmin"
-                                                Header="{x:Static resx:ResUI.menuRebootAsAdmin}"
-                                                IsVisible="{Binding BlIsWindows}" />
-                                            <MenuItem
-                                                x:Name="menuSettingsSetUWP"
-                                                Header="{x:Static resx:ResUI.TbSettingsSetUWP}"
-                                                IsVisible="{Binding BlIsWindows}" />
-                                            <MenuItem x:Name="menuClearServerStatistics" Header="{x:Static resx:ResUI.menuClearServerStatistics}" />
-                                            <Separator />
-                                            <MenuItem Header="{x:Static resx:ResUI.menuRegionalPresets}">
-                                                <MenuItem x:Name="menuRegionalPresetsDefault" Header="{x:Static resx:ResUI.menuRegionalPresetsDefault}" />
-                                                <MenuItem x:Name="menuRegionalPresetsRussia" Header="{x:Static resx:ResUI.menuRegionalPresetsRussia}" />
-                                                <MenuItem x:Name="menuRegionalPresetsIran" Header="{x:Static resx:ResUI.menuRegionalPresetsIran}" />
-                                            </MenuItem>
-                                            <MenuItem x:Name="menuBackupAndRestore" Header="{x:Static resx:ResUI.menuBackupAndRestore}" />
-                                            <MenuItem x:Name="menuOpenTheFileLocation" Header="{x:Static resx:ResUI.menuOpenTheFileLocation}" />
-                                        </MenuItem>
-                                        <MenuItem x:Name="menuHelp" Header="{x:Static resx:ResUI.menuHelp}">
-                                            <MenuItem.Icon>
-                                                <PathIcon Width="18" Height="18" Data="{StaticResource IconInfo}" />
-                                            </MenuItem.Icon>
-                                            <MenuItem x:Name="menuCheckUpdate" Header="{x:Static resx:ResUI.menuCheckUpdate}" />
-                                            <Separator />
-                                        </MenuItem>
-                                        <MenuItem x:Name="menuReload" Header="{x:Static resx:ResUI.menuReload}">
-                                            <MenuItem.Icon>
-                                                <PathIcon Width="18" Height="18" Data="{StaticResource SemiIconRefresh}" />
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <MenuItem x:Name="menuPromotion" Header="{x:Static resx:ResUI.menuPromotion}">
-                                            <MenuItem.Icon>
-                                                <PathIcon Width="18" Height="18" Data="{StaticResource IconAdd}" />
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <MenuItem x:Name="menuClose" Header="{x:Static resx:ResUI.menuExit}">
-                                            <MenuItem.Icon>
-                                                <PathIcon Width="18" Height="18" Data="{StaticResource SemiIconClose}" />
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                </MenuFlyout>
-                            </Button.Flyout>
-                        </Button>
-                    </StackPanel>
+                        Classes="tonal"
+                        Content="{x:Static resx:ResUI.menuNewUpdate}"
+                        IsVisible="False"
+                        VerticalAlignment="Center" />
                 </Grid>
             </Border>
 
-            <Grid Grid.Row="1" ColumnDefinitions="96,*">
+            <Grid Grid.Row="1" ColumnDefinitions="248,*">
                 <Border
                     Background="{DynamicResource MyCard}"
                     BorderBrush="{DynamicResource MyOutline}"
                     BorderThickness="0,0,1,0">
                     <DockPanel>
-                        <RadioButton
-                            x:Name="navAbout"
-                            Margin="8,8,8,12"
-                            Classes="nav"
-                            DockPanel.Dock="Bottom"
-                            GroupName="shellNav"
-                            Tag="5">
-                            <StackPanel Spacing="2">
-                                <PathIcon
-                                    Width="22"
-                                    Height="22"
-                                    HorizontalAlignment="Center"
-                                    Data="{StaticResource IconInfo}" />
-                                <TextBlock Classes="nav-label" Text="{x:Static shell:ShellStrings.NavAbout}" />
-                            </StackPanel>
-                        </RadioButton>
-                        <StackPanel Margin="0,8,0,0">
-                            <RadioButton
-                                x:Name="navHome"
-                                Classes="nav"
-                                GroupName="shellNav"
-                                IsChecked="True"
-                                Tag="0">
-                                <StackPanel Spacing="2">
-                                    <PathIcon
-                                        Width="22"
-                                        Height="22"
-                                        HorizontalAlignment="Center"
-                                        Data="{StaticResource IconHome}" />
-                                    <TextBlock Classes="nav-label" Text="{x:Static shell:ShellStrings.NavHome}" />
+                        <StackPanel Margin="0,4,0,8" DockPanel.Dock="Bottom">
+                            <TextBlock Classes="nav-section" Text="{x:Static shell:ShellStrings.SectionActions}" />
+                            <Button x:Name="menuReload" Classes="drawer-action">
+                                <StackPanel Orientation="Horizontal" Spacing="12">
+                                    <PathIcon Width="22" Height="22" Data="{StaticResource SemiIconRefresh}" />
+                                    <TextBlock VerticalAlignment="Center" Text="{x:Static resx:ResUI.menuReload}" />
                                 </StackPanel>
-                            </RadioButton>
-                            <RadioButton
-                                x:Name="navProfiles"
-                                Classes="nav"
-                                GroupName="shellNav"
-                                Tag="1">
-                                <StackPanel Spacing="2">
-                                    <PathIcon
-                                        Width="22"
-                                        Height="22"
-                                        HorizontalAlignment="Center"
-                                        Data="{StaticResource IconConfig}" />
-                                    <TextBlock Classes="nav-label" Text="{x:Static shell:ShellStrings.NavProfiles}" />
+                            </Button>
+                            <Button x:Name="menuPromotion" Classes="drawer-action">
+                                <StackPanel Orientation="Horizontal" Spacing="12">
+                                    <PathIcon Width="22" Height="22" Data="{StaticResource IconAdd}" />
+                                    <TextBlock VerticalAlignment="Center" Text="{x:Static resx:ResUI.menuPromotion}" />
                                 </StackPanel>
-                            </RadioButton>
-                            <RadioButton
-                                x:Name="navSubs"
-                                Classes="nav"
-                                GroupName="shellNav"
-                                Tag="2">
-                                <StackPanel Spacing="2">
-                                    <PathIcon
-                                        Width="22"
-                                        Height="22"
-                                        HorizontalAlignment="Center"
-                                        Data="{StaticResource IconSub}" />
-                                    <TextBlock Classes="nav-label" Text="{x:Static shell:ShellStrings.NavSubscriptions}" />
+                            </Button>
+                            <Grid Margin="12,8,12,4" ColumnDefinitions="Auto,*">
+                                <Button
+                                    x:Name="btnTheme"
+                                    Width="44"
+                                    Height="44"
+                                    Padding="0"
+                                    Classes="outline"
+                                    CornerRadius="22">
+                                    <PathIcon Width="18" Height="18" Data="{StaticResource IconMoon}" />
+                                </Button>
+                                <Button
+                                    x:Name="btnConnect"
+                                    Grid.Column="1"
+                                    Margin="8,0,0,0"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Classes="connect">
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <PathIcon
+                                            Width="16"
+                                            Height="16"
+                                            Data="{StaticResource IconPlug}"
+                                            Foreground="{DynamicResource MyOnPrimary}" />
+                                        <TextBlock Text="{x:Static shell:ShellStrings.Connect}" />
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                            <Button x:Name="menuClose" Classes="drawer-action">
+                                <StackPanel Orientation="Horizontal" Spacing="12">
+                                    <PathIcon Width="22" Height="22" Data="{StaticResource SemiIconClose}" />
+                                    <TextBlock VerticalAlignment="Center" Text="{x:Static resx:ResUI.menuExit}" />
                                 </StackPanel>
-                            </RadioButton>
-                            <RadioButton
-                                x:Name="navRouting"
-                                Classes="nav"
-                                GroupName="shellNav"
-                                Tag="3">
-                                <StackPanel Spacing="2">
-                                    <PathIcon
-                                        Width="22"
-                                        Height="22"
-                                        HorizontalAlignment="Center"
-                                        Data="{StaticResource IconRoute}" />
-                                    <TextBlock Classes="nav-label" Text="{x:Static shell:ShellStrings.NavRouting}" />
-                                </StackPanel>
-                            </RadioButton>
-                            <RadioButton
-                                x:Name="navSettings"
-                                Classes="nav"
-                                GroupName="shellNav"
-                                Tag="4">
-                                <StackPanel Spacing="2">
-                                    <PathIcon
-                                        Width="22"
-                                        Height="22"
-                                        HorizontalAlignment="Center"
-                                        Data="{StaticResource IconSettings}" />
-                                    <TextBlock Classes="nav-label" Text="{x:Static shell:ShellStrings.NavSettings}" />
-                                </StackPanel>
-                            </RadioButton>
+                            </Button>
                         </StackPanel>
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel Margin="0,8,0,0">
+                                <RadioButton
+                                    x:Name="navHome"
+                                    Classes="nav"
+                                    GroupName="shellNav"
+                                    IsChecked="True"
+                                    Tag="0">
+                                    <StackPanel Orientation="Horizontal" Spacing="12">
+                                        <PathIcon Width="22" Height="22" Data="{StaticResource IconHome}" />
+                                        <TextBlock Classes="nav-label" Text="{x:Static shell:ShellStrings.NavHome}" />
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton
+                                    x:Name="navSubs"
+                                    Classes="nav"
+                                    GroupName="shellNav"
+                                    Tag="2">
+                                    <StackPanel Orientation="Horizontal" Spacing="12">
+                                        <PathIcon Width="22" Height="22" Data="{StaticResource IconSub}" />
+                                        <TextBlock Classes="nav-label" Text="{x:Static shell:ShellStrings.NavSubscriptions}" />
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton
+                                    x:Name="navProfiles"
+                                    Classes="nav"
+                                    GroupName="shellNav"
+                                    Tag="1">
+                                    <StackPanel Orientation="Horizontal" Spacing="12">
+                                        <PathIcon Width="22" Height="22" Data="{StaticResource IconConfig}" />
+                                        <TextBlock Classes="nav-label" Text="{x:Static shell:ShellStrings.NavProfiles}" />
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton
+                                    x:Name="navRouting"
+                                    Classes="nav"
+                                    GroupName="shellNav"
+                                    Tag="3">
+                                    <StackPanel Orientation="Horizontal" Spacing="12">
+                                        <PathIcon Width="22" Height="22" Data="{StaticResource IconRoute}" />
+                                        <TextBlock Classes="nav-label" Text="{x:Static shell:ShellStrings.NavRouting}" />
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton
+                                    x:Name="navSettings"
+                                    Classes="nav"
+                                    GroupName="shellNav"
+                                    Tag="4">
+                                    <StackPanel Orientation="Horizontal" Spacing="12">
+                                        <PathIcon Width="22" Height="22" Data="{StaticResource IconSettings}" />
+                                        <TextBlock Classes="nav-label" Text="{x:Static shell:ShellStrings.NavSettings}" />
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton
+                                    x:Name="navHelp"
+                                    Classes="nav"
+                                    GroupName="shellNav"
+                                    Tag="5">
+                                    <StackPanel Orientation="Horizontal" Spacing="12">
+                                        <PathIcon Width="22" Height="22" Data="{StaticResource IconInfo}" />
+                                        <TextBlock Classes="nav-label" Text="{x:Static shell:ShellStrings.NavHelp}" />
+                                    </StackPanel>
+                                </RadioButton>
+                            </StackPanel>
+                        </ScrollViewer>
                     </DockPanel>
                 </Border>
 
                 <Grid Grid.Column="1">
                     <Grid x:Name="pageServers" Margin="12,12,384,12">
-                        <ContentControl x:Name="profilesHost" />
+                        <Grid ColumnDefinitions="Auto,*">
+                            <ScrollViewer
+                                x:Name="configActions"
+                                Width="280"
+                                Margin="0,0,12,0"
+                                HorizontalScrollBarVisibility="Disabled"
+                                IsVisible="False">
+                                <StackPanel>
+                                    <TextBlock
+                                        Margin="4,0,0,8"
+                                        FontSize="22"
+                                        FontWeight="SemiBold"
+                                        Text="{x:Static shell:ShellStrings.AddProfileTitle}" />
+                                    <Button x:Name="menuAddServerViaClipboard" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
+                                    <Button x:Name="menuAddServerViaScan" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddServerViaScan}" />
+                                    <Button x:Name="menuAddServerViaImage" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddServerViaImage}" />
+                                    <Button x:Name="menuAddCustomServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddCustomServer}" />
+                                    <Button x:Name="menuAddPolicyGroupServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddPolicyGroupServer}" />
+                                    <Button x:Name="menuAddProxyChainServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddProxyChainServer}" />
+                                    <Button x:Name="menuAddCustomOutboundServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddCustomOutboundServer}" />
+                                    <Button x:Name="menuAddVmessServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddVmessServer}" />
+                                    <Button x:Name="menuAddVlessServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddVlessServer}" />
+                                    <Button x:Name="menuAddShadowsocksServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddShadowsocksServer}" />
+                                    <Button x:Name="menuAddTrojanServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddTrojanServer}" />
+                                    <Button x:Name="menuAddHysteria2Server" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddHysteria2Server}" />
+                                    <Button x:Name="menuAddWireguardServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddWireguardServer}" />
+                                    <Button x:Name="menuAddMasqueServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddMasqueServer}" />
+                                    <Button x:Name="menuAddSocksServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddSocksServer}" />
+                                    <Button x:Name="menuAddHttpServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddHttpServer}" />
+                                    <Button x:Name="menuAddTuicServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddTuicServer}" />
+                                    <Button x:Name="menuAddAnytlsServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddAnytlsServer}" />
+                                    <Button x:Name="menuAddNaiveServer" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddNaiveServer}" />
+                                </StackPanel>
+                            </ScrollViewer>
+                            <ContentControl x:Name="profilesHost" Grid.Column="1" />
+                        </Grid>
                     </Grid>
                     <Grid
                         x:Name="pageSubs"
                         Margin="20,16,20,16"
-                        IsVisible="False">
-                        <views:SubscriptionPage x:Name="subscriptionPage" />
+                        IsVisible="False"
+                        RowDefinitions="Auto,*">
+                        <WrapPanel Margin="0,0,0,12">
+                            <Button
+                                x:Name="menuSubSetting"
+                                Margin="0,0,8,8"
+                                Classes="tonal"
+                                Content="{x:Static resx:ResUI.menuSubSetting}" />
+                            <Button
+                                x:Name="menuSubUpdate"
+                                Margin="0,0,8,8"
+                                Classes="outline"
+                                Content="{x:Static resx:ResUI.menuSubUpdate}" />
+                            <Button
+                                x:Name="menuSubUpdateViaProxy"
+                                Margin="0,0,8,8"
+                                Classes="outline"
+                                Content="{x:Static resx:ResUI.menuSubUpdateViaProxy}" />
+                            <Button
+                                x:Name="menuSubGroupUpdate"
+                                Margin="0,0,8,8"
+                                Classes="outline"
+                                Content="{x:Static resx:ResUI.menuSubGroupUpdate}" />
+                            <Button
+                                x:Name="menuSubGroupUpdateViaProxy"
+                                Margin="0,0,8,8"
+                                Classes="outline"
+                                Content="{x:Static resx:ResUI.menuSubGroupUpdateViaProxy}" />
+                        </WrapPanel>
+                        <views:SubscriptionPage x:Name="subscriptionPage" Grid.Row="1" />
                     </Grid>
                     <Grid
                         x:Name="pageRouting"
@@ -361,27 +304,36 @@
                         <views:SettingsPage x:Name="settingsPage" />
                     </Grid>
                     <Grid
-                        x:Name="pageAbout"
+                        x:Name="pageHelp"
                         Margin="20,16,20,16"
                         IsVisible="False">
-                        <Border
-                            MaxWidth="560"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Classes="surface-card">
-                            <StackPanel Spacing="8">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel MaxWidth="640" HorizontalAlignment="Left" Spacing="12">
                                 <TextBlock
-                                    FontSize="24"
+                                    FontSize="28"
                                     FontWeight="SemiBold"
-                                    Text="{x:Static shell:ShellStrings.AboutTitle}" />
-                                <TextBlock
-                                    x:Name="txtAboutVersion"
-                                    Foreground="{DynamicResource MyOnSurfaceVariant}" />
-                                <TextBlock
-                                    Text="{x:Static shell:ShellStrings.AboutBody}"
-                                    TextWrapping="Wrap" />
+                                    Text="{x:Static shell:ShellStrings.HelpTitle}" />
+                                <Button
+                                    x:Name="menuCheckUpdate"
+                                    Classes="settings-row"
+                                    Content="{x:Static resx:ResUI.menuCheckUpdate}" />
+                                <StackPanel x:Name="helpLinks" Spacing="8" />
+                                <Border Classes="surface-card">
+                                    <StackPanel Spacing="8">
+                                        <TextBlock
+                                            FontSize="20"
+                                            FontWeight="SemiBold"
+                                            Text="{x:Static shell:ShellStrings.AboutTitle}" />
+                                        <TextBlock
+                                            x:Name="txtAboutVersion"
+                                            Foreground="{DynamicResource MyOnSurfaceVariant}" />
+                                        <TextBlock
+                                            Text="{x:Static shell:ShellStrings.AboutBody}"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </Border>
                             </StackPanel>
-                        </Border>
+                        </ScrollViewer>
                     </Grid>
                     <Grid
                         x:Name="pageDetails"

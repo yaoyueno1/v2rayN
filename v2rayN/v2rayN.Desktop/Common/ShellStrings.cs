@@ -17,12 +17,14 @@ public static class ShellStrings
 
     private static string T(string hans, string hant, string en) => !Zh ? en : Hant ? hant : hans;
 
-    public static string NavHome => T("首页", "主頁", "Home");
-    public static string NavProfiles => T("配置", "設定檔", "Profiles");
-    public static string NavSubscriptions => T("订阅", "訂閱", "Subscriptions");
+    public static string NavHome => T("节点", "節點", "Nodes");
+    public static string NavProfiles => T("配置项", "設定項", "Profiles");
+    public static string NavSubscriptions => T("订阅分组", "訂閱分組", "Subscriptions");
     public static string NavRouting => T("路由", "路由", "Routing");
     public static string NavSettings => T("设置", "設定", "Settings");
+    public static string NavHelp => T("帮助", "說明", "Help");
     public static string NavAbout => T("关于", "關於", "About");
+    public static string SectionActions => T("操作", "操作", "Actions");
 
     public static string SearchNodes => T("搜索节点...", "搜尋節點...", "Search nodes...");
     public static string SearchShortcut => OperatingSystem.IsMacOS() ? "⌘K" : "Ctrl+K";
@@ -85,7 +87,11 @@ public static class ShellStrings
     public static string SettingsPresetDefault => T("区域预设：默认", "區域預設：預設", "Regional preset: default");
     public static string SettingsPresetRussia => T("区域预设：俄罗斯", "區域預設：俄羅斯", "Regional preset: Russia");
     public static string SettingsPresetIran => T("区域预设：伊朗", "區域預設：伊朗", "Regional preset: Iran");
+    public static string SettingsRebootAdmin => T("以管理员重启", "以系統管理員重新啟動", "Restart as administrator");
+    public static string SettingsUwp => T("UWP 回环解锁", "UWP 回環解鎖", "UWP loopback unlock");
     public static string Appearance => T("外观", "外觀", "Appearance");
+    public static string HelpTitle => T("帮助", "說明", "Help");
+    public static string AddProfileTitle => T("添加配置", "新增設定", "Add profile");
 
     public static string AboutTitle => T("关于 v2rayN", "關於 v2rayN", "About v2rayN");
     public static string AboutBody => T(

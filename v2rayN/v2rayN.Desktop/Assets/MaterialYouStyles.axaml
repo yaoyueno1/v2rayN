@@ -141,11 +141,11 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
         <Setter Property="CornerRadius" Value="16" />
-        <Setter Property="MinHeight" Value="64" />
-        <Setter Property="Padding" Value="4,6" />
+        <Setter Property="MinHeight" Value="44" />
+        <Setter Property="Padding" Value="12,8" />
         <Setter Property="Margin" Value="8,2" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <ControlTemplate>
@@ -154,7 +154,7 @@
                     CornerRadius="{TemplateBinding CornerRadius}"
                     Padding="{TemplateBinding Padding}">
                     <ContentPresenter
-                        HorizontalAlignment="Center"
+                        HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
                         Content="{TemplateBinding Content}"
                         Foreground="{TemplateBinding Foreground}" />
@@ -173,9 +173,31 @@
     </Style>
 
     <Style Selector="TextBlock.nav-label">
-        <Setter Property="FontSize" Value="11" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="TextBlock.nav-section">
+        <Setter Property="Margin" Value="20,12,12,4" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
+    </Style>
+
+    <Style Selector="Button.drawer-action">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="MinHeight" Value="44" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="Margin" Value="8,2" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="Cursor" Value="Hand" />
+    </Style>
+
+    <Style Selector="Button.drawer-action:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
     </Style>
 
     <Style Selector="Border.kbd">

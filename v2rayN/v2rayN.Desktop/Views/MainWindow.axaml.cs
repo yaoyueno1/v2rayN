@@ -26,11 +26,9 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.TopRight };
 
         KeyDown += MainWindow_KeyDown;
-        menuSettingsSetUWP.Click += MenuSettingsSetUWP_Click;
         menuPromotion.Click += MenuPromotion_Click;
         menuCheckUpdate.Click += MenuCheckUpdate_Click;
         btnNewUpdate.Click += MenuCheckUpdate_Click;
-        menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
         menuClose.Click += MenuClose_Click;
         btnConnect.Click += BtnConnect_Click;
         btnTheme.Click += BtnTheme_Click;
@@ -39,10 +37,11 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         navSubs.IsCheckedChanged += Nav_Checked;
         navRouting.IsCheckedChanged += Nav_Checked;
         navSettings.IsCheckedChanged += Nav_Checked;
-        navAbout.IsCheckedChanged += Nav_Checked;
+        navHelp.IsCheckedChanged += Nav_Checked;
         connectionCard.DetailsRequested += (_, _) => ShowDetails();
         settingsPage.BackupRequested += (_, _) => MenuBackupAndRestore_Click(this, new RoutedEventArgs());
         settingsPage.CheckUpdateRequested += (_, _) => MenuCheckUpdate_Click(this, new RoutedEventArgs());
+        settingsPage.UwpRequested += (_, _) => MenuSettingsSetUWP_Click(this, new RoutedEventArgs());
 
         this.WhenActivated(disposables =>
         {
@@ -73,19 +72,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             this.BindCommand(ViewModel, vm => vm.SubUpdateViaProxyCmd, v => v.menuSubUpdateViaProxy).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SubGroupUpdateCmd, v => v.menuSubGroupUpdate).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SubGroupUpdateViaProxyCmd, v => v.menuSubGroupUpdateViaProxy).DisposeWith(disposables);
-
-            //setting
-            this.BindCommand(ViewModel, vm => vm.OptionSettingCmd, v => v.menuOptionSetting).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.RoutingSettingCmd, v => v.menuRoutingSetting).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.DNSSettingCmd, v => v.menuDNSSetting).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.FullConfigTemplateCmd, v => v.menuFullConfigTemplate).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.GlobalHotkeySettingCmd, v => v.menuGlobalHotkeySetting).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.RebootAsAdminCmd, v => v.menuRebootAsAdmin).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.ClearServerStatisticsCmd, v => v.menuClearServerStatistics).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.OpenTheFileLocationCmd, v => v.menuOpenTheFileLocation).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.RegionalPresetDefaultCmd, v => v.menuRegionalPresetsDefault).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.RegionalPresetRussiaCmd, v => v.menuRegionalPresetsRussia).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.RegionalPresetIranCmd, v => v.menuRegionalPresetsIran).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.ReloadCmd, v => v.menuReload).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.menuReload.IsEnabled).DisposeWith(disposables);
@@ -427,11 +413,14 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         pageSubs.IsVisible = page == 2;
         pageRouting.IsVisible = page == 3;
         pageSettings.IsVisible = page == 4;
-        pageAbout.IsVisible = page == 5;
+        pageHelp.IsVisible = page == 5;
         pageDetails.IsVisible = page == 6;
         var showConnection = page is 0 or 3;
         connectionHost.IsVisible = showConnection;
         pageServers.Margin = page == 0 ? new Thickness(12, 12, 384, 12) : new Thickness(12);
+        configActions.IsVisible = page == 1;
+        Grid.SetColumn(profilesHost, page == 1 ? 1 : 0);
+        Grid.SetColumnSpan(profilesHost, page == 1 ? 1 : 2);
         ApplyCardLayout();
 
         if (page == 2)
@@ -450,7 +439,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         navSubs.IsChecked = page == 2;
         navRouting.IsChecked = page == 3;
         navSettings.IsChecked = page == 4;
-        navAbout.IsChecked = page == 5;
+        navHelp.IsChecked = page == 5;
         _navSync = false;
     }
 
@@ -510,19 +499,22 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             .Where(t => t.CoreType is not ECoreType.v2fly
                         and not ECoreType.hysteria))
         {
-            var item = new MenuItem()
+            var item = new Button
             {
                 Tag = it.Url?.Replace(@"/releases", ""),
-                Header = string.Format(ResUI.menuWebsiteItem, it.CoreType.ToString().Replace("_", " ")).UpperFirstChar()
+                Content = string.Format(ResUI.menuWebsiteItem, it.CoreType.ToString().Replace("_", " ")).UpperFirstChar(),
+                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch,
+                HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Left
             };
-            item.Click += MenuItem_Click;
-            menuHelp.Items.Add(item);
+            item.Classes.Add("settings-row");
+            item.Click += HelpLink_Click;
+            helpLinks.Children.Add(item);
         }
     }
 
-    private void MenuItem_Click(object? sender, RoutedEventArgs e)
+    private void HelpLink_Click(object? sender, RoutedEventArgs e)
     {
-        if (sender is MenuItem item)
+        if (sender is Button item)
         {
             ProcUtils.ProcessStart(item.Tag?.ToString());
         }
