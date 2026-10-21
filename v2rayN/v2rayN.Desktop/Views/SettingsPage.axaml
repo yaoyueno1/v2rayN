@@ -1,0 +1,85 @@
+<UserControl
+    x:Class="v2rayN.Desktop.Views.SettingsPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shell="clr-namespace:v2rayN.Desktop.Common"
+    xmlns:views="clr-namespace:v2rayN.Desktop.Views"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    x:DataType="vms:MainWindowViewModel"
+    mc:Ignorable="d">
+    <ScrollViewer>
+        <StackPanel MaxWidth="720" HorizontalAlignment="Left" Spacing="8">
+            <TextBlock
+                Margin="4,0,0,8"
+                FontSize="28"
+                FontWeight="SemiBold"
+                Text="{x:Static shell:ShellStrings.SettingsTitle}" />
+
+            <Border Classes="surface-card" Margin="0,0,0,8">
+                <StackPanel Spacing="8">
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Text="{x:Static shell:ShellStrings.Appearance}" />
+                    <views:ThemeSettingView x:Name="themeSetting" />
+                </StackPanel>
+            </Border>
+
+            <Button
+                Classes="settings-row"
+                Command="{Binding OptionSettingCmd}"
+                Content="{x:Static shell:ShellStrings.SettingsCore}" />
+            <Button
+                Classes="settings-row"
+                Command="{Binding DNSSettingCmd}"
+                Content="{x:Static shell:ShellStrings.SettingsDns}" />
+            <Button
+                Classes="settings-row"
+                Command="{Binding RoutingSettingCmd}"
+                Content="{x:Static shell:ShellStrings.AdvancedRouting}" />
+            <Button
+                Classes="settings-row"
+                Command="{Binding FullConfigTemplateCmd}"
+                Content="{x:Static shell:ShellStrings.SettingsTemplate}" />
+            <Button
+                Classes="settings-row"
+                Command="{Binding GlobalHotkeySettingCmd}"
+                Content="{x:Static shell:ShellStrings.SettingsHotkey}"
+                IsVisible="{Binding BlIsWindows}" />
+            <Button
+                x:Name="btnBackup"
+                Classes="settings-row"
+                Content="{x:Static shell:ShellStrings.SettingsBackup}" />
+            <Button
+                Classes="settings-row"
+                Command="{Binding OpenTheFileLocationCmd}"
+                Content="{x:Static shell:ShellStrings.SettingsFolder}" />
+            <Button
+                Classes="settings-row"
+                Command="{Binding ClearServerStatisticsCmd}"
+                Content="{x:Static shell:ShellStrings.SettingsClearStats}" />
+            <Button
+                Classes="settings-row"
+                Command="{Binding ReloadCmd}"
+                Content="{x:Static shell:ShellStrings.SettingsReload}" />
+            <Button
+                x:Name="btnUpdate"
+                Classes="settings-row"
+                Content="{x:Static shell:ShellStrings.SettingsUpdate}" />
+            <Button
+                Classes="settings-row"
+                Command="{Binding RegionalPresetDefaultCmd}"
+                Content="{x:Static shell:ShellStrings.SettingsPresetDefault}" />
+            <Button
+                Classes="settings-row"
+                Command="{Binding RegionalPresetRussiaCmd}"
+                Content="{x:Static shell:ShellStrings.SettingsPresetRussia}" />
+            <Button
+                Classes="settings-row"
+                Command="{Binding RegionalPresetIranCmd}"
+                Content="{x:Static shell:ShellStrings.SettingsPresetIran}" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,241 @@
+<UserControl
+    x:Class="v2rayN.Desktop.Views.ConnectionStatusCard"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shell="clr-namespace:v2rayN.Desktop.Common"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    x:DataType="vms:StatusBarViewModel"
+    Design.DataContext="{x:Static dd:DesignData.StatusBar}"
+    mc:Ignorable="d">
+    <Border Classes="surface-card" Padding="18,16">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Ellipse
+                    x:Name="statusDot"
+                    Width="8"
+                    Height="8"
+                    VerticalAlignment="Center"
+                    Fill="{DynamicResource MyPrimary}" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="13"
+                    Foreground="{DynamicResource MyOnSurfaceVariant}"
+                    Text="{x:Static shell:ShellStrings.ConnectionStatus}" />
+            </StackPanel>
+
+            <Grid
+                Width="132"
+                Height="132"
+                Margin="0,18,0,8"
+                HorizontalAlignment="Center">
+                <Ellipse
+                    Width="112"
+                    Height="112"
+                    Stroke="{DynamicResource MyRingTrack}"
+                    StrokeThickness="10" />
+                <Path
+                    x:Name="ringArc"
+                    Width="112"
+                    Height="112"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Data="M56,8 A48,48 0 1 1 22,86"
+                    Stroke="{DynamicResource MyPrimary}"
+                    StrokeLineCap="Round"
+                    StrokeThickness="10" />
+                <Border
+                    x:Name="statusBadge"
+                    Width="72"
+                    Height="72"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="{DynamicResource MyPrimary}"
+                    CornerRadius="36">
+                    <PathIcon
+                        Width="36"
+                        Height="36"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Data="{StaticResource IconCheck}"
+                        Foreground="{DynamicResource MyOnPrimary}" />
+                </Border>
+            </Grid>
+
+            <TextBlock
+                x:Name="txtState"
+                HorizontalAlignment="Center"
+                FontSize="22"
+                FontWeight="SemiBold"
+                Text="{x:Static shell:ShellStrings.Disconnected}" />
+            <TextBlock
+                x:Name="txtSince"
+                Margin="0,2,0,0"
+                HorizontalAlignment="Center"
+                FontSize="12"
+                Foreground="{DynamicResource MyOnSurfaceVariant}" />
+            <TextBlock
+                x:Name="txtServer"
+                Margin="0,4,0,0"
+                HorizontalAlignment="Center"
+                FontSize="12"
+                Foreground="{DynamicResource MyOnSurfaceVariant}"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="NoWrap" />
+
+            <Grid Margin="0,16,0,0" ColumnDefinitions="*,8,*">
+                <Border
+                    Grid.Column="0"
+                    Padding="10,8"
+                    Background="{DynamicResource MyPrimaryContainer}"
+                    CornerRadius="16">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <PathIcon
+                                Width="14"
+                                Height="14"
+                                Data="{StaticResource IconUpload}"
+                                Foreground="{DynamicResource MyPrimary}" />
+                            <TextBlock
+                                FontSize="12"
+                                Foreground="{DynamicResource MyOnSurfaceVariant}"
+                                Text="{x:Static shell:ShellStrings.Upload}" />
+                        </StackPanel>
+                        <TextBlock
+                            x:Name="txtUp"
+                            Margin="0,6,0,4"
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Text="0 B/s" />
+                        <Polyline
+                            x:Name="sparkUp"
+                            Height="28"
+                            Stroke="{DynamicResource MyPrimary}"
+                            StrokeLineCap="Round"
+                            StrokeThickness="2" />
+                    </StackPanel>
+                </Border>
+                <Border
+                    Grid.Column="2"
+                    Padding="10,8"
+                    Background="{DynamicResource MyNavSelected}"
+                    CornerRadius="16">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <PathIcon
+                                Width="14"
+                                Height="14"
+                                Data="{StaticResource IconDownload}"
+                                Foreground="{DynamicResource MyChipPurpleText}" />
+                            <TextBlock
+                                FontSize="12"
+                                Foreground="{DynamicResource MyOnSurfaceVariant}"
+                                Text="{x:Static shell:ShellStrings.Download}" />
+                        </StackPanel>
+                        <TextBlock
+                            x:Name="txtDown"
+                            Margin="0,6,0,4"
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Text="0 B/s" />
+                        <Polyline
+                            x:Name="sparkDown"
+                            Height="28"
+                            Stroke="{DynamicResource MyChipPurpleText}"
+                            StrokeLineCap="Round"
+                            StrokeThickness="2" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <TextBlock
+                Margin="0,16,0,8"
+                FontSize="13"
+                Foreground="{DynamicResource MyOnSurfaceVariant}"
+                Text="{x:Static shell:ShellStrings.OutboundMode}" />
+
+            <StackPanel Spacing="4">
+                <RadioButton
+                    x:Name="modeSystem"
+                    Classes="mode"
+                    GroupName="outboundMode">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <Ellipse
+                            Width="10"
+                            Height="10"
+                            VerticalAlignment="Center"
+                            Fill="{DynamicResource MyPrimary}" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="8,0"
+                            VerticalAlignment="Center"
+                            Text="{x:Static shell:ShellStrings.SystemProxy}" />
+                        <PathIcon
+                            Grid.Column="2"
+                            Width="18"
+                            Height="18"
+                            Data="{StaticResource IconMonitor}"
+                            Foreground="{DynamicResource MyOnSurfaceVariant}" />
+                    </Grid>
+                </RadioButton>
+                <RadioButton
+                    x:Name="modeTun"
+                    Classes="mode"
+                    GroupName="outboundMode">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <Ellipse
+                            Width="10"
+                            Height="10"
+                            VerticalAlignment="Center"
+                            Stroke="{DynamicResource MyOutline}"
+                            StrokeThickness="1.5" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="8,0"
+                            VerticalAlignment="Center"
+                            Text="{x:Static shell:ShellStrings.Tun}" />
+                        <PathIcon
+                            Grid.Column="2"
+                            Width="18"
+                            Height="18"
+                            Data="{StaticResource IconShield}"
+                            Foreground="{DynamicResource MyOnSurfaceVariant}" />
+                    </Grid>
+                </RadioButton>
+                <RadioButton
+                    x:Name="modePac"
+                    Classes="mode"
+                    GroupName="outboundMode">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <Ellipse
+                            Width="10"
+                            Height="10"
+                            VerticalAlignment="Center"
+                            Stroke="{DynamicResource MyOutline}"
+                            StrokeThickness="1.5" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="8,0"
+                            VerticalAlignment="Center"
+                            Text="{x:Static shell:ShellStrings.Pac}" />
+                        <PathIcon
+                            Grid.Column="2"
+                            Width="18"
+                            Height="18"
+                            Data="{StaticResource IconDoc}"
+                            Foreground="{DynamicResource MyOnSurfaceVariant}" />
+                    </Grid>
+                </RadioButton>
+            </StackPanel>
+
+            <Button
+                x:Name="btnDetails"
+                Margin="0,16,0,0"
+                HorizontalAlignment="Stretch"
+                Classes="outline"
+                Content="{x:Static shell:ShellStrings.ViewDetails}" />
+        </StackPanel>
+    </Border>
+</UserControl>

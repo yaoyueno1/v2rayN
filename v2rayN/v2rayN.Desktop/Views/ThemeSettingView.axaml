@@ -10,58 +10,42 @@
     x:DataType="vms:ThemeSettingViewModel"
     Design.DataContext="{x:Static dd:DesignData.ThemeSetting}"
     mc:Ignorable="d">
-    <UserControl.Styles>
-        <Style Selector="TextBlock">
-            <Setter Property="Width" Value="100" />
-        </Style>
-        <Style Selector="ComboBox">
-            <Setter Property="Width" Value="130" />
-        </Style>
-    </UserControl.Styles>
-
-    <Button Margin="{StaticResource MarginLr8}" Classes="IconButton">
-        <Button.Content>
-            <PathIcon Data="{StaticResource SemiIconMore}">
-                <PathIcon.RenderTransform>
-                    <RotateTransform Angle="90" />
-                </PathIcon.RenderTransform>
-            </PathIcon>
-        </Button.Content>
-        <Button.Flyout>
-            <Flyout>
-                <StackPanel Margin="{StaticResource MarginTb8}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSettingsTheme}" />
-                        <ComboBox
-                            x:Name="cmbCurrentTheme"
-                            Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Center" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSettingsFontSize}" />
-                        <ComboBox
-                            x:Name="cmbCurrentFontSize"
-                            Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Center" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSettingsLanguage}" />
-                        <ComboBox
-                            x:Name="cmbCurrentLanguage"
-                            Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Center" />
-                    </StackPanel>
-                </StackPanel>
-            </Flyout>
-        </Button.Flyout>
-    </Button>
+    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto">
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="0,6"
+            VerticalAlignment="Center"
+            Text="{x:Static resx:ResUI.TbSettingsTheme}" />
+        <ComboBox
+            x:Name="cmbCurrentTheme"
+            Grid.Row="0"
+            Grid.Column="1"
+            Margin="8,4"
+            HorizontalAlignment="Stretch" />
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="0,6"
+            VerticalAlignment="Center"
+            Text="{x:Static resx:ResUI.TbSettingsFontSize}" />
+        <ComboBox
+            x:Name="cmbCurrentFontSize"
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="8,4"
+            HorizontalAlignment="Stretch" />
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="0"
+            Margin="0,6"
+            VerticalAlignment="Center"
+            Text="{x:Static resx:ResUI.TbSettingsLanguage}" />
+        <ComboBox
+            x:Name="cmbCurrentLanguage"
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="8,4"
+            HorizontalAlignment="Stretch" />
+    </Grid>
 </UserControl>

@@ -1,0 +1,98 @@
+<UserControl
+    x:Class="v2rayN.Desktop.Views.SubscriptionPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shell="clr-namespace:v2rayN.Desktop.Common"
+    xmlns:views="clr-namespace:v2rayN.Desktop.Views"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    x:DataType="vms:SubSettingViewModel"
+    mc:Ignorable="d">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Spacing="14">
+            <TextBlock
+                FontSize="28"
+                FontWeight="SemiBold"
+                Text="{x:Static shell:ShellStrings.NavSubscriptions}" />
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button
+                    x:Name="btnAdd"
+                    Classes="tonal"
+                    Content="{x:Static shell:ShellStrings.AddSubscription}" />
+                <Button
+                    x:Name="btnRefreshAll"
+                    Classes="outline"
+                    Content="{x:Static shell:ShellStrings.RefreshAll}" />
+            </StackPanel>
+        </StackPanel>
+
+        <ScrollViewer Margin="0,16,0,0">
+            <StackPanel>
+                <TextBlock
+                    x:Name="txtEmpty"
+                    Margin="4"
+                    Foreground="{DynamicResource MyOnSurfaceVariant}"
+                    IsVisible="False"
+                    Text="{x:Static shell:ShellStrings.EmptySubscriptions}" />
+                <ItemsControl x:Name="lstSubs">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="views:SubscriptionCard">
+                            <Border Margin="0,0,0,12" Classes="surface-card">
+                                <Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto,Auto,Auto">
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        FontSize="18"
+                                        FontWeight="SemiBold"
+                                        Text="{Binding Title}" />
+                                    <Border
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Margin="12,0"
+                                        VerticalAlignment="Center"
+                                        Classes="badge-protocol">
+                                        <TextBlock
+                                            FontSize="12"
+                                            Foreground="{DynamicResource MyChipPurpleText}"
+                                            Text="{Binding CountText}" />
+                                    </Border>
+                                    <StackPanel
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Orientation="Horizontal"
+                                        Spacing="8">
+                                        <Button
+                                            Classes="outline"
+                                            Click="Update_Click"
+                                            Content="{x:Static shell:ShellStrings.Update}" />
+                                        <Button
+                                            Classes="outline"
+                                            Click="Edit_Click"
+                                            Content="{x:Static shell:ShellStrings.Edit}" />
+                                    </StackPanel>
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        Margin="0,8,0,0"
+                                        Foreground="{DynamicResource MyOnSurfaceVariant}"
+                                        Text="{Binding Url}"
+                                        TextTrimming="CharacterEllipsis" />
+                                    <TextBlock
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        Margin="0,6,0,0"
+                                        FontSize="12"
+                                        Foreground="{DynamicResource MyOnSurfaceVariant}"
+                                        Text="{Binding Meta}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

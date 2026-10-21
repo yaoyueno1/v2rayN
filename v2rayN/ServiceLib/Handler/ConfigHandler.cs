@@ -107,9 +107,8 @@ public static class ConfigHandler
 
         if (config.UiItem.CurrentLanguage.IsNullOrEmpty())
         {
-            config.UiItem.CurrentLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.Equals("zh", StringComparison.CurrentCultureIgnoreCase)
-                ? Global.Languages.First()
-                : Global.Languages[2];
+            // Desktop shell chrome defaults to Simplified Chinese. Other languages stay selectable.
+            config.UiItem.CurrentLanguage = Global.Languages.First();
         }
 
         config.ConstItem ??= new ConstItem();

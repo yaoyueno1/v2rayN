@@ -47,8 +47,7 @@
                         x:Name="lstGroup"
                         Margin="{StaticResource MarginLr4}"
                         DisplayMemberBinding="{Binding Remarks}"
-                        ItemsSource="{Binding SubItems}"
-                        Theme="{DynamicResource ButtonRadioGroupListBox}">
+                        ItemsSource="{Binding SubItems}">
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel />

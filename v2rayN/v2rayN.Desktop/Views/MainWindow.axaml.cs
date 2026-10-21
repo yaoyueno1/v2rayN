@@ -1,4 +1,5 @@
 using Avalonia.Controls.Notifications;
+using Avalonia.VisualTree;
 using DialogHostAvalonia;
 using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
@@ -9,8 +10,10 @@ namespace v2rayN.Desktop.Views;
 public partial class MainWindow : WindowBase<MainWindowViewModel>
 {
     private static Config _config;
-    private readonly SingleReplaceableDisposable _layoutBindingsDisposable = new();
     private readonly WindowNotificationManager? _manager;
+    private int _page;
+    private int _pageBeforeDetails;
+    private bool _navSync;
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
     private bool _blCloseByUser = false;
@@ -29,8 +32,17 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         btnNewUpdate.Click += MenuCheckUpdate_Click;
         menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
         menuClose.Click += MenuClose_Click;
-
-        conTheme.Content ??= new ThemeSettingView();
+        btnConnect.Click += BtnConnect_Click;
+        btnTheme.Click += BtnTheme_Click;
+        navHome.IsCheckedChanged += Nav_Checked;
+        navProfiles.IsCheckedChanged += Nav_Checked;
+        navSubs.IsCheckedChanged += Nav_Checked;
+        navRouting.IsCheckedChanged += Nav_Checked;
+        navSettings.IsCheckedChanged += Nav_Checked;
+        navAbout.IsCheckedChanged += Nav_Checked;
+        connectionCard.DetailsRequested += (_, _) => ShowDetails();
+        settingsPage.BackupRequested += (_, _) => MenuBackupAndRestore_Click(this, new RoutedEventArgs());
+        settingsPage.CheckUpdateRequested += (_, _) => MenuCheckUpdate_Click(this, new RoutedEventArgs());
 
         this.WhenActivated(disposables =>
         {
@@ -77,16 +89,17 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
             this.BindCommand(ViewModel, vm => vm.ReloadCmd, v => v.menuReload).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.menuReload.IsEnabled).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.btnConnect.IsEnabled).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.BlNewUpdate, v => v.btnNewUpdate.IsVisible).DisposeWith(disposables);
+            this.Bind(ViewModel.ProfilesViewModel, vm => vm.ServerFilter, v => v.txtSearch.Text).DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, vm => vm.StatusBarViewModel, v => v.contentStatusBarView.Content).DisposeWith(disposables);
-
-            _layoutBindingsDisposable.DisposeWith(disposables);
-
-            this.WhenAnyValue(v => v.ViewModel.MainGirdOrientation)
-                .ObserveOn(RxSchedulers.MainThreadScheduler)
-                .Subscribe(UpdateLayout)
-                .DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.profilesHost.Content).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.MsgViewModel, v => v.tabMsgView.Content).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.ClashProxiesViewModel, v => v.tabClashProxies.Content).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.ClashConnectionsViewModel, v => v.tabClashConnections.Content).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.IsVisible).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.IsVisible).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain.SelectedIndex).DisposeWith(disposables);
 
             ViewModel.ReadTextFromClipboardInteraction.RegisterHandler(async interaction =>
             {
@@ -227,6 +240,11 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                 case Key.S:
                     await ScanScreenTaskAsync();
                     break;
+
+                case Key.K:
+                    txtSearch.Focus();
+                    e.Handled = true;
+                    break;
             }
         }
         else
@@ -363,108 +381,126 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     protected override void OnLoaded(object? sender, RoutedEventArgs e)
     {
         base.OnLoaded(sender, e);
+        var version = Utils.GetVersionInfo();
+        txtVersion.Text = version;
+        txtAboutVersion.Text = version;
+        ShowPage(0);
         if (_config.UiItem.AutoHideStartup)
         {
             ShowHideWindow(false);
-        }
-        RestoreUI();
-    }
-
-    private void RestoreUI()
-    {
-        if (_config.UiItem.MainGirdHeight1 > 0 && _config.UiItem.MainGirdHeight2 > 0)
-        {
-            if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
-            {
-                gridMain.ColumnDefinitions[0].Width = new GridLength(_config.UiItem.MainGirdHeight1, GridUnitType.Star);
-                gridMain.ColumnDefinitions[2].Width = new GridLength(_config.UiItem.MainGirdHeight2, GridUnitType.Star);
-            }
-            else if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Vertical)
-            {
-                gridMain1.RowDefinitions[0].Height = new GridLength(_config.UiItem.MainGirdHeight1, GridUnitType.Star);
-                gridMain1.RowDefinitions[2].Height = new GridLength(_config.UiItem.MainGirdHeight2, GridUnitType.Star);
-            }
         }
     }
 
     private void StorageUI()
     {
         ConfigHandler.SaveWindowSizeItem(_config, GetType().Name, Width, Height);
+    }
 
-        if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
+    private void Nav_Checked(object? sender, RoutedEventArgs e)
+    {
+        if (_navSync || !IsLoaded || sender is not RadioButton { IsChecked: true, Tag: string tag })
         {
-            ConfigHandler.SaveMainGirdHeight(_config, gridMain.ColumnDefinitions[0].ActualWidth, gridMain.ColumnDefinitions[2].ActualWidth);
+            return;
         }
-        else if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Vertical)
+
+        if (int.TryParse(tag, out var page))
         {
-            ConfigHandler.SaveMainGirdHeight(_config, gridMain1.RowDefinitions[0].ActualHeight, gridMain1.RowDefinitions[2].ActualHeight);
+            ShowPage(page);
         }
     }
 
-    private void UpdateLayout(EGirdOrientation orientation)
+    private void ShowDetails()
     {
-        var currentLayoutDisposables = new MultipleDisposable();
-        _layoutBindingsDisposable.Create(currentLayoutDisposables);
-
-        ClearLayoutContent();
-
-        gridMain.IsVisible = orientation == EGirdOrientation.Horizontal;
-        gridMain1.IsVisible = orientation == EGirdOrientation.Vertical;
-        gridMain2.IsVisible = orientation == EGirdOrientation.Tab;
-
-        switch (orientation)
-        {
-            case EGirdOrientation.Horizontal:
-                this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.tabProfiles.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.MsgViewModel, v => v.tabMsgView.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashProxiesViewModel, v => v.tabClashProxies.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashConnectionsViewModel, v => v.tabClashConnections.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain.SelectedIndex).DisposeWith(currentLayoutDisposables);
-                break;
-
-            case EGirdOrientation.Vertical:
-                this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.tabProfiles1.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.MsgViewModel, v => v.tabMsgView1.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashProxiesViewModel, v => v.tabClashProxies1.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashConnectionsViewModel, v => v.tabClashConnections1.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies1.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections1.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain1.SelectedIndex).DisposeWith(currentLayoutDisposables);
-                break;
-
-            case EGirdOrientation.Tab:
-            default:
-                this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.tabProfiles2.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.MsgViewModel, v => v.tabMsgView2.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashProxiesViewModel, v => v.tabClashProxies2.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashConnectionsViewModel, v => v.tabClashConnections2.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies2.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections2.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(currentLayoutDisposables);
-                break;
-        }
-
-        RestoreUI();
+        _pageBeforeDetails = _page;
+        ShowPage(6);
     }
 
-    private void ClearLayoutContent()
+    private void DetailsBack_Click(object? sender, RoutedEventArgs e)
     {
-        tabProfiles.Content = null;
-        tabMsgView.Content = null;
-        tabClashProxies.Content = null;
-        tabClashConnections.Content = null;
+        ShowPage(_pageBeforeDetails);
+    }
 
-        tabProfiles1.Content = null;
-        tabMsgView1.Content = null;
-        tabClashProxies1.Content = null;
-        tabClashConnections1.Content = null;
+    private void ShowPage(int page)
+    {
+        _page = page;
+        pageServers.IsVisible = page is 0 or 1;
+        pageSubs.IsVisible = page == 2;
+        pageRouting.IsVisible = page == 3;
+        pageSettings.IsVisible = page == 4;
+        pageAbout.IsVisible = page == 5;
+        pageDetails.IsVisible = page == 6;
+        var showConnection = page is 0 or 3;
+        connectionHost.IsVisible = showConnection;
+        pageServers.Margin = page == 0 ? new Thickness(12, 12, 384, 12) : new Thickness(12);
+        ApplyCardLayout();
 
-        tabProfiles2.Content = null;
-        tabMsgView2.Content = null;
-        tabClashProxies2.Content = null;
-        tabClashConnections2.Content = null;
+        if (page == 2)
+        {
+            _ = subscriptionPage.RefreshAsync();
+        }
+
+        if (page == 6)
+        {
+            return;
+        }
+
+        _navSync = true;
+        navHome.IsChecked = page == 0;
+        navProfiles.IsChecked = page == 1;
+        navSubs.IsChecked = page == 2;
+        navRouting.IsChecked = page == 3;
+        navSettings.IsChecked = page == 4;
+        navAbout.IsChecked = page == 5;
+        _navSync = false;
+    }
+
+    private void ApplyCardLayout()
+    {
+        var card = _page == 0;
+        var views = profilesHost.GetVisualDescendants().OfType<ProfilesView>().ToList();
+        if (views.Count == 0)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                foreach (var view in profilesHost.GetVisualDescendants().OfType<ProfilesView>())
+                {
+                    view.UseCardLayout = _page == 0;
+                }
+            }, DispatcherPriority.Background);
+            return;
+        }
+
+        foreach (var view in views)
+        {
+            view.UseCardLayout = card;
+        }
+    }
+
+    private async void BtnConnect_Click(object? sender, RoutedEventArgs e)
+    {
+        if (ViewModel is null)
+        {
+            return;
+        }
+
+        var status = StatusBarViewModel.Instance;
+        if (!status.EnableTun && status.SystemProxySelected == (int)ESysProxyType.ForcedClear)
+        {
+            status.SystemProxySelected = (int)ESysProxyType.ForcedChange;
+        }
+
+        await ViewModel.Reload();
+    }
+
+    private void BtnTheme_Click(object? sender, RoutedEventArgs e)
+    {
+        if (settingsPage.ThemeSetting.ViewModel is not { } theme)
+        {
+            return;
+        }
+
+        var dark = Application.Current?.ActualThemeVariant == ThemeVariant.Dark;
+        theme.CurrentTheme = dark ? nameof(ETheme.Light) : nameof(ETheme.Dark);
     }
 
     private void AddHelpMenuItem()

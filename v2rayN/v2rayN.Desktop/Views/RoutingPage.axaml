@@ -1,0 +1,133 @@
+<UserControl
+    x:Class="v2rayN.Desktop.Views.RoutingPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shell="clr-namespace:v2rayN.Desktop.Common"
+    xmlns:views="clr-namespace:v2rayN.Desktop.Views"
+    mc:Ignorable="d">
+    <DockPanel>
+        <Grid
+            DockPanel.Dock="Top"
+            ColumnDefinitions="*,Auto"
+            RowDefinitions="Auto,Auto">
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                FontSize="28"
+                FontWeight="SemiBold"
+                Text="{x:Static shell:ShellStrings.NavRouting}" />
+            <Button
+                x:Name="btnAdd"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="12,12,0,0"
+                Classes="connect"
+                VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <PathIcon
+                        Width="16"
+                        Height="16"
+                        Data="{StaticResource IconAdd}"
+                        Foreground="{DynamicResource MyOnPrimary}" />
+                    <TextBlock Text="{x:Static shell:ShellStrings.AddRule}" />
+                </StackPanel>
+            </Button>
+            <StackPanel
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="0,12,0,0"
+                Orientation="Horizontal"
+                Spacing="8">
+                <Border Classes="segment-track">
+                    <StackPanel x:Name="modeBar" Orientation="Horizontal" />
+                </Border>
+                <Button
+                    x:Name="btnAdvanced"
+                    Classes="ghost"
+                    Content="{x:Static shell:ShellStrings.AdvancedRouting}"
+                    VerticalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+
+        <ScrollViewer Margin="0,16,0,0">
+            <StackPanel>
+                <TextBlock
+                    x:Name="txtEmpty"
+                    Foreground="{DynamicResource MyOnSurfaceVariant}"
+                    IsVisible="False"
+                    Text="{x:Static shell:ShellStrings.EmptyRules}" />
+                <ItemsControl x:Name="lstRules">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="views:RoutingRuleCard">
+                            <Border Margin="0,0,0,12" Classes="surface-card">
+                                <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto">
+                                    <PathIcon
+                                        Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        Width="18"
+                                        Height="18"
+                                        Margin="0,0,12,0"
+                                        VerticalAlignment="Center"
+                                        Data="{StaticResource IconDownload}"
+                                        Foreground="{DynamicResource MyPrimary}" />
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        FontSize="16"
+                                        FontWeight="SemiBold"
+                                        Text="{Binding Title}" />
+                                    <StackPanel
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Orientation="Horizontal"
+                                        Spacing="8">
+                                        <ToggleSwitch IsChecked="{Binding Enabled, Mode=TwoWay}" />
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            Foreground="{DynamicResource MyOnSurfaceVariant}"
+                                            Text="{x:Static shell:ShellStrings.Enabled}" />
+                                    </StackPanel>
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Margin="0,6,0,8"
+                                        Foreground="{DynamicResource MyOnSurfaceVariant}"
+                                        Text="{Binding Pattern}"
+                                        TextWrapping="Wrap" />
+                                    <StackPanel
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        Margin="12,6,0,0"
+                                        Orientation="Horizontal"
+                                        Spacing="6"
+                                        VerticalAlignment="Center">
+                                        <Button
+                                            Classes="chip chip-proxy"
+                                            Classes.on="{Binding IsProxy}"
+                                            Click="Outbound_Click"
+                                            Content="{x:Static shell:ShellStrings.OutboundProxy}"
+                                            Tag="proxy" />
+                                        <Button
+                                            Classes="chip chip-direct"
+                                            Classes.on="{Binding IsDirect}"
+                                            Click="Outbound_Click"
+                                            Content="{x:Static shell:ShellStrings.OutboundDirect}"
+                                            Tag="direct" />
+                                        <Button
+                                            Classes="chip chip-block"
+                                            Classes.on="{Binding IsBlock}"
+                                            Click="Outbound_Click"
+                                            Content="{x:Static shell:ShellStrings.OutboundBlock}"
+                                            Tag="block" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

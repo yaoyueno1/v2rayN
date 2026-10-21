@@ -6,12 +6,26 @@ namespace v2rayN.Desktop.Views;
 
 public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 {
+    public static readonly StyledProperty<bool> UseCardLayoutProperty =
+        AvaloniaProperty.Register<ProfilesView, bool>(nameof(UseCardLayout), true);
+
     private static Config _config;
     private static readonly string _tag = "ProfilesView";
+
+    public bool UseCardLayout
+    {
+        get => GetValue(UseCardLayoutProperty);
+        set => SetValue(UseCardLayoutProperty, value);
+    }
 
     public ProfilesView()
     {
         InitializeComponent();
+        this.GetObservable(UseCardLayoutProperty).Subscribe(useCards =>
+        {
+            cardRoot.IsVisible = useCards;
+            detailRoot.IsVisible = !useCards;
+        });
 
         _config = AppManager.Instance.Config;
 
@@ -20,6 +34,14 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         txtServerFilter.KeyDown += TxtServerFilter_KeyDown;
         lstProfiles.KeyDown += LstProfiles_KeyDown;
         lstProfiles.SelectionChanged += lstProfiles_SelectionChanged;
+        lstNodes.SelectionChanged += (_, _) =>
+        {
+            if (ViewModel != null)
+            {
+                ViewModel.SelectedProfiles = lstNodes.SelectedItems.Cast<ProfileItemModel>().ToList();
+            }
+        };
+        btnCardRefresh.Click += (_, _) => txtRefreshed.Text = ShellStrings.RefreshJustNow;
         lstProfiles.DoubleTapped += LstProfiles_DoubleTapped;
         lstProfiles.LoadingRow += LstProfiles_LoadingRow;
         lstProfiles.Sorting += LstProfiles_Sorting;
@@ -41,7 +63,22 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 
             // this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.lstGroup.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSub, v => v.lstGroup.SelectedItem).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSub, v => v.lstGroupCard.SelectedItem).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedProfile, v => v.lstNodes.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.ServerFilter, v => v.txtServerFilter.Text).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.SetDefaultServerCmd, v => v.menuCardSetDefault).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.EditServerCmd, v => v.menuCardEdit).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.CopyServerCmd, v => v.menuCardCopy).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.RemoveServerCmd, v => v.menuCardRemove).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.RealPingServerCmd, v => v.menuCardRealPing).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.ShareServerCmd, v => v.menuCardShare).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.SortServerResultCmd, v => v.menuCardSort).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.FastRealPingCmd, v => v.btnCardRefresh).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.SortServerResultCmd, v => v.btnCardSort).DisposeWith(disposables);
+
+            ViewModel.ProfileItems.CollectionChanged += ProfileItems_CollectionChanged;
+            new ActionDisposable(() => ViewModel.ProfileItems.CollectionChanged -= ProfileItems_CollectionChanged).DisposeWith(disposables);
+            UpdateNodeCount();
             this.BindCommand(ViewModel, vm => vm.AddSubCmd, v => v.btnAddSub).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.EditSubCmd, v => v.btnEditSub).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.EditSubCmd, v => v.menuSubEdit).DisposeWith(disposables);
@@ -188,6 +225,28 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         {
             lstProfiles.ScrollIntoView(lstProfiles.SelectedItem, null);
         }
+    }
+
+    private void UpdateNodeCount()
+    {
+        txtAvailable.Text = ShellStrings.NodesAvailable(ViewModel?.ProfileItems.Count ?? 0);
+    }
+
+    private async void NodeCard_Tapped(object? sender, TappedEventArgs e)
+    {
+        if (sender is not Border { DataContext: ProfileItemModel item } || ViewModel is null)
+        {
+            return;
+        }
+
+        ViewModel.SelectedProfile = item;
+        ViewModel.SelectedProfiles = [item];
+        await ViewModel.SetDefaultServer();
+    }
+
+    private void ProfileItems_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        UpdateNodeCount();
     }
 
     private void lstProfiles_SelectionChanged(object? sender, SelectionChangedEventArgs e)

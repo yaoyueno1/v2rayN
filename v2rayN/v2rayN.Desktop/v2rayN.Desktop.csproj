@@ -27,9 +27,8 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Semi.Avalonia" />
-		<PackageReference Include="Semi.Avalonia.AvaloniaEdit" />
-		<PackageReference Include="Semi.Avalonia.DataGrid">
+		<PackageReference Include="Material.Avalonia" />
+		<PackageReference Include="Material.Avalonia.DataGrid">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
 		<PackageReference Include="ReactiveUI">

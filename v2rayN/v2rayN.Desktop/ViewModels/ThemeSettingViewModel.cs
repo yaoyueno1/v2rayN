@@ -1,7 +1,7 @@
 using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
 using AvaloniaEdit;
-using Semi.Avalonia;
+using Material.Styles.Themes;
 
 namespace v2rayN.Desktop.ViewModels;
 
@@ -75,19 +75,34 @@ public partial class ThemeSettingViewModel : MyReactiveObject
     private void ModifyTheme()
     {
         var app = Application.Current;
-        if (app is not null)
+        if (app is null)
         {
-            app.RequestedThemeVariant = CurrentTheme switch
-            {
-                nameof(ETheme.Dark) => ThemeVariant.Dark,
-                nameof(ETheme.Light) => ThemeVariant.Light,
-                nameof(ETheme.Aquatic) => SemiTheme.Aquatic,
-                nameof(ETheme.Desert) => SemiTheme.Desert,
-                nameof(ETheme.Dusk) => SemiTheme.Dusk,
-                nameof(ETheme.NightSky) => SemiTheme.NightSky,
-                _ => ThemeVariant.Default,
-            };
+            return;
         }
+
+        var (variant, primary, secondary) = CurrentTheme switch
+        {
+            nameof(ETheme.Dark) => (ThemeVariant.Dark, Color.Parse("#3DDC97"), Color.Parse("#D0BCFF")),
+            nameof(ETheme.Light) => (ThemeVariant.Light, Color.Parse("#0F8F6A"), Color.Parse("#6750A4")),
+            nameof(ETheme.Aquatic) => (ThemeVariant.Light, Color.Parse("#0277BD"), Color.Parse("#00897B")),
+            nameof(ETheme.Desert) => (ThemeVariant.Light, Color.Parse("#C47B2B"), Color.Parse("#8D6E63")),
+            nameof(ETheme.Dusk) => (ThemeVariant.Dark, Color.Parse("#B388FF"), Color.Parse("#80CBC4")),
+            nameof(ETheme.NightSky) => (ThemeVariant.Dark, Color.Parse("#8AB4F8"), Color.Parse("#80DEEA")),
+            _ => (ThemeVariant.Default, Color.Parse("#0F8F6A"), Color.Parse("#6750A4")),
+        };
+
+        try
+        {
+            var material = app.LocateMaterialTheme<CustomMaterialTheme>();
+            material.PrimaryColor = primary;
+            material.SecondaryColor = secondary;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog("ModifyTheme", ex);
+        }
+
+        app.RequestedThemeVariant = variant;
     }
 
     private void ModifyFontSize()

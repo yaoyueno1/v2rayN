@@ -54,8 +54,7 @@
                 x:Name="togAutoRefresh"
                 Margin="{StaticResource MarginLr8}"
                 HorizontalAlignment="Left"
-                IsChecked="True"
-                Theme="{DynamicResource SimpleToggleSwitch}" />
+                IsChecked="True" />
             <TextBlock
                 Margin="{StaticResource MarginLr8}"
                 VerticalAlignment="Center"
@@ -64,8 +63,7 @@
                 x:Name="togScrollToEnd"
                 Margin="{StaticResource MarginLr8}"
                 HorizontalAlignment="Left"
-                IsChecked="True"
-                Theme="{DynamicResource SimpleToggleSwitch}" />
+                IsChecked="True" />
         </WrapPanel>
 
         <avaloniaEdit:TextEditor

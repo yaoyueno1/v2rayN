@@ -248,6 +248,53 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
         }
     }
 
+    /// <summary>
+    /// Persists the in-memory rule list without regenerating ids or closing the editor.
+    /// </summary>
+    public async Task<bool> SaveRulesInPlaceAsync()
+    {
+        var item = SelectedRouting;
+        if (item is null || item.Remarks.IsNullOrEmpty())
+        {
+            return false;
+        }
+
+        item.RuleNum = _rules.Count;
+        item.RuleSet = JsonUtils.Serialize(_rules, false);
+        if (await ConfigHandler.SaveRoutingItem(_config, item) != 0)
+        {
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
+            return false;
+        }
+
+        RefreshRulesItems();
+        return true;
+    }
+
+    public async Task<bool> SetRuleEnabledAsync(string? id, bool enabled)
+    {
+        var item = _rules.FirstOrDefault(t => t.Id == id);
+        if (item is null)
+        {
+            return false;
+        }
+
+        item.Enabled = enabled;
+        return await SaveRulesInPlaceAsync();
+    }
+
+    public async Task<bool> SetRuleOutboundAsync(string? id, string? outbound)
+    {
+        var item = _rules.FirstOrDefault(t => t.Id == id);
+        if (item is null || outbound.IsNullOrEmpty())
+        {
+            return false;
+        }
+
+        item.OutboundTag = outbound;
+        return await SaveRulesInPlaceAsync();
+    }
+
     #region Import rules
 
     public async Task ImportRulesFromFileAsync(string fileName)
