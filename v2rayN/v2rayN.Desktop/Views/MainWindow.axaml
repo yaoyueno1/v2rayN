@@ -57,29 +57,34 @@
                         </Border>
                     </StackPanel>
 
-                    <Grid Grid.Column="1" MaxWidth="560" Margin="24,0">
-                        <TextBox
-                            x:Name="txtSearch"
-                            Classes="search"
-                            PlaceholderText="{x:Static shell:ShellStrings.SearchNodes}" />
-                        <PathIcon
-                            Width="18"
-                            Height="18"
-                            Margin="14,0,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            IsHitTestVisible="False"
-                            Data="{StaticResource IconSearch}"
-                            Foreground="{DynamicResource MyOnSurfaceVariant}" />
-                        <Border
-                            Margin="0,0,12,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Classes="kbd"
-                            IsHitTestVisible="False">
-                            <TextBlock Classes="kbd" Text="{x:Static shell:ShellStrings.SearchShortcut}" />
-                        </Border>
-                    </Grid>
+                    <TextBox
+                        x:Name="txtSearch"
+                        Grid.Column="1"
+                        MaxWidth="560"
+                        Margin="24,0"
+                        Classes="search"
+                        PlaceholderText="{x:Static shell:ShellStrings.SearchNodes}"
+                        UseFloatingPlaceholder="False">
+                        <TextBox.InnerLeftContent>
+                            <PathIcon
+                                Width="18"
+                                Height="18"
+                                Margin="14,0,8,0"
+                                VerticalAlignment="Center"
+                                IsHitTestVisible="False"
+                                Data="{StaticResource IconSearch}"
+                                Foreground="{DynamicResource MyOnSurfaceVariant}" />
+                        </TextBox.InnerLeftContent>
+                        <TextBox.InnerRightContent>
+                            <Border
+                                Margin="0,0,12,0"
+                                VerticalAlignment="Center"
+                                Classes="kbd"
+                                IsHitTestVisible="False">
+                                <TextBlock Classes="kbd" Text="{x:Static shell:ShellStrings.SearchShortcut}" />
+                            </Border>
+                        </TextBox.InnerRightContent>
+                    </TextBox>
 
                     <StackPanel
                         Grid.Column="2"
@@ -115,9 +120,26 @@
                         </Button>
                         <Button Classes="outline" Content="{x:Static shell:ShellStrings.More}">
                             <Button.Flyout>
-                                <Flyout>
-                                    <Menu>
+                                <MenuFlyout Placement="BottomEdgeAlignedRight">
+                                    <MenuFlyout.FlyoutPresenterTheme>
+                                        <ControlTheme TargetType="MenuFlyoutPresenter" BasedOn="{StaticResource {x:Type MenuFlyoutPresenter}}">
+                                            <Setter Property="MinWidth" Value="240" />
+                                            <Setter Property="MaxWidth" Value="360" />
+                                            <Setter Property="Background" Value="{DynamicResource MyCard}" />
+                                            <Setter Property="Padding" Value="6,8" />
+                                            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                                            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+                                            <Setter Property="ItemsPanel">
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Vertical" />
+                                                </ItemsPanelTemplate>
+                                            </Setter>
+                                        </ControlTheme>
+                                    </MenuFlyout.FlyoutPresenterTheme>
                                         <MenuItem Header="{x:Static resx:ResUI.menuServers}">
+                                            <MenuItem.Icon>
+                                                <PathIcon Width="18" Height="18" Data="{StaticResource IconConfig}" />
+                                            </MenuItem.Icon>
                                             <MenuItem
                                                 x:Name="menuAddServerViaClipboard"
                                                 Header="{x:Static resx:ResUI.menuAddServerViaClipboard}"
@@ -148,6 +170,9 @@
                                             <MenuItem x:Name="menuAddNaiveServer" Header="{x:Static resx:ResUI.menuAddNaiveServer}" />
                                         </MenuItem>
                                         <MenuItem Header="{x:Static resx:ResUI.menuSubscription}">
+                                            <MenuItem.Icon>
+                                                <PathIcon Width="18" Height="18" Data="{StaticResource IconSub}" />
+                                            </MenuItem.Icon>
                                             <MenuItem x:Name="menuSubSetting" Header="{x:Static resx:ResUI.menuSubSetting}" />
                                             <Separator />
                                             <MenuItem x:Name="menuSubUpdate" Header="{x:Static resx:ResUI.menuSubUpdate}" />
@@ -156,6 +181,9 @@
                                             <MenuItem x:Name="menuSubGroupUpdateViaProxy" Header="{x:Static resx:ResUI.menuSubGroupUpdateViaProxy}" />
                                         </MenuItem>
                                         <MenuItem Header="{x:Static resx:ResUI.menuSetting}">
+                                            <MenuItem.Icon>
+                                                <PathIcon Width="18" Height="18" Data="{StaticResource IconSettings}" />
+                                            </MenuItem.Icon>
                                             <MenuItem x:Name="menuOptionSetting" Header="{x:Static resx:ResUI.menuOptionSetting}" />
                                             <MenuItem x:Name="menuRoutingSetting" Header="{x:Static resx:ResUI.menuRoutingSetting}" />
                                             <MenuItem x:Name="menuDNSSetting" Header="{x:Static resx:ResUI.menuDNSSetting}" />
@@ -184,14 +212,28 @@
                                             <MenuItem x:Name="menuOpenTheFileLocation" Header="{x:Static resx:ResUI.menuOpenTheFileLocation}" />
                                         </MenuItem>
                                         <MenuItem x:Name="menuHelp" Header="{x:Static resx:ResUI.menuHelp}">
+                                            <MenuItem.Icon>
+                                                <PathIcon Width="18" Height="18" Data="{StaticResource IconInfo}" />
+                                            </MenuItem.Icon>
                                             <MenuItem x:Name="menuCheckUpdate" Header="{x:Static resx:ResUI.menuCheckUpdate}" />
                                             <Separator />
                                         </MenuItem>
-                                        <MenuItem x:Name="menuReload" Header="{x:Static resx:ResUI.menuReload}" />
-                                        <MenuItem x:Name="menuPromotion" Header="{x:Static resx:ResUI.menuPromotion}" />
-                                        <MenuItem x:Name="menuClose" Header="{x:Static resx:ResUI.menuExit}" />
-                                    </Menu>
-                                </Flyout>
+                                        <MenuItem x:Name="menuReload" Header="{x:Static resx:ResUI.menuReload}">
+                                            <MenuItem.Icon>
+                                                <PathIcon Width="18" Height="18" Data="{StaticResource SemiIconRefresh}" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem x:Name="menuPromotion" Header="{x:Static resx:ResUI.menuPromotion}">
+                                            <MenuItem.Icon>
+                                                <PathIcon Width="18" Height="18" Data="{StaticResource IconAdd}" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem x:Name="menuClose" Header="{x:Static resx:ResUI.menuExit}">
+                                            <MenuItem.Icon>
+                                                <PathIcon Width="18" Height="18" Data="{StaticResource SemiIconClose}" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                </MenuFlyout>
                             </Button.Flyout>
                         </Button>
                     </StackPanel>
