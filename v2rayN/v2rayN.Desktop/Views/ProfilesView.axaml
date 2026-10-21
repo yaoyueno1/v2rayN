@@ -175,8 +175,10 @@
 
                     <TextBox
                         x:Name="txtServerFilter"
-                        Width="200"
+                        Width="220"
                         Margin="{StaticResource MarginLr4}"
+                        Padding="14,0"
+                        Classes="search"
                         VerticalContentAlignment="Center"
                         PlaceholderText="{x:Static resx:ResUI.MsgServerTitle}"
                         ToolTip.Tip="{x:Static resx:ResUI.MsgServerTitle}" />

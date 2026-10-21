@@ -15,6 +15,9 @@
                 <ResourceInclude Source="Assets/GlobalResources.axaml" />
                 <ResourceInclude Source="Assets/ClaudeTheme.axaml" />
             </ResourceDictionary.MergedDictionaries>
+            <x:Double x:Key="ScrollBarSize">8</x:Double>
+            <SolidColorBrush x:Key="ScrollBarThumbBackgroundColor" Color="#665C574E" />
+            <SolidColorBrush x:Key="ScrollBarTrackFill" Color="Transparent" />
         </ResourceDictionary>
     </Application.Resources>
     <Application.Styles>
