@@ -20,6 +20,19 @@
         <Setter Property="CornerRadius" Value="10" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="MinHeight" Value="36" />
+        <Setter Property="Background" Value="{DynamicResource MySearch}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MyOutline}" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{DynamicResource MySearch}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MyOutline}" />
+    </Style>
+
+    <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{DynamicResource MySearch}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MyPrimary}" />
     </Style>
 
     <Style Selector="TextBox.TextArea">
@@ -614,6 +627,57 @@
     <Style Selector="DataGridRow:selected">
         <Setter Property="Background" Value="{DynamicResource MySelected}" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+    </Style>
+
+    <!-- Fluent paints selection on BackgroundRectangle with the accent at 60% opacity.
+         That overlay ignores DataGridRow.Background and washes the filler column clay. -->
+    <Style Selector="DataGridRow /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="Fill" Value="Transparent" />
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="Fill" Value="{DynamicResource MyHover}" />
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="Fill" Value="{DynamicResource MySelected}" />
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="DataGridRow:selected:pointerover /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="Fill" Value="{DynamicResource MySelected}" />
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="DataGridRow:selected:focus /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="Fill" Value="{DynamicResource MySelected}" />
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="DataGridRow:selected:pointerover:focus /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="Fill" Value="{DynamicResource MySelected}" />
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="DataGridRowHeader /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="Fill" Value="Transparent" />
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="DataGridRow:pointerover DataGridRowHeader /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="Fill" Value="{DynamicResource MyHover}" />
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="DataGridRowHeader:selected /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="Fill" Value="{DynamicResource MySelected}" />
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="DataGridRow:pointerover DataGridRowHeader:selected /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="Fill" Value="{DynamicResource MySelected}" />
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="DataGridRowHeader:selected:focus /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="Fill" Value="{DynamicResource MySelected}" />
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="DataGridRow:pointerover DataGridRowHeader:selected:focus /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="Fill" Value="{DynamicResource MySelected}" />
+        <Setter Property="Opacity" Value="1" />
     </Style>
 
     <Style Selector="DataGridCell">

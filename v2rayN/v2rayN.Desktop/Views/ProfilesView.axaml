@@ -39,6 +39,7 @@
                 Grid.Row="2"
                 Margin="0,0,0,8"
                 Classes="chips"
+                DisplayMemberBinding="{Binding Remarks}"
                 ItemsSource="{Binding SubItems}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
