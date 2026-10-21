@@ -1,0 +1,56 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+            <SolidColorBrush x:Key="MySurface" Color="#F3F1EB" />
+            <SolidColorBrush x:Key="MySurfaceDim" Color="#E6E2D8" />
+            <SolidColorBrush x:Key="MyCard" Color="#FBFAF7" />
+            <SolidColorBrush x:Key="MyCardMuted" Color="#F6F4EE" />
+            <SolidColorBrush x:Key="MyOnSurface" Color="#1C1B17" />
+            <SolidColorBrush x:Key="MyOnSurfaceVariant" Color="#6E6A62" />
+            <SolidColorBrush x:Key="MyOutline" Color="#E3DED2" />
+            <SolidColorBrush x:Key="MyPrimary" Color="#C4643C" />
+            <SolidColorBrush x:Key="MyOnPrimary" Color="#FFFBF7" />
+            <SolidColorBrush x:Key="MyInk" Color="#2A2824" />
+            <SolidColorBrush x:Key="MyOnInk" Color="#F7F4EE" />
+            <SolidColorBrush x:Key="MyInkHover" Color="#3A3834" />
+            <SolidColorBrush x:Key="MyPrimaryContainer" Color="#F3E7DF" />
+            <SolidColorBrush x:Key="MyNavSelected" Color="#E5E0D6" />
+            <SolidColorBrush x:Key="MySearch" Color="#FFFcf8" />
+            <SolidColorBrush x:Key="MyChipPurple" Color="#F0E6DC" />
+            <SolidColorBrush x:Key="MyChipPurpleText" Color="#7A5340" />
+            <SolidColorBrush x:Key="MyChipGreen" Color="#E6EDE4" />
+            <SolidColorBrush x:Key="MyChipGreenText" Color="#3F5C45" />
+            <SolidColorBrush x:Key="MyChipRed" Color="#F6E6E2" />
+            <SolidColorBrush x:Key="MyChipRedText" Color="#9C4036" />
+            <SolidColorBrush x:Key="MyRingTrack" Color="#E7E2D8" />
+            <SolidColorBrush x:Key="MyKbd" Color="#EFEBE3" />
+            <SolidColorBrush x:Key="MyShadow" Color="#12000000" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush x:Key="MySurface" Color="#1C1B19" />
+            <SolidColorBrush x:Key="MySurfaceDim" Color="#2A2825" />
+            <SolidColorBrush x:Key="MyCard" Color="#242321" />
+            <SolidColorBrush x:Key="MyCardMuted" Color="#201F1C" />
+            <SolidColorBrush x:Key="MyOnSurface" Color="#F3F0E8" />
+            <SolidColorBrush x:Key="MyOnSurfaceVariant" Color="#B7B1A6" />
+            <SolidColorBrush x:Key="MyOutline" Color="#3A3833" />
+            <SolidColorBrush x:Key="MyPrimary" Color="#E0926A" />
+            <SolidColorBrush x:Key="MyOnPrimary" Color="#1C1B19" />
+            <SolidColorBrush x:Key="MyInk" Color="#F3F0E8" />
+            <SolidColorBrush x:Key="MyOnInk" Color="#1C1B19" />
+            <SolidColorBrush x:Key="MyInkHover" Color="#E4E0D6" />
+            <SolidColorBrush x:Key="MyPrimaryContainer" Color="#3A2E28" />
+            <SolidColorBrush x:Key="MyNavSelected" Color="#33312C" />
+            <SolidColorBrush x:Key="MySearch" Color="#2A2825" />
+            <SolidColorBrush x:Key="MyChipPurple" Color="#3A322C" />
+            <SolidColorBrush x:Key="MyChipPurpleText" Color="#E7C4B0" />
+            <SolidColorBrush x:Key="MyChipGreen" Color="#2A332C" />
+            <SolidColorBrush x:Key="MyChipGreenText" Color="#C9D7C4" />
+            <SolidColorBrush x:Key="MyChipRed" Color="#3A2826" />
+            <SolidColorBrush x:Key="MyChipRedText" Color="#F0B8B0" />
+            <SolidColorBrush x:Key="MyRingTrack" Color="#3A3833" />
+            <SolidColorBrush x:Key="MyKbd" Color="#33312C" />
+            <SolidColorBrush x:Key="MyShadow" Color="#66000000" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>

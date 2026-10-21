@@ -13,15 +13,13 @@
         <StackPanel MaxWidth="720" HorizontalAlignment="Left" Spacing="8">
             <TextBlock
                 Margin="4,0,0,8"
-                FontSize="28"
-                FontWeight="SemiBold"
+                Classes="page-title"
                 Text="{x:Static shell:ShellStrings.SettingsTitle}" />
 
             <Border Classes="surface-card" Margin="0,0,0,8">
                 <StackPanel Spacing="8">
                     <TextBlock
-                        FontSize="16"
-                        FontWeight="SemiBold"
+                        Classes="section-title"
                         Text="{x:Static shell:ShellStrings.Appearance}" />
                     <views:ThemeSettingView x:Name="themeSetting" />
                 </StackPanel>

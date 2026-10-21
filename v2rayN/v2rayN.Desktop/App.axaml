@@ -3,8 +3,8 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+    xmlns:fluent="clr-namespace:Avalonia.Themes.Fluent;assembly=Avalonia.Themes.Fluent"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
-    xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Name="v2rayN"
     x:DataType="vms:StatusBarViewModel"
@@ -13,23 +13,26 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="Assets/GlobalResources.axaml" />
-                <ResourceInclude Source="Assets/MaterialYou.axaml" />
+                <ResourceInclude Source="Assets/ClaudeTheme.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
     <Application.Styles>
-        <themes:CustomMaterialTheme
-            BaseTheme="Inherit"
-            PrimaryColor="#0F8F6A"
-            SecondaryColor="#6750A4" />
+        <fluent:FluentTheme>
+            <fluent:FluentTheme.Palettes>
+                <fluent:ColorPaletteResources x:Key="Light" Accent="#C4643C" RegionColor="#F3F1EB" />
+                <fluent:ColorPaletteResources x:Key="Dark" Accent="#E0926A" RegionColor="#1C1B19" />
+            </fluent:FluentTheme.Palettes>
+        </fluent:FluentTheme>
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <StyleInclude Source="Assets/GlobalStyles.axaml" />
-        <StyleInclude Source="Assets/MaterialYouStyles.axaml" />
+        <StyleInclude Source="Assets/ClaudeStyles.axaml" />
         <dialogHost:DialogHostStyles />
 
         <Style Selector="dialogHost|DialogHost">
             <Setter Property="OverlayBackground" Value="#66000000" />
-            <Setter Property="Background" Value="{DynamicResource MaterialCardBackgroundBrush}" />
-            <Setter Property="dialogHost:DialogHostStyle.CornerRadius" Value="28" />
+            <Setter Property="Background" Value="{DynamicResource MyCard}" />
+            <Setter Property="dialogHost:DialogHostStyle.CornerRadius" Value="16" />
         </Style>
     </Application.Styles>
 

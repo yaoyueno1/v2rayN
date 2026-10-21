@@ -27,14 +27,13 @@
             Margin="4,0,4,0"
             RowDefinitions="Auto,Auto,Auto,*,Auto">
             <TextBlock
-                FontSize="28"
-                FontWeight="SemiBold"
+                Classes="page-title"
                 Text="{x:Static shell:ShellStrings.NodeList}" />
             <TextBlock
                 x:Name="txtAvailable"
                 Grid.Row="1"
-                Margin="0,4,0,8"
-                Foreground="{DynamicResource MyOnSurfaceVariant}" />
+                Margin="0,2,0,12"
+                Classes="meta" />
             <ListBox
                 x:Name="lstGroupCard"
                 Grid.Row="2"
@@ -79,8 +78,7 @@
                                 <TextBlock
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
-                                    FontSize="16"
-                                    FontWeight="SemiBold"
+                                    Classes="card-title"
                                     Text="{Binding Remarks}"
                                     TextTrimming="CharacterEllipsis" />
                                 <Border Grid.Column="2" Margin="8,0" VerticalAlignment="Center" Classes="badge-protocol">

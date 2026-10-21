@@ -1,0 +1,462 @@
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style Selector="Window">
+        <Setter Property="Background" Value="{DynamicResource MySurface}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+
+    <Style Selector="Button">
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Padding" Value="14,8" />
+    </Style>
+
+    <Style Selector="TextBox">
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="MinHeight" Value="36" />
+    </Style>
+
+    <Style Selector="TextBox.TextArea">
+        <Setter Property="AcceptsReturn" Value="True" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="MinHeight" Value="96" />
+    </Style>
+
+    <Style Selector="TextBlock.page-title">
+        <Setter Property="FontSize" Value="26" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="LineHeight" Value="34" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+    </Style>
+
+    <Style Selector="TextBlock.section-title">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="LineHeight" Value="24" />
+    </Style>
+
+    <Style Selector="TextBlock.card-title">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="LineHeight" Value="24" />
+    </Style>
+
+    <Style Selector="TextBlock.wordmark">
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="LineHeight" Value="24" />
+        <Setter Property="LetterSpacing" Value="-0.2" />
+    </Style>
+
+    <Style Selector="TextBlock.meta">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="LineHeight" Value="20" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
+    </Style>
+
+    <Style Selector="Button.IconButton">
+        <Setter Property="Width" Value="36" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="MinWidth" Value="36" />
+        <Setter Property="Padding" Value="6" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="CornerRadius" Value="10" />
+    </Style>
+
+    <Style Selector="Border.surface-card">
+        <Setter Property="Background" Value="{DynamicResource MyCardMuted}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MyOutline}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="Padding" Value="18,16" />
+        <Setter Property="BoxShadow" Value="0 1 2 0 #10000000" />
+    </Style>
+
+    <Style Selector="Border.node-card">
+        <Setter Property="Background" Value="{DynamicResource MyCardMuted}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MyOutline}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="14" />
+        <Setter Property="Padding" Value="14,12" />
+        <Setter Property="Margin" Value="0,0,0,8" />
+    </Style>
+
+    <Style Selector="Border.node-card.active">
+        <Setter Property="Background" Value="{DynamicResource MyPrimaryContainer}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MyPrimary}" />
+    </Style>
+
+    <Style Selector="Button.connect">
+        <Setter Property="Background" Value="{DynamicResource MyInk}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnInk}" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Padding" Value="14,8" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="MinWidth" Value="96" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+
+    <Style Selector="Button.connect:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MyInkHover}" />
+    </Style>
+
+    <Style Selector="Button.tonal">
+        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Padding" Value="14,8" />
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+
+    <Style Selector="Button.tonal:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MyNavSelected}" />
+    </Style>
+
+    <Style Selector="Button.outline">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MyOutline}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Padding" Value="14,8" />
+        <Setter Property="MinHeight" Value="36" />
+    </Style>
+
+    <Style Selector="Button.outline:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+    </Style>
+
+    <Style Selector="Button.ghost">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Padding" Value="12,8" />
+    </Style>
+
+    <Style Selector="Button.ghost:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+    </Style>
+
+    <Style Selector="Button.theme-toggle">
+        <Setter Property="Width" Value="36" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="MinWidth" Value="36" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MyOutline}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="10" />
+    </Style>
+
+    <Style Selector="Button.theme-toggle:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+    </Style>
+
+    <Style Selector="TextBox.search">
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Background" Value="{DynamicResource MySearch}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MyOutline}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="UseFloatingPlaceholder" Value="False" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="TextBox.search:pointerover /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{DynamicResource MySearch}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MyOutline}" />
+    </Style>
+
+    <Style Selector="TextBox.search:focus /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{DynamicResource MySearch}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MyPrimary}" />
+    </Style>
+
+    <Style Selector="MenuFlyoutPresenter">
+        <Setter Property="Background" Value="{DynamicResource MyCard}" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="6,8" />
+        <Setter Property="MinWidth" Value="220" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+    </Style>
+
+    <Style Selector="RadioButton.nav">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="Margin" Value="10,2" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Padding="{TemplateBinding Padding}">
+                    <ContentPresenter
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Content="{TemplateBinding Content}"
+                        Foreground="{TemplateBinding Foreground}" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="RadioButton.nav:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+    </Style>
+
+    <Style Selector="RadioButton.nav:checked">
+        <Setter Property="Background" Value="{DynamicResource MyNavSelected}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+    </Style>
+
+    <Style Selector="TextBlock.nav-label">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="LineHeight" Value="22" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="RadioButton.nav:checked TextBlock.nav-label">
+        <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+
+    <Style Selector="TextBlock.nav-section">
+        <Setter Property="Margin" Value="22,14,12,6" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="LineHeight" Value="16" />
+        <Setter Property="LetterSpacing" Value="0.6" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
+    </Style>
+
+    <Style Selector="Button.drawer-action">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="Margin" Value="10,2" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="Cursor" Value="Hand" />
+    </Style>
+
+    <Style Selector="Button.drawer-action:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+    </Style>
+
+    <Style Selector="Button.drawer-action TextBlock">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="LineHeight" Value="22" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Border.kbd">
+        <Setter Property="Background" Value="{DynamicResource MyKbd}" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Padding" Value="6,2" />
+    </Style>
+
+    <Style Selector="TextBlock.kbd">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="LineHeight" Value="16" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
+    </Style>
+
+    <Style Selector="Border.badge-protocol">
+        <Setter Property="Background" Value="{DynamicResource MyChipPurple}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="8,2" />
+    </Style>
+
+    <Style Selector="Border.badge-delay">
+        <Setter Property="Background" Value="{DynamicResource MyChipGreen}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="8,2" />
+    </Style>
+
+    <Style Selector="Border.version-chip">
+        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="8,2" />
+    </Style>
+
+    <Style Selector="Border.version-chip TextBlock">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
+    </Style>
+
+    <Style Selector="ListBox.flat">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style Selector="ListBox.flat ListBoxItem">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="CornerRadius" Value="14" />
+    </Style>
+
+    <Style Selector="ListBox.chips">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="MaxHeight" Value="44" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+    </Style>
+
+    <Style Selector="ListBox.chips ListBoxItem">
+        <Setter Property="Padding" Value="12,6" />
+        <Setter Property="Margin" Value="0,0,8,0" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Background" Value="{DynamicResource MyCardMuted}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+    </Style>
+
+    <Style Selector="ListBox.chips ListBoxItem:selected">
+        <Setter Property="Background" Value="{DynamicResource MyNavSelected}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+
+    <Style Selector="Button.chip">
+        <Setter Property="MinHeight" Value="28" />
+        <Setter Property="Padding" Value="12,2" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Background" Value="{DynamicResource MyCardMuted}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
+    </Style>
+
+    <Style Selector="Button.chip-proxy">
+        <Setter Property="Background" Value="{DynamicResource MyChipPurple}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyChipPurpleText}" />
+    </Style>
+
+    <Style Selector="Button.chip-proxy.on">
+        <Setter Property="Background" Value="{DynamicResource MyChipPurpleText}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnPrimary}" />
+    </Style>
+
+    <Style Selector="Button.chip-direct">
+        <Setter Property="Background" Value="{DynamicResource MyChipGreen}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyChipGreenText}" />
+    </Style>
+
+    <Style Selector="Button.chip-direct.on">
+        <Setter Property="Background" Value="{DynamicResource MyChipGreenText}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyCard}" />
+    </Style>
+
+    <Style Selector="Button.chip-block">
+        <Setter Property="Background" Value="{DynamicResource MyChipRed}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyChipRedText}" />
+    </Style>
+
+    <Style Selector="Button.chip-block.on">
+        <Setter Property="Background" Value="{DynamicResource MyChipRedText}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyCard}" />
+    </Style>
+
+    <Style Selector="ToggleButton.segment">
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="MinWidth" Value="72" />
+        <Setter Property="Padding" Value="14,6" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <Style Selector="ToggleButton.segment:checked">
+        <Setter Property="Background" Value="{DynamicResource MyCard}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+
+    <Style Selector="Border.segment-track">
+        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Padding" Value="3" />
+    </Style>
+
+    <Style Selector="RadioButton.mode">
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Padding="{TemplateBinding Padding}">
+                    <ContentPresenter Content="{TemplateBinding Content}" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="RadioButton.mode:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+    </Style>
+
+    <Style Selector="RadioButton.mode:checked">
+        <Setter Property="Background" Value="{DynamicResource MyPrimaryContainer}" />
+    </Style>
+
+    <Style Selector="Button.settings-row">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="Background" Value="{DynamicResource MyCardMuted}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MyOutline}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="MinHeight" Value="48" />
+        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="Margin" Value="0,0,0,8" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Normal" />
+    </Style>
+
+    <Style Selector="Button.settings-row:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+    </Style>
+
+    <Style Selector="Label.Solid.Red">
+        <Setter Property="Background" Value="{DynamicResource MyChipRed}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyChipRedText}" />
+        <Setter Property="Padding" Value="6,1" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+</Styles>

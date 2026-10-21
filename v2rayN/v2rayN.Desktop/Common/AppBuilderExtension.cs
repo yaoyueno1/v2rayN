@@ -2,19 +2,25 @@ namespace v2rayN.Desktop.Common;
 
 public static class AppBuilderExtension
 {
+    /// <summary>
+    /// Latin uses Segoe UI. Chinese prefers Microsoft YaHei UI, then PingFang, then the
+    /// OFL Noto Sans SC already shipped with the app. No commercial font files.
+    /// </summary>
+    private static readonly string EmbeddedCjkFamily =
+        Global.AvaAssets + "Fonts#Noto Sans SC";
+
     private static readonly string DefaultFontFamilyName =
-        Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC");
+        "Segoe UI, Microsoft YaHei UI, Microsoft YaHei, PingFang SC, " + EmbeddedCjkFamily;
 
     public static AppBuilder WithFontByDefault(this AppBuilder appBuilder)
     {
-        var fallbacks = new List<FontFallback>();
-
-        var notoSansSc = new FontFamily(DefaultFontFamilyName);
-
-        fallbacks.Add(new FontFallback
+        var fallbacks = new List<FontFallback>
         {
-            FontFamily = notoSansSc
-        });
+            new() { FontFamily = new FontFamily("Microsoft YaHei UI") },
+            new() { FontFamily = new FontFamily("Microsoft YaHei") },
+            new() { FontFamily = new FontFamily("PingFang SC") },
+            new() { FontFamily = new FontFamily(EmbeddedCjkFamily) },
+        };
 
         if (OperatingSystem.IsWindows())
         {

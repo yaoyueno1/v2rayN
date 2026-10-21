@@ -23,36 +23,16 @@
     mc:Ignorable="d">
     <dialogHost:DialogHost CloseOnClickAway="True" DisableOpeningAnimation="True">
         <Grid RowDefinitions="Auto,*">
-            <Border
-                Padding="16,12"
-                Background="{DynamicResource MySurface}"
-                BorderBrush="{DynamicResource MyOutline}"
-                BorderThickness="0,0,0,1">
+            <Border Padding="20,16,20,12" Background="{DynamicResource MySurface}">
                 <Grid ColumnDefinitions="Auto,*,Auto">
                     <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
-                        <Border
-                            Width="36"
-                            Height="36"
-                            Background="{DynamicResource MyPrimary}"
-                            CornerRadius="12">
-                            <PathIcon
-                                Width="20"
-                                Height="20"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Data="{StaticResource IconHome}"
-                                Foreground="{DynamicResource MyOnPrimary}" />
-                        </Border>
                         <TextBlock
                             VerticalAlignment="Center"
-                            FontSize="22"
-                            FontWeight="SemiBold"
+                            Classes="wordmark"
                             Text="v2rayN" />
                         <Border Classes="version-chip" VerticalAlignment="Center">
                             <TextBlock
                                 x:Name="txtVersion"
-                                FontSize="12"
-                                Foreground="{DynamicResource MyChipPurpleText}"
                                 Text="0.0.0" />
                         </Border>
                     </StackPanel>
@@ -97,10 +77,7 @@
             </Border>
 
             <Grid Grid.Row="1" ColumnDefinitions="248,*">
-                <Border
-                    Background="{DynamicResource MyCard}"
-                    BorderBrush="{DynamicResource MyOutline}"
-                    BorderThickness="0,0,1,0">
+                <Border Background="Transparent">
                     <DockPanel>
                         <StackPanel Margin="0,4,0,8" DockPanel.Dock="Bottom">
                             <TextBlock Classes="nav-section" Text="{x:Static shell:ShellStrings.SectionActions}" />
@@ -119,11 +96,7 @@
                             <Grid Margin="12,8,12,4" ColumnDefinitions="Auto,*">
                                 <Button
                                     x:Name="btnTheme"
-                                    Width="44"
-                                    Height="44"
-                                    Padding="0"
-                                    Classes="outline"
-                                    CornerRadius="22">
+                                    Classes="theme-toggle">
                                     <PathIcon Width="18" Height="18" Data="{StaticResource IconMoon}" />
                                 </Button>
                                 <Button
@@ -138,7 +111,7 @@
                                             Width="16"
                                             Height="16"
                                             Data="{StaticResource IconPlug}"
-                                            Foreground="{DynamicResource MyOnPrimary}" />
+                                            Foreground="{DynamicResource MyOnInk}" />
                                         <TextBlock Text="{x:Static shell:ShellStrings.Connect}" />
                                     </StackPanel>
                                 </Button>
@@ -218,7 +191,15 @@
                     </DockPanel>
                 </Border>
 
-                <Grid Grid.Column="1">
+                <Border
+                    Grid.Column="1"
+                    Margin="0,0,12,12"
+                    Background="{DynamicResource MyCard}"
+                    BorderBrush="{DynamicResource MyOutline}"
+                    BorderThickness="1"
+                    CornerRadius="18"
+                    BoxShadow="0 8 28 0 #12000000">
+                <Grid>
                     <Grid x:Name="pageServers" Margin="12,12,384,12">
                         <Grid ColumnDefinitions="Auto,*">
                             <ScrollViewer
@@ -230,8 +211,7 @@
                                 <StackPanel>
                                     <TextBlock
                                         Margin="4,0,0,8"
-                                        FontSize="22"
-                                        FontWeight="SemiBold"
+                                        Classes="section-title"
                                         Text="{x:Static shell:ShellStrings.AddProfileTitle}" />
                                     <Button x:Name="menuAddServerViaClipboard" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
                                     <Button x:Name="menuAddServerViaScan" Classes="settings-row" Content="{x:Static resx:ResUI.menuAddServerViaScan}" />
@@ -310,8 +290,7 @@
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled">
                             <StackPanel MaxWidth="640" HorizontalAlignment="Left" Spacing="12">
                                 <TextBlock
-                                    FontSize="28"
-                                    FontWeight="SemiBold"
+                                    Classes="page-title"
                                     Text="{x:Static shell:ShellStrings.HelpTitle}" />
                                 <Button
                                     x:Name="menuCheckUpdate"
@@ -321,8 +300,7 @@
                                 <Border Classes="surface-card">
                                     <StackPanel Spacing="8">
                                         <TextBlock
-                                            FontSize="20"
-                                            FontWeight="SemiBold"
+                                            Classes="section-title"
                                             Text="{x:Static shell:ShellStrings.AboutTitle}" />
                                         <TextBlock
                                             x:Name="txtAboutVersion"
@@ -351,8 +329,7 @@
                                     Content="{x:Static shell:ShellStrings.Back}" />
                                 <TextBlock
                                     VerticalAlignment="Center"
-                                    FontSize="22"
-                                    FontWeight="SemiBold"
+                                    Classes="section-title"
                                     Text="{x:Static shell:ShellStrings.DetailsTitle}" />
                             </StackPanel>
                             <TabControl x:Name="tabMain">
@@ -371,6 +348,7 @@
                         <views:ConnectionStatusCard x:Name="connectionCard" />
                     </Border>
                 </Grid>
+                </Border>
             </Grid>
         </Grid>
     </dialogHost:DialogHost>

@@ -1,7 +1,7 @@
 namespace v2rayN.Desktop.Common;
 
 /// <summary>
-/// Chrome strings for the Material You shell.
+/// Chrome strings for the desktop shell.
 /// Simplified Chinese is the default. Traditional Chinese and English follow the UI culture
 /// so existing language packs are not replaced.
 /// </summary>
@@ -95,9 +95,9 @@ public static class ShellStrings
 
     public static string AboutTitle => T("关于 v2rayN", "關於 v2rayN", "About v2rayN");
     public static string AboutBody => T(
-        "跨平台桌面客户端。这一版把主界面改成 Material You：大圆角、色调表面、浅色与深色。",
-        "跨平台桌面客戶端。這一版把主介面改成 Material You：大圓角、色調表面、淺色與深色。",
-        "Cross-platform desktop client. This shell uses Material You: large corners, tonal surfaces, light and dark.");
+        "跨平台桌面客户端。界面是暖色纸张底、圆角内容区和左侧导航，浅色与深色都可用。",
+        "跨平台桌面客戶端。介面是暖色紙張底、圓角內容區和左側導覽，淺色與深色都可用。",
+        "Cross-platform desktop client. Warm paper background, rounded content, and a left sidebar, in light and dark.");
 
     public static string FormatUpdated(long unixSeconds)
     {

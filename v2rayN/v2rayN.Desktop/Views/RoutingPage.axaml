@@ -15,8 +15,7 @@
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"
-                FontSize="28"
-                FontWeight="SemiBold"
+                Classes="page-title"
                 Text="{x:Static shell:ShellStrings.NavRouting}" />
             <Button
                 x:Name="btnAdd"
@@ -30,7 +29,7 @@
                         Width="16"
                         Height="16"
                         Data="{StaticResource IconAdd}"
-                        Foreground="{DynamicResource MyOnPrimary}" />
+                        Foreground="{DynamicResource MyOnInk}" />
                     <TextBlock Text="{x:Static shell:ShellStrings.AddRule}" />
                 </StackPanel>
             </Button>
@@ -75,8 +74,7 @@
                                     <TextBlock
                                         Grid.Row="0"
                                         Grid.Column="1"
-                                        FontSize="16"
-                                        FontWeight="SemiBold"
+                                        Classes="card-title"
                                         Text="{Binding Title}" />
                                     <StackPanel
                                         Grid.Row="0"
