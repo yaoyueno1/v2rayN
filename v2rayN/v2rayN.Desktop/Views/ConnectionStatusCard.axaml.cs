@@ -45,7 +45,7 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
                     x => x.ViewModel!.SystemProxySelected,
                     x => x.ViewModel!.BlSystemProxyPacVisible)
                 .ObserveOn(RxSchedulers.MainThreadScheduler)
-                .Subscribe(_ => Render())
+                .Subscribe(_ => SafeRender())
                 .DisposeWith(disposables);
 
             ViewModel.SetClipboardDataInteraction.RegisterHandler(async interaction =>
@@ -65,12 +65,24 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
                 interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
-            Render();
+            SafeRender();
         });
 
         if (!Design.IsDesignMode)
         {
             RefreshIcon();
+        }
+    }
+
+    private void SafeRender()
+    {
+        try
+        {
+            Render();
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog("ConnectionStatusCard.Render", ex);
         }
     }
 
@@ -85,12 +97,12 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
                         && ViewModel.RunningServerDisplay != ResUI.CheckServerSettings;
         txtState.Text = connected ? ShellStrings.Connected : ShellStrings.Disconnected;
         txtServer.Text = connected ? ViewModel.RunningServerDisplay : string.Empty;
-        statusDot.Fill = connected
-            ? (IBrush?)this.FindResource("MyPrimary") ?? Brushes.Green
-            : Brushes.Gray;
+        // Theme dictionaries are not visible to FindResource(key): it returns UnsetValue,
+        // and casting that sentinel to IBrush throws InvalidCastException on Loaded.
+        statusDot.Fill = connected ? ResolveBrush("MyPrimary", Brushes.MediumSeaGreen) : Brushes.Gray;
         statusBadge.Background = connected
-            ? (IBrush?)this.FindResource("MyPrimary") ?? Brushes.Green
-            : (IBrush?)this.FindResource("MySurfaceDim") ?? Brushes.LightGray;
+            ? ResolveBrush("MyPrimary", Brushes.MediumSeaGreen)
+            : ResolveBrush("MySurfaceDim", new SolidColorBrush(Color.Parse("#E8E3F1")));
         ringArc.IsVisible = connected;
 
         if (connected && !_wasConnected)
@@ -147,6 +159,37 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
         }
 
         _syncingMode = false;
+    }
+
+    private IBrush ResolveBrush(string key, IBrush fallback)
+    {
+        foreach (var theme in CandidateThemes())
+        {
+            if (this.TryGetResource(key, theme, out var value) && value is IBrush brush)
+            {
+                return brush;
+            }
+
+            if (Application.Current?.TryGetResource(key, theme, out value) == true && value is IBrush appBrush)
+            {
+                return appBrush;
+            }
+        }
+
+        return fallback;
+    }
+
+    private IEnumerable<ThemeVariant?> CandidateThemes()
+    {
+        yield return ActualThemeVariant;
+        if (Application.Current is { } app)
+        {
+            yield return app.ActualThemeVariant;
+            yield return app.RequestedThemeVariant;
+        }
+
+        yield return ThemeVariant.Light;
+        yield return ThemeVariant.Dark;
     }
 
     private void ModeChanged(object? sender, RoutedEventArgs e)
