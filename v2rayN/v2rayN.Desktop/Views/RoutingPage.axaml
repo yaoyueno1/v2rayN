@@ -22,14 +22,14 @@
                 Grid.Row="1"
                 Grid.Column="1"
                 Margin="12,12,0,0"
-                Classes="connect"
+                Classes="tonal"
                 VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal" Spacing="6">
                     <PathIcon
                         Width="16"
                         Height="16"
                         Data="{StaticResource IconAdd}"
-                        Foreground="{DynamicResource MyOnInk}" />
+                        Foreground="{DynamicResource MyOnSurface}" />
                     <TextBlock Text="{x:Static shell:ShellStrings.AddRule}" />
                 </StackPanel>
             </Button>
@@ -60,7 +60,7 @@
                 <ItemsControl x:Name="lstRules">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="views:RoutingRuleCard">
-                            <Border Margin="0,0,0,12" Classes="surface-card">
+                            <Border Classes="plain-row">
                                 <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto">
                                     <PathIcon
                                         Grid.Row="0"

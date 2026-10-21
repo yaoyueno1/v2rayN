@@ -16,14 +16,12 @@
                 Classes="page-title"
                 Text="{x:Static shell:ShellStrings.SettingsTitle}" />
 
-            <Border Classes="surface-card" Margin="0,0,0,8">
-                <StackPanel Spacing="8">
-                    <TextBlock
-                        Classes="section-title"
-                        Text="{x:Static shell:ShellStrings.Appearance}" />
-                    <views:ThemeSettingView x:Name="themeSetting" />
-                </StackPanel>
-            </Border>
+            <TextBlock
+                Margin="8,4,0,4"
+                Classes="section-title"
+                Text="{x:Static shell:ShellStrings.Appearance}" />
+            <views:ThemeSettingView x:Name="themeSetting" Margin="8,0,0,0" />
+            <Border Classes="hairline" />
 
             <Button
                 Classes="settings-row"

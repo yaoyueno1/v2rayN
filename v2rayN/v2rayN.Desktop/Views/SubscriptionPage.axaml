@@ -37,7 +37,7 @@
                 <ItemsControl x:Name="lstSubs">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="views:SubscriptionCard">
-                            <Border Margin="0,0,0,12" Classes="surface-card">
+                            <Border Classes="plain-row">
                                 <Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto,Auto,Auto">
                                     <TextBlock
                                         Grid.Row="0"

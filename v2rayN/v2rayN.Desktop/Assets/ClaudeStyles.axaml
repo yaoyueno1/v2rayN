@@ -80,26 +80,51 @@
     </Style>
 
     <Style Selector="Border.surface-card">
-        <Setter Property="Background" Value="{DynamicResource MyCardMuted}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MyOutline}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CornerRadius" Value="16" />
-        <Setter Property="Padding" Value="18,16" />
-        <Setter Property="BoxShadow" Value="0 1 2 0 #10000000" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BoxShadow" Value="0 0 0 0" />
+    </Style>
+
+    <Style Selector="Border.plain-row">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Padding" Value="14,14" />
+        <Setter Property="Margin" Value="0,4" />
+    </Style>
+
+    <Style Selector="Border.plain-row:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
+    </Style>
+
+    <Style Selector="Border.hairline">
+        <Setter Property="Height" Value="1" />
+        <Setter Property="Margin" Value="8,18" />
+        <Setter Property="Background" Value="{DynamicResource MyOutline}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
     </Style>
 
     <Style Selector="Border.node-card">
-        <Setter Property="Background" Value="{DynamicResource MyCardMuted}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MyOutline}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CornerRadius" Value="14" />
-        <Setter Property="Padding" Value="14,12" />
-        <Setter Property="Margin" Value="0,0,0,8" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Padding" Value="8,14" />
+        <Setter Property="Margin" Value="0,3" />
+    </Style>
+
+    <Style Selector="Border.node-card:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
     </Style>
 
     <Style Selector="Border.node-card.active">
-        <Setter Property="Background" Value="{DynamicResource MyPrimaryContainer}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MyPrimary}" />
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <Style Selector="Border.node-card.active:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
     </Style>
 
     <Style Selector="Button.connect">
@@ -118,30 +143,30 @@
     </Style>
 
     <Style Selector="Button.tonal">
-        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="CornerRadius" Value="10" />
-        <Setter Property="Padding" Value="14,8" />
-        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="FontWeight" Value="Medium" />
     </Style>
 
     <Style Selector="Button.tonal:pointerover">
-        <Setter Property="Background" Value="{DynamicResource MyNavSelected}" />
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
     </Style>
 
     <Style Selector="Button.outline">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MyOutline}" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="CornerRadius" Value="10" />
-        <Setter Property="Padding" Value="14,8" />
-        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="MinHeight" Value="40" />
     </Style>
 
     <Style Selector="Button.outline:pointerover">
-        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
     </Style>
 
     <Style Selector="Button.ghost">
@@ -152,7 +177,7 @@
     </Style>
 
     <Style Selector="Button.ghost:pointerover">
-        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
     </Style>
 
@@ -163,13 +188,12 @@
         <Setter Property="Padding" Value="0" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MyOutline}" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="CornerRadius" Value="10" />
     </Style>
 
     <Style Selector="Button.theme-toggle:pointerover">
-        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
     </Style>
 
     <Style Selector="TextBox.search">
@@ -206,9 +230,9 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
         <Setter Property="CornerRadius" Value="10" />
-        <Setter Property="MinHeight" Value="46" />
-        <Setter Property="Padding" Value="12,10" />
-        <Setter Property="Margin" Value="10,3" />
+        <Setter Property="MinHeight" Value="48" />
+        <Setter Property="Padding" Value="14,12" />
+        <Setter Property="Margin" Value="8,3" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="FontSize" Value="15" />
@@ -230,12 +254,16 @@
     </Style>
 
     <Style Selector="RadioButton.nav:pointerover">
-        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
     </Style>
 
     <Style Selector="RadioButton.nav:checked">
-        <Setter Property="Background" Value="{DynamicResource MyNavSelected}" />
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+    </Style>
+
+    <Style Selector="RadioButton.nav:checked:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
     </Style>
 
     <Style Selector="TextBlock.nav-label">
@@ -262,9 +290,9 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
         <Setter Property="CornerRadius" Value="10" />
-        <Setter Property="MinHeight" Value="46" />
-        <Setter Property="Padding" Value="12,10" />
-        <Setter Property="Margin" Value="10,3" />
+        <Setter Property="MinHeight" Value="48" />
+        <Setter Property="Padding" Value="14,12" />
+        <Setter Property="Margin" Value="8,3" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -273,7 +301,7 @@
     </Style>
 
     <Style Selector="Button.drawer-action:pointerover">
-        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
     </Style>
 
     <Style Selector="Button.drawer-action TextBlock">
@@ -300,9 +328,9 @@
     </Style>
 
     <Style Selector="Border.soft-pane">
-        <Setter Property="Background" Value="{DynamicResource MyCardMuted}" />
-        <Setter Property="CornerRadius" Value="18" />
-        <Setter Property="Padding" Value="8,12,6,12" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0,4,0,8" />
     </Style>
 
     <Style Selector="Button.soft-item">
@@ -311,21 +339,21 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="CornerRadius" Value="12" />
-        <Setter Property="MinHeight" Value="40" />
-        <Setter Property="Padding" Value="12,8" />
-        <Setter Property="Margin" Value="2,1" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="MinHeight" Value="48" />
+        <Setter Property="Padding" Value="12,12" />
+        <Setter Property="Margin" Value="0,2" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="Cursor" Value="Hand" />
     </Style>
 
     <Style Selector="Button.soft-item:pointerover">
-        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
     </Style>
 
     <Style Selector="Button.soft-item:pressed">
-        <Setter Property="Background" Value="{DynamicResource MyNavSelected}" />
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
     </Style>
 
     <Style Selector="Border.kbd">
@@ -341,21 +369,18 @@
     </Style>
 
     <Style Selector="Border.badge-protocol">
-        <Setter Property="Background" Value="{DynamicResource MyChipPurple}" />
-        <Setter Property="CornerRadius" Value="8" />
-        <Setter Property="Padding" Value="8,2" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="8,0" />
     </Style>
 
     <Style Selector="Border.badge-delay">
-        <Setter Property="Background" Value="{DynamicResource MyChipGreen}" />
-        <Setter Property="CornerRadius" Value="8" />
-        <Setter Property="Padding" Value="8,2" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="8,0" />
     </Style>
 
     <Style Selector="Border.version-chip">
-        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
-        <Setter Property="CornerRadius" Value="8" />
-        <Setter Property="Padding" Value="8,2" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="8,0" />
     </Style>
 
     <Style Selector="Border.version-chip TextBlock">
@@ -374,71 +399,90 @@
         <Setter Property="Padding" Value="0" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="CornerRadius" Value="14" />
+        <Setter Property="CornerRadius" Value="10" />
+    </Style>
+
+    <Style Selector="ListBox.flat ListBoxItem:pointerover">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style Selector="ListBox.flat ListBoxItem:selected">
+        <Setter Property="Background" Value="Transparent" />
     </Style>
 
     <Style Selector="ListBox.chips">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="MaxHeight" Value="44" />
+        <Setter Property="MaxHeight" Value="52" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
     </Style>
 
     <Style Selector="ListBox.chips ListBoxItem">
-        <Setter Property="Padding" Value="12,6" />
-        <Setter Property="Margin" Value="0,0,8,0" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="Margin" Value="0,0,4,0" />
         <Setter Property="CornerRadius" Value="10" />
-        <Setter Property="MinHeight" Value="32" />
-        <Setter Property="FontSize" Value="13" />
-        <Setter Property="Background" Value="{DynamicResource MyCardMuted}" />
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
+    </Style>
+
+    <Style Selector="ListBox.chips ListBoxItem:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
     </Style>
 
     <Style Selector="ListBox.chips ListBoxItem:selected">
-        <Setter Property="Background" Value="{DynamicResource MyNavSelected}" />
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
         <Setter Property="FontWeight" Value="Medium" />
     </Style>
 
     <Style Selector="Button.chip">
-        <Setter Property="MinHeight" Value="28" />
-        <Setter Property="Padding" Value="12,2" />
         <Setter Property="CornerRadius" Value="8" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontWeight" Value="Medium" />
-        <Setter Property="Background" Value="{DynamicResource MyCardMuted}" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="Padding" Value="12,6" />
+    </Style>
+
+    <Style Selector="Button.chip:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
     </Style>
 
     <Style Selector="Button.chip-proxy">
-        <Setter Property="Background" Value="{DynamicResource MyChipPurple}" />
-        <Setter Property="Foreground" Value="{DynamicResource MyChipPurpleText}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
     </Style>
 
     <Style Selector="Button.chip-proxy.on">
-        <Setter Property="Background" Value="{DynamicResource MyChipPurpleText}" />
-        <Setter Property="Foreground" Value="{DynamicResource MyOnPrimary}" />
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
     </Style>
 
     <Style Selector="Button.chip-direct">
-        <Setter Property="Background" Value="{DynamicResource MyChipGreen}" />
-        <Setter Property="Foreground" Value="{DynamicResource MyChipGreenText}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
     </Style>
 
     <Style Selector="Button.chip-direct.on">
-        <Setter Property="Background" Value="{DynamicResource MyChipGreenText}" />
-        <Setter Property="Foreground" Value="{DynamicResource MyCard}" />
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
     </Style>
 
     <Style Selector="Button.chip-block">
-        <Setter Property="Background" Value="{DynamicResource MyChipRed}" />
-        <Setter Property="Foreground" Value="{DynamicResource MyChipRedText}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
     </Style>
 
     <Style Selector="Button.chip-block.on">
-        <Setter Property="Background" Value="{DynamicResource MyChipRedText}" />
-        <Setter Property="Foreground" Value="{DynamicResource MyCard}" />
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
     </Style>
 
     <Style Selector="ToggleButton.segment">
@@ -452,16 +496,19 @@
         <Setter Property="FontSize" Value="13" />
     </Style>
 
+    <Style Selector="ToggleButton.segment:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
+    </Style>
+
     <Style Selector="ToggleButton.segment:checked">
-        <Setter Property="Background" Value="{DynamicResource MyCard}" />
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
         <Setter Property="FontWeight" Value="Medium" />
     </Style>
 
     <Style Selector="Border.segment-track">
-        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
-        <Setter Property="CornerRadius" Value="10" />
-        <Setter Property="Padding" Value="3" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="0" />
     </Style>
 
     <Style Selector="RadioButton.mode">
@@ -484,36 +531,131 @@
     </Style>
 
     <Style Selector="RadioButton.mode:pointerover">
-        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
     </Style>
 
     <Style Selector="RadioButton.mode:checked">
-        <Setter Property="Background" Value="{DynamicResource MyPrimaryContainer}" />
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
     </Style>
 
     <Style Selector="Button.settings-row">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Background" Value="{DynamicResource MyCardMuted}" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MyOutline}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CornerRadius" Value="12" />
-        <Setter Property="MinHeight" Value="48" />
-        <Setter Property="Padding" Value="16,12" />
-        <Setter Property="Margin" Value="0,0,0,8" />
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="MinHeight" Value="52" />
+        <Setter Property="Padding" Value="8,14" />
+        <Setter Property="Margin" Value="0,2" />
+        <Setter Property="FontSize" Value="15" />
         <Setter Property="FontWeight" Value="Normal" />
     </Style>
 
     <Style Selector="Button.settings-row:pointerover">
-        <Setter Property="Background" Value="{DynamicResource MySurfaceDim}" />
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
+    </Style>
+
+    <Style Selector="ListBox">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <Style Selector="ListBoxItem">
+        <Setter Property="MinHeight" Value="44" />
+        <Setter Property="Padding" Value="12,10" />
+        <Setter Property="Margin" Value="0,2" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+    </Style>
+
+    <Style Selector="ListBoxItem:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
+    </Style>
+
+    <Style Selector="ListBoxItem:selected">
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+    </Style>
+
+    <Style Selector="ListBoxItem:selected:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+    </Style>
+
+    <Style Selector="DataGrid">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="GridLinesVisibility" Value="None" />
+        <Setter Property="RowHeight" Value="48" />
+        <Setter Property="HorizontalGridLinesBrush" Value="Transparent" />
+        <Setter Property="VerticalGridLinesBrush" Value="Transparent" />
+    </Style>
+
+    <Style Selector="DataGridColumnHeader">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
+        <Setter Property="SeparatorBrush" Value="{DynamicResource MyOutline}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="MinHeight" Value="40" />
+    </Style>
+
+    <Style Selector="DataGridRow">
+        <Setter Property="MinHeight" Value="48" />
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style Selector="DataGridRow:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
+    </Style>
+
+    <Style Selector="DataGridRow:selected">
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+    </Style>
+
+    <Style Selector="DataGridCell">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+    </Style>
+
+    <Style Selector="DataGridCell:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+    </Style>
+
+    <Style Selector="DataGridCell:selected">
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+    </Style>
+
+    <Style Selector="DataGridCell:selected:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+    </Style>
+
+    <Style Selector="ComboBox">
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Padding" Value="10,6" />
+    </Style>
+
+    <Style Selector="ComboBox:pointerover">
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
+    </Style>
+
+    <Style Selector="ComboBox:focus">
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
     </Style>
 
     <Style Selector="Label.Solid.Red">
-        <Setter Property="Background" Value="{DynamicResource MyChipRed}" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource MyChipRedText}" />
-        <Setter Property="Padding" Value="6,1" />
+        <Setter Property="Padding" Value="0" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontWeight" Value="Medium" />
     </Style>

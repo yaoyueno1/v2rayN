@@ -14,7 +14,9 @@
             <SolidColorBrush x:Key="MyOnInk" Color="#F7F4EE" />
             <SolidColorBrush x:Key="MyInkHover" Color="#3A3834" />
             <SolidColorBrush x:Key="MyPrimaryContainer" Color="#F3E7DF" />
-            <SolidColorBrush x:Key="MyNavSelected" Color="#E5E0D6" />
+            <SolidColorBrush x:Key="MyHover" Color="#EBE6DC" />
+            <SolidColorBrush x:Key="MySelected" Color="#E3DDD2" />
+            <SolidColorBrush x:Key="MyNavSelected" Color="#E3DDD2" />
             <SolidColorBrush x:Key="MySearch" Color="#FFFcf8" />
             <SolidColorBrush x:Key="MyChipPurple" Color="#F0E6DC" />
             <SolidColorBrush x:Key="MyChipPurpleText" Color="#7A5340" />
@@ -40,7 +42,9 @@
             <SolidColorBrush x:Key="MyOnInk" Color="#1C1B19" />
             <SolidColorBrush x:Key="MyInkHover" Color="#E4E0D6" />
             <SolidColorBrush x:Key="MyPrimaryContainer" Color="#3A2E28" />
-            <SolidColorBrush x:Key="MyNavSelected" Color="#33312C" />
+            <SolidColorBrush x:Key="MyHover" Color="#262421" />
+            <SolidColorBrush x:Key="MySelected" Color="#302D29" />
+            <SolidColorBrush x:Key="MyNavSelected" Color="#302D29" />
             <SolidColorBrush x:Key="MySearch" Color="#2A2825" />
             <SolidColorBrush x:Key="MyChipPurple" Color="#3A322C" />
             <SolidColorBrush x:Key="MyChipPurpleText" Color="#E7C4B0" />

@@ -194,20 +194,19 @@
                 <Border
                     Grid.Column="1"
                     Margin="0,0,12,12"
-                    Background="{DynamicResource MyCard}"
-                    BorderBrush="{DynamicResource MyOutline}"
-                    BorderThickness="1"
-                    CornerRadius="18"
-                    BoxShadow="0 8 28 0 #12000000">
+                    Background="{DynamicResource MySurface}"
+                    BorderThickness="0">
                 <Grid>
                     <Grid x:Name="pageServers" Margin="12,12,384,12">
                         <Grid ColumnDefinitions="Auto,*">
                             <Border
                                 x:Name="configActions"
                                 Width="300"
-                                Margin="0,4,12,4"
-                                Padding="0"
+                                Margin="0,4,8,4"
+                                Padding="0,0,12,0"
                                 Classes="soft-pane"
+                                BorderBrush="{DynamicResource MyOutline}"
+                                BorderThickness="0,0,1,0"
                                 IsVisible="False">
                                 <DockPanel>
                                     <TextBlock
@@ -309,20 +308,19 @@
                                     x:Name="menuCheckUpdate"
                                     Classes="settings-row"
                                     Content="{x:Static resx:ResUI.menuCheckUpdate}" />
-                                <StackPanel x:Name="helpLinks" Spacing="8" />
-                                <Border Classes="surface-card">
-                                    <StackPanel Spacing="8">
-                                        <TextBlock
-                                            Classes="section-title"
-                                            Text="{x:Static shell:ShellStrings.AboutTitle}" />
-                                        <TextBlock
-                                            x:Name="txtAboutVersion"
-                                            Foreground="{DynamicResource MyOnSurfaceVariant}" />
-                                        <TextBlock
-                                            Text="{x:Static shell:ShellStrings.AboutBody}"
-                                            TextWrapping="Wrap" />
-                                    </StackPanel>
-                                </Border>
+                                <StackPanel x:Name="helpLinks" Spacing="4" />
+                                <Border Classes="hairline" />
+                                <StackPanel Spacing="8">
+                                    <TextBlock
+                                        Classes="section-title"
+                                        Text="{x:Static shell:ShellStrings.AboutTitle}" />
+                                    <TextBlock
+                                        x:Name="txtAboutVersion"
+                                        Foreground="{DynamicResource MyOnSurfaceVariant}" />
+                                    <TextBlock
+                                        Text="{x:Static shell:ShellStrings.AboutBody}"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
                             </StackPanel>
                         </ScrollViewer>
                     </Grid>
@@ -356,8 +354,11 @@
                     <Border
                         x:Name="connectionHost"
                         Width="360"
-                        Margin="0,12,12,12"
-                        HorizontalAlignment="Right">
+                        Margin="8,8,8,8"
+                        Padding="16,4,8,8"
+                        HorizontalAlignment="Right"
+                        BorderBrush="{DynamicResource MyOutline}"
+                        BorderThickness="1,0,0,0">
                         <views:ConnectionStatusCard x:Name="connectionCard" />
                     </Border>
                 </Grid>

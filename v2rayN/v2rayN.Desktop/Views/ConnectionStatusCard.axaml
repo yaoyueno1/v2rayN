@@ -84,12 +84,10 @@
                 TextTrimming="CharacterEllipsis"
                 TextWrapping="NoWrap" />
 
-            <Grid Margin="0,16,0,0" ColumnDefinitions="*,8,*">
+            <Grid Margin="0,16,0,0" ColumnDefinitions="*,16,*">
                 <Border
                     Grid.Column="0"
-                    Padding="10,8"
-                    Background="{DynamicResource MyPrimaryContainer}"
-                    CornerRadius="16">
+                    Padding="4,8">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Spacing="4">
                             <PathIcon
@@ -118,9 +116,7 @@
                 </Border>
                 <Border
                     Grid.Column="2"
-                    Padding="10,8"
-                    Background="{DynamicResource MyNavSelected}"
-                    CornerRadius="16">
+                    Padding="4,8">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Spacing="4">
                             <PathIcon
