@@ -133,7 +133,8 @@ public partial class ThemeSettingViewModel : MyReactiveObject
     private void ModifyFontFamily()
     {
         var currentFontFamily = _config.UiItem.CurrentFontFamily;
-        if (currentFontFamily.IsNullOrEmpty())
+        if (currentFontFamily.IsNullOrEmpty()
+            || currentFontFamily is "Inter" or "Noto Sans SC" or "Noto Sans CJK SC")
         {
             return;
         }

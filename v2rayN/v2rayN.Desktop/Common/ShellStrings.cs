@@ -99,6 +99,11 @@ public static class ShellStrings
         "跨平台桌面客戶端。介面是暖色紙張底、圓角內容區和左側導覽，淺色與深色都可用。",
         "Cross-platform desktop client. Warm paper background, rounded content, and a left sidebar, in light and dark.");
 
+    public static string FontCredit => T(
+        "界面字体 MiSans",
+        "介面字型 MiSans",
+        "Interface typeface: MiSans");
+
     public static string FormatUpdated(long unixSeconds)
     {
         if (unixSeconds <= 0)

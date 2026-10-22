@@ -72,6 +72,14 @@ internal class Program
             var showInDock = Design.IsDesignMode || AppManager.Instance.Config.UiItem.MacOSShowInDock;
             builder = builder.With(new MacOSPlatformOptions { ShowInDock = showInDock });
         }
+        else if (OperatingSystem.IsLinux())
+        {
+            // X11 keeps the window-manager frame unless client decorations are enabled.
+            // Windows draws the paper title bar whenever the client area is extended.
+#pragma warning disable AVALONIA_X11_CSD
+            builder = builder.With(new X11PlatformOptions { EnableDrawnDecorations = true });
+#pragma warning restore AVALONIA_X11_CSD
+        }
 
         return builder;
     }

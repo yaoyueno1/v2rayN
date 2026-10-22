@@ -183,7 +183,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         return lstFonts;
     }
 
-    private static string GetDefaultFontFamilyName() => "Noto Sans SC";
+    private static string GetDefaultFontFamilyName() => "MiSans";
 
     private static bool IsInstalledFontFamilyName(string fontFamilyName)
     {

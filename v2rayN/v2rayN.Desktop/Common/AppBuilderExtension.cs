@@ -3,14 +3,11 @@ namespace v2rayN.Desktop.Common;
 public static class AppBuilderExtension
 {
     /// <summary>
-    /// UI latin is embedded Inter (OFL). Chinese falls through to the embedded Noto Sans SC.
-    /// System CJK faces stay behind that, only for glyphs the embedded fonts do not cover.
+    /// UI face is embedded MiSans (Xiaomi HyperOS). One family covers Latin and Chinese.
+    /// System CJK faces stay behind it for glyphs the embedded cut does not include.
     /// </summary>
     private static readonly string EmbeddedUiFamily =
-        Global.AvaAssets + "Fonts#Inter";
-
-    private static readonly string EmbeddedCjkFamily =
-        Global.AvaAssets + "Fonts#Noto Sans SC";
+        Global.AvaAssets + "Fonts#MiSans";
 
     private static readonly string DefaultFontFamilyName = EmbeddedUiFamily;
 
@@ -18,7 +15,6 @@ public static class AppBuilderExtension
     {
         var fallbacks = new List<FontFallback>
         {
-            new() { FontFamily = new FontFamily(EmbeddedCjkFamily) },
             new() { FontFamily = new FontFamily("PingFang SC") },
             new() { FontFamily = new FontFamily("Microsoft YaHei UI") },
             new() { FontFamily = new FontFamily("Microsoft YaHei") },

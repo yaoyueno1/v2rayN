@@ -77,7 +77,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.menuReload.IsEnabled).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.btnConnect.IsEnabled).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.BlNewUpdate, v => v.btnNewUpdate.IsVisible).DisposeWith(disposables);
-            this.Bind(ViewModel.ProfilesViewModel, vm => vm.ServerFilter, v => v.txtSearch.Text).DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.profilesHost.Content).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.MsgViewModel, v => v.tabMsgView.Content).DisposeWith(disposables);
@@ -225,11 +224,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
                 case Key.S:
                     await ScanScreenTaskAsync();
-                    break;
-
-                case Key.K:
-                    txtSearch.Focus();
-                    e.Handled = true;
                     break;
             }
         }
