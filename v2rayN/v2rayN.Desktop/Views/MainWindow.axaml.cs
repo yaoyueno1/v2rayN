@@ -415,9 +415,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         pageSettings.IsVisible = page == 4;
         pageHelp.IsVisible = page == 5;
         pageDetails.IsVisible = page == 6;
-        var showConnection = page is 0 or 3;
-        connectionHost.IsVisible = showConnection;
-        pageServers.Margin = page == 0 ? new Thickness(12, 12, 384, 12) : new Thickness(12);
         configActions.IsVisible = page == 1;
         Grid.SetColumn(profilesHost, page == 1 ? 1 : 0);
         Grid.SetColumnSpan(profilesHost, page == 1 ? 1 : 2);

@@ -63,16 +63,7 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
 
     private void RefreshIcon()
     {
-        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow.Icon = AvaUtils.GetAppIcon(_config.SystemProxyItem.SysProxyType);
-            var iconslist = TrayIcon.GetIcons(Application.Current);
-            if (iconslist is { Count: > 0 })
-            {
-                iconslist[0].Icon = desktop.MainWindow.Icon;
-                TrayIcon.SetIcons(Application.Current, iconslist);
-            }
-        }
+        AvaUtils.ApplyTrayIcon(_config.SystemProxyItem.SysProxyType);
     }
 
     private async Task<string?> PasswordInputAsync()

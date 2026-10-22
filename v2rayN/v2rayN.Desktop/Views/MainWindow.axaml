@@ -76,18 +76,17 @@
                 </Grid>
             </Border>
 
-            <Grid Grid.Row="1" ColumnDefinitions="248,*">
+            <Grid Grid.Row="1" ColumnDefinitions="300,*">
                 <Border Background="Transparent">
                     <DockPanel>
-                        <StackPanel Margin="0,4,0,8" DockPanel.Dock="Bottom">
-                            <TextBlock Classes="nav-section" Text="{x:Static shell:ShellStrings.SectionActions}" />
-                            <Button x:Name="menuReload" Classes="drawer-action">
+                        <StackPanel Margin="8,0,8,8" DockPanel.Dock="Bottom">
+                            <Button x:Name="menuReload" Classes="drawer-action compact">
                                 <StackPanel Orientation="Horizontal" Spacing="12">
                                     <PathIcon Width="22" Height="22" Data="{StaticResource SemiIconRefresh}" />
                                     <TextBlock VerticalAlignment="Center" Text="{x:Static resx:ResUI.menuReload}" />
                                 </StackPanel>
                             </Button>
-                            <Button x:Name="menuPromotion" Classes="drawer-action">
+                            <Button x:Name="menuPromotion" Classes="drawer-action compact">
                                 <StackPanel Orientation="Horizontal" Spacing="12">
                                     <PathIcon Width="22" Height="22" Data="{StaticResource IconAdd}" />
                                     <TextBlock VerticalAlignment="Center" Text="{x:Static resx:ResUI.menuPromotion}" />
@@ -116,13 +115,16 @@
                                     </StackPanel>
                                 </Button>
                             </Grid>
-                            <Button x:Name="menuClose" Classes="drawer-action">
+                            <Button x:Name="menuClose" Classes="drawer-action compact">
                                 <StackPanel Orientation="Horizontal" Spacing="12">
                                     <PathIcon Width="22" Height="22" Data="{StaticResource SemiIconClose}" />
                                     <TextBlock VerticalAlignment="Center" Text="{x:Static resx:ResUI.menuExit}" />
                                 </StackPanel>
                             </Button>
                         </StackPanel>
+                        <Border Margin="10,0,10,8" DockPanel.Dock="Bottom">
+                            <views:ConnectionStatusCard x:Name="connectionCard" />
+                        </Border>
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled">
                             <StackPanel Margin="0,8,0,0">
                                 <RadioButton
@@ -197,7 +199,7 @@
                     Background="{DynamicResource MySurface}"
                     BorderThickness="0">
                 <Grid>
-                    <Grid x:Name="pageServers" Margin="12,12,384,12">
+                    <Grid x:Name="pageServers" Margin="12">
                         <Grid ColumnDefinitions="Auto,*">
                             <Border
                                 x:Name="configActions"
@@ -279,7 +281,7 @@
                     </Grid>
                     <Grid
                         x:Name="pageRouting"
-                        Margin="20,16,384,12"
+                        Margin="20,16,20,16"
                         IsVisible="False">
                         <views:RoutingPage x:Name="routingPage" />
                     </Grid>
@@ -294,16 +296,16 @@
                         Margin="20,16,20,16"
                         IsVisible="False">
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-                            <StackPanel MaxWidth="640" HorizontalAlignment="Left" Spacing="12">
+                            <StackPanel MaxWidth="980" HorizontalAlignment="Stretch" Spacing="16">
                                 <TextBlock
                                     Classes="page-title"
                                     Text="{x:Static shell:ShellStrings.HelpTitle}" />
-                                <Button
-                                    x:Name="menuCheckUpdate"
-                                    Classes="settings-row"
-                                    Content="{x:Static resx:ResUI.menuCheckUpdate}" />
-                                <StackPanel x:Name="helpLinks" Spacing="4" />
-                                <Border Classes="hairline" />
+                                <UniformGrid x:Name="helpLinks" Columns="2">
+                                    <Button
+                                        x:Name="menuCheckUpdate"
+                                        Classes="settings-row"
+                                        Content="{x:Static resx:ResUI.menuCheckUpdate}" />
+                                </UniformGrid>
                                 <StackPanel Spacing="8">
                                     <TextBlock
                                         Classes="section-title"
@@ -314,6 +316,20 @@
                                     <TextBlock
                                         Text="{x:Static shell:ShellStrings.AboutBody}"
                                         TextWrapping="Wrap" />
+                                </StackPanel>
+                                <StackPanel
+                                    Margin="0,12,0,8"
+                                    HorizontalAlignment="Center"
+                                    Spacing="8">
+                                    <Image
+                                        Width="88"
+                                        Height="88"
+                                        HorizontalAlignment="Center"
+                                        Source="avares://v2rayN/Assets/ForkMark.png" />
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        Classes="section-title"
+                                        Text="v2rayN" />
                                 </StackPanel>
                             </StackPanel>
                         </ScrollViewer>
@@ -344,17 +360,6 @@
                             </TabControl>
                         </DockPanel>
                     </Grid>
-
-                    <Border
-                        x:Name="connectionHost"
-                        Width="360"
-                        Margin="8,8,8,8"
-                        Padding="16,4,8,8"
-                        HorizontalAlignment="Right"
-                        BorderBrush="Transparent"
-                        BorderThickness="0">
-                        <views:ConnectionStatusCard x:Name="connectionCard" />
-                    </Border>
                 </Grid>
                 </Border>
             </Grid>

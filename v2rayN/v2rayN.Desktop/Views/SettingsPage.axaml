@@ -10,37 +10,17 @@
     x:DataType="vms:MainWindowViewModel"
     mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        <Grid
-            MaxWidth="1080"
-            HorizontalAlignment="Stretch"
-            ColumnDefinitions="*,*"
-            RowDefinitions="Auto,Auto,*">
+        <StackPanel>
             <TextBlock
-                Grid.Row="0"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
                 Margin="4,0,0,12"
                 Classes="page-title"
                 Text="{x:Static shell:ShellStrings.SettingsTitle}" />
-
-            <StackPanel
-                Grid.Row="1"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Margin="4,0,24,8"
-                Spacing="4">
-                <TextBlock
-                    Margin="8,4,0,4"
-                    Classes="section-title"
-                    Text="{x:Static shell:ShellStrings.Appearance}" />
-                <views:ThemeSettingView x:Name="themeSetting" HorizontalAlignment="Stretch" />
-            </StackPanel>
-
-            <StackPanel
-                Grid.Row="2"
-                Grid.Column="0"
-                Margin="4,8,16,0"
-                Spacing="2">
+            <views:ThemeSettingView
+                x:Name="themeSetting"
+                Height="0"
+                IsHitTestVisible="False"
+                Opacity="0" />
+            <WrapPanel x:Name="settingsBoard" Classes="settings-board">
                 <Button
                     Classes="settings-row"
                     Command="{Binding OptionSettingCmd}"
@@ -70,13 +50,6 @@
                     Classes="settings-row"
                     Command="{Binding OpenTheFileLocationCmd}"
                     Content="{x:Static shell:ShellStrings.SettingsFolder}" />
-            </StackPanel>
-
-            <StackPanel
-                Grid.Row="2"
-                Grid.Column="1"
-                Margin="16,8,4,0"
-                Spacing="2">
                 <Button
                     Classes="settings-row"
                     Command="{Binding ClearServerStatisticsCmd}"
@@ -111,7 +84,7 @@
                     Classes="settings-row"
                     Content="{x:Static shell:ShellStrings.SettingsUwp}"
                     IsVisible="{Binding BlIsWindows}" />
-            </StackPanel>
-        </Grid>
+            </WrapPanel>
+        </StackPanel>
     </ScrollViewer>
 </UserControl>

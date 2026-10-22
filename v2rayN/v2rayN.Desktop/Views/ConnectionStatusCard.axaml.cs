@@ -281,13 +281,7 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
         }
 
         var config = AppManager.Instance.Config;
-        desktop.MainWindow?.Icon = AvaUtils.GetAppIcon(config.SystemProxyItem.SysProxyType);
-        var icons = TrayIcon.GetIcons(Application.Current);
-        if (icons is { Count: > 0 })
-        {
-            icons[0].Icon = desktop.MainWindow?.Icon;
-            TrayIcon.SetIcons(Application.Current, icons);
-        }
+        AvaUtils.ApplyTrayIcon(config.SystemProxyItem.SysProxyType);
     }
 
     private async Task<string?> PasswordInputAsync()

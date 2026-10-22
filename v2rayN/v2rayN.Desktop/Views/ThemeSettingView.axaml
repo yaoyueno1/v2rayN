@@ -10,42 +10,42 @@
     x:DataType="vms:ThemeSettingViewModel"
     Design.DataContext="{x:Static dd:DesignData.ThemeSetting}"
     mc:Ignorable="d">
-    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto">
-        <TextBlock
-            Grid.Row="0"
-            Grid.Column="0"
-            Margin="0,6"
-            VerticalAlignment="Center"
-            Text="{x:Static resx:ResUI.TbSettingsTheme}" />
-        <ComboBox
-            x:Name="cmbCurrentTheme"
-            Grid.Row="0"
-            Grid.Column="1"
-            Margin="8,4"
-            HorizontalAlignment="Stretch" />
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="0"
-            Margin="0,6"
-            VerticalAlignment="Center"
-            Text="{x:Static resx:ResUI.TbSettingsFontSize}" />
-        <ComboBox
-            x:Name="cmbCurrentFontSize"
-            Grid.Row="1"
-            Grid.Column="1"
-            Margin="8,4"
-            HorizontalAlignment="Stretch" />
-        <TextBlock
-            Grid.Row="2"
-            Grid.Column="0"
-            Margin="0,6"
-            VerticalAlignment="Center"
-            Text="{x:Static resx:ResUI.TbSettingsLanguage}" />
-        <ComboBox
-            x:Name="cmbCurrentLanguage"
-            Grid.Row="2"
-            Grid.Column="1"
-            Margin="8,4"
-            HorizontalAlignment="Stretch" />
-    </Grid>
+    <StackPanel x:Name="appearanceRows">
+        <Border Classes="settings-cell">
+            <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                <TextBlock
+                    MinWidth="72"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.TbSettingsTheme}" />
+                <ComboBox
+                    x:Name="cmbCurrentTheme"
+                    Width="148"
+                    HorizontalAlignment="Left" />
+            </StackPanel>
+        </Border>
+        <Border Classes="settings-cell">
+            <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                <TextBlock
+                    MinWidth="72"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.TbSettingsFontSize}" />
+                <ComboBox
+                    x:Name="cmbCurrentFontSize"
+                    Width="148"
+                    HorizontalAlignment="Left" />
+            </StackPanel>
+        </Border>
+        <Border Classes="settings-cell">
+            <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                <TextBlock
+                    MinWidth="72"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.TbSettingsLanguage}" />
+                <ComboBox
+                    x:Name="cmbCurrentLanguage"
+                    Width="148"
+                    HorizontalAlignment="Left" />
+            </StackPanel>
+        </Border>
+    </StackPanel>
 </UserControl>

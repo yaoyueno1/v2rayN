@@ -18,8 +18,6 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <conv:DelayColorConverter x:Key="DelayColorConverter" />
-        <conv:RemarksToFlagConverter x:Key="RemarksToFlagConverter" />
-        <conv:DelayTextConverter x:Key="DelayTextConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid
@@ -75,35 +73,11 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="dto:ProfileItemModel">
                         <Border Classes="node-card" Classes.active="{Binding IsActive}" Tapped="NodeCard_Tapped">
-                            <Grid ColumnDefinitions="Auto,*,Auto,Auto">
-                                <TextBlock
-                                    Margin="2,0,6,0"
-                                    VerticalAlignment="Center"
-                                    FontSize="16"
-                                    Text="{Binding Remarks, Converter={StaticResource RemarksToFlagConverter}}" />
-                                <TextBlock
-                                    Grid.Column="1"
-                                    VerticalAlignment="Center"
-                                    Classes="card-title"
-                                    Text="{Binding Remarks}"
-                                    TextTrimming="CharacterEllipsis" />
-                                <TextBlock
-                                    Grid.Column="2"
-                                    Margin="8,0"
-                                    VerticalAlignment="Center"
-                                    FontSize="12"
-                                    Foreground="{DynamicResource MyOnSurfaceVariant}"
-                                    Text="{Binding ConfigType}" />
-                                <TextBlock
-                                    Grid.Column="3"
-                                    MaxWidth="72"
-                                    Margin="4,0,2,0"
-                                    VerticalAlignment="Center"
-                                    FontSize="12"
-                                    Foreground="{DynamicResource MyOnSurfaceVariant}"
-                                    Text="{Binding DelayVal, Converter={StaticResource DelayTextConverter}}"
-                                    TextTrimming="CharacterEllipsis" />
-                            </Grid>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Classes="card-title"
+                                Text="{Binding Remarks}"
+                                TextTrimming="CharacterEllipsis" />
                         </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -382,7 +356,7 @@
                         Binding="{Binding SubRemarks}"
                         Header="{x:Static resx:ResUI.LvSubscription}"
                         Tag="SubRemarks" />
-                    <DataGridTemplateColumn SortMemberPath="Delay" Tag="DelayVal">
+                    <DataGridTemplateColumn Width="168" SortMemberPath="Delay" Tag="DelayVal">
                         <DataGridTemplateColumn.Header>
                             <TextBlock Text="{x:Static resx:ResUI.LvTestDelay}" />
                         </DataGridTemplateColumn.Header>
@@ -393,7 +367,9 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Foreground="{Binding Delay, Converter={StaticResource DelayColorConverter}}"
-                                    Text="{Binding Path=DelayVal, Mode=OneWay}" />
+                                    Text="{Binding Path=DelayVal, Mode=OneWay}"
+                                    TextTrimming="CharacterEllipsis"
+                                    ToolTip.Tip="{Binding DelayVal}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

@@ -8,6 +8,13 @@ namespace v2rayN.Desktop.Views;
 /// </summary>
 public partial class ThemeSettingView : ReactiveUserControl<ThemeSettingViewModel>
 {
+    public Control[] DetachRows()
+    {
+        var rows = appearanceRows.Children.ToArray();
+        appearanceRows.Children.Clear();
+        return rows;
+    }
+
     public ThemeSettingView()
     {
         InitializeComponent();
