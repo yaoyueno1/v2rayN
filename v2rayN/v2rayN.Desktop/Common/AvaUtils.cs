@@ -42,14 +42,21 @@ internal class AvaUtils
     public static WindowIcon GetAppIcon(ESysProxyType sysProxyType)
     {
         var index = (int)sysProxyType + 1;
+        if (index is < 1 or > 4)
+        {
+            index = 1;
+        }
+
+        // A loose ico keeps every Windows icon size. A bitmap loaded from the stream and then disposed
+        // leaves the tray with a blank icon, which is what happened after the shell refreshed TrayIcon.
         var fileName = Utils.GetPath($"NotifyIcon{index}.ico");
         if (File.Exists(fileName))
         {
-            return new(fileName);
+            return new WindowIcon(fileName);
         }
 
-        var uri = new Uri(Path.Combine(Global.AvaAssets, $"NotifyIcon{index}.ico"));
-        using var bitmap = new Bitmap(AssetLoader.Open(uri));
-        return new(bitmap);
+        var uri = new Uri($"{Global.AvaAssets}NotifyIcon{index}.ico");
+        var stream = AssetLoader.Open(uri);
+        return new WindowIcon(stream);
     }
 }

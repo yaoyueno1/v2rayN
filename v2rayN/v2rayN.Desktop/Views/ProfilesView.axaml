@@ -50,8 +50,13 @@
             <ListBox
                 x:Name="lstNodes"
                 Grid.Row="3"
-                Classes="flat"
+                Classes="flat nodes"
                 ItemsSource="{Binding ProfileItems}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
                 <ListBox.KeyBindings>
                     <KeyBinding Command="{Binding SetDefaultServerCmd}" Gesture="Enter" />
                 </ListBox.KeyBindings>
@@ -72,9 +77,9 @@
                         <Border Classes="node-card" Classes.active="{Binding IsActive}" Tapped="NodeCard_Tapped">
                             <Grid ColumnDefinitions="Auto,*,Auto,Auto">
                                 <TextBlock
-                                    Margin="4,0,12,0"
+                                    Margin="2,0,6,0"
                                     VerticalAlignment="Center"
-                                    FontSize="22"
+                                    FontSize="16"
                                     Text="{Binding Remarks, Converter={StaticResource RemarksToFlagConverter}}" />
                                 <TextBlock
                                     Grid.Column="1"
@@ -84,18 +89,20 @@
                                     TextTrimming="CharacterEllipsis" />
                                 <TextBlock
                                     Grid.Column="2"
-                                    Margin="12,0"
+                                    Margin="8,0"
                                     VerticalAlignment="Center"
-                                    FontSize="13"
+                                    FontSize="12"
                                     Foreground="{DynamicResource MyOnSurfaceVariant}"
                                     Text="{Binding ConfigType}" />
                                 <TextBlock
                                     Grid.Column="3"
-                                    Margin="8,0,4,0"
+                                    MaxWidth="72"
+                                    Margin="4,0,2,0"
                                     VerticalAlignment="Center"
-                                    FontSize="13"
+                                    FontSize="12"
                                     Foreground="{DynamicResource MyOnSurfaceVariant}"
-                                    Text="{Binding DelayVal, Converter={StaticResource DelayTextConverter}}" />
+                                    Text="{Binding DelayVal, Converter={StaticResource DelayTextConverter}}"
+                                    TextTrimming="CharacterEllipsis" />
                             </Grid>
                         </Border>
                     </DataTemplate>

@@ -205,8 +205,8 @@
                                 Margin="0,4,8,4"
                                 Padding="0,0,12,0"
                                 Classes="soft-pane"
-                                BorderBrush="{DynamicResource MyOutline}"
-                                BorderThickness="0,0,1,0"
+                                BorderBrush="Transparent"
+                                BorderThickness="0"
                                 IsVisible="False">
                                 <DockPanel>
                                     <TextBlock
@@ -214,14 +214,8 @@
                                         DockPanel.Dock="Top"
                                         Text="{x:Static shell:ShellStrings.AddProfileTitle}" />
                                     <ScrollViewer
-                                        Classes="soft"
                                         HorizontalScrollBarVisibility="Disabled"
                                         VerticalScrollBarVisibility="Auto">
-                                        <ScrollViewer.Resources>
-                                            <x:Double x:Key="ScrollBarSize">6</x:Double>
-                                            <SolidColorBrush x:Key="ScrollBarThumbBackgroundColor" Color="#665C574E" />
-                                            <SolidColorBrush x:Key="ScrollBarTrackFill" Color="Transparent" />
-                                        </ScrollViewer.Resources>
                                         <StackPanel>
                                             <Button x:Name="menuAddServerViaClipboard" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
                                             <Button x:Name="menuAddServerViaScan" Classes="soft-item" Content="{x:Static resx:ResUI.menuAddServerViaScan}" />
@@ -357,8 +351,8 @@
                         Margin="8,8,8,8"
                         Padding="16,4,8,8"
                         HorizontalAlignment="Right"
-                        BorderBrush="{DynamicResource MyOutline}"
-                        BorderThickness="1,0,0,0">
+                        BorderBrush="Transparent"
+                        BorderThickness="0">
                         <views:ConnectionStatusCard x:Name="connectionCard" />
                     </Border>
                 </Grid>

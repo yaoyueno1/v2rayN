@@ -9,83 +9,109 @@
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     x:DataType="vms:MainWindowViewModel"
     mc:Ignorable="d">
-    <ScrollViewer>
-        <StackPanel MaxWidth="720" HorizontalAlignment="Left" Spacing="8">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <Grid
+            MaxWidth="1080"
+            HorizontalAlignment="Stretch"
+            ColumnDefinitions="*,*"
+            RowDefinitions="Auto,Auto,*">
             <TextBlock
-                Margin="4,0,0,8"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="4,0,0,12"
                 Classes="page-title"
                 Text="{x:Static shell:ShellStrings.SettingsTitle}" />
 
-            <TextBlock
-                Margin="8,4,0,4"
-                Classes="section-title"
-                Text="{x:Static shell:ShellStrings.Appearance}" />
-            <views:ThemeSettingView x:Name="themeSetting" Margin="8,0,0,0" />
-            <Border Classes="hairline" />
+            <StackPanel
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="4,0,24,8"
+                Spacing="4">
+                <TextBlock
+                    Margin="8,4,0,4"
+                    Classes="section-title"
+                    Text="{x:Static shell:ShellStrings.Appearance}" />
+                <views:ThemeSettingView x:Name="themeSetting" HorizontalAlignment="Stretch" />
+            </StackPanel>
 
-            <Button
-                Classes="settings-row"
-                Command="{Binding OptionSettingCmd}"
-                Content="{x:Static shell:ShellStrings.SettingsCore}" />
-            <Button
-                Classes="settings-row"
-                Command="{Binding DNSSettingCmd}"
-                Content="{x:Static shell:ShellStrings.SettingsDns}" />
-            <Button
-                Classes="settings-row"
-                Command="{Binding RoutingSettingCmd}"
-                Content="{x:Static shell:ShellStrings.AdvancedRouting}" />
-            <Button
-                Classes="settings-row"
-                Command="{Binding FullConfigTemplateCmd}"
-                Content="{x:Static shell:ShellStrings.SettingsTemplate}" />
-            <Button
-                Classes="settings-row"
-                Command="{Binding GlobalHotkeySettingCmd}"
-                Content="{x:Static shell:ShellStrings.SettingsHotkey}"
-                IsVisible="{Binding BlIsWindows}" />
-            <Button
-                x:Name="btnBackup"
-                Classes="settings-row"
-                Content="{x:Static shell:ShellStrings.SettingsBackup}" />
-            <Button
-                Classes="settings-row"
-                Command="{Binding OpenTheFileLocationCmd}"
-                Content="{x:Static shell:ShellStrings.SettingsFolder}" />
-            <Button
-                Classes="settings-row"
-                Command="{Binding ClearServerStatisticsCmd}"
-                Content="{x:Static shell:ShellStrings.SettingsClearStats}" />
-            <Button
-                Classes="settings-row"
-                Command="{Binding ReloadCmd}"
-                Content="{x:Static shell:ShellStrings.SettingsReload}" />
-            <Button
-                x:Name="btnUpdate"
-                Classes="settings-row"
-                Content="{x:Static shell:ShellStrings.SettingsUpdate}" />
-            <Button
-                Classes="settings-row"
-                Command="{Binding RegionalPresetDefaultCmd}"
-                Content="{x:Static shell:ShellStrings.SettingsPresetDefault}" />
-            <Button
-                Classes="settings-row"
-                Command="{Binding RegionalPresetRussiaCmd}"
-                Content="{x:Static shell:ShellStrings.SettingsPresetRussia}" />
-            <Button
-                Classes="settings-row"
-                Command="{Binding RegionalPresetIranCmd}"
-                Content="{x:Static shell:ShellStrings.SettingsPresetIran}" />
-            <Button
-                Classes="settings-row"
-                Command="{Binding RebootAsAdminCmd}"
-                Content="{x:Static shell:ShellStrings.SettingsRebootAdmin}"
-                IsVisible="{Binding BlIsWindows}" />
-            <Button
-                x:Name="btnUwp"
-                Classes="settings-row"
-                Content="{x:Static shell:ShellStrings.SettingsUwp}"
-                IsVisible="{Binding BlIsWindows}" />
-        </StackPanel>
+            <StackPanel
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="4,8,16,0"
+                Spacing="2">
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding OptionSettingCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsCore}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding DNSSettingCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsDns}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding RoutingSettingCmd}"
+                    Content="{x:Static shell:ShellStrings.AdvancedRouting}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding FullConfigTemplateCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsTemplate}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding GlobalHotkeySettingCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsHotkey}"
+                    IsVisible="{Binding BlIsWindows}" />
+                <Button
+                    x:Name="btnBackup"
+                    Classes="settings-row"
+                    Content="{x:Static shell:ShellStrings.SettingsBackup}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding OpenTheFileLocationCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsFolder}" />
+            </StackPanel>
+
+            <StackPanel
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="16,8,4,0"
+                Spacing="2">
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding ClearServerStatisticsCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsClearStats}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding ReloadCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsReload}" />
+                <Button
+                    x:Name="btnUpdate"
+                    Classes="settings-row"
+                    Content="{x:Static shell:ShellStrings.SettingsUpdate}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding RegionalPresetDefaultCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsPresetDefault}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding RegionalPresetRussiaCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsPresetRussia}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding RegionalPresetIranCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsPresetIran}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding RebootAsAdminCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsRebootAdmin}"
+                    IsVisible="{Binding BlIsWindows}" />
+                <Button
+                    x:Name="btnUwp"
+                    Classes="settings-row"
+                    Content="{x:Static shell:ShellStrings.SettingsUwp}"
+                    IsVisible="{Binding BlIsWindows}" />
+            </StackPanel>
+        </Grid>
     </ScrollViewer>
 </UserControl>

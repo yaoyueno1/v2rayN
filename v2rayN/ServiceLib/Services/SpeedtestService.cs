@@ -115,17 +115,39 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                         ct);
                     break;
             }
+
+            await ClearPendingAsync(lstSelected, completedIds, actionType, ResUI.FailedToRunCore).ConfigureAwait(false);
         }
         catch (OperationCanceledException) when (ct.IsCancellationRequested)
         {
             _ = UpdateFunc("", ResUI.SpeedtestingStop);
-            await SetTestResultAsync(lstSelected.Where(it => !completedIds.ContainsKey(it.IndexId)).ToList(),
-                actionType, ResUI.SpeedtestingSkip).ConfigureAwait(false);
+            await ClearPendingAsync(lstSelected, completedIds, actionType, ResUI.SpeedtestingSkip).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
             _ = UpdateFunc("", ex.Message);
+            await ClearPendingAsync(lstSelected, completedIds, actionType, ResUI.FailedToRunCore).ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// Rows are set to "testing" up front. Any row that never receives a result would stay there forever,
+    /// because an empty delay string does not replace DelayVal. Write a real failure into every leftover row.
+    /// </summary>
+    private async Task ClearPendingAsync(List<ServerTestItem> selecteds,
+        ConcurrentDictionary<string, byte> completedIds, ESpeedActionType actionType, string message)
+    {
+        var pending = selecteds.Where(it => it.IndexId.IsNotEmpty() && !completedIds.ContainsKey(it.IndexId)).ToList();
+        if (pending.Count == 0)
+        {
+            return;
+        }
+
+        await SetTestResultAsync(pending, actionType, message).ConfigureAwait(false);
+        foreach (var it in pending)
+        {
+            completedIds.TryAdd(it.IndexId, 0);
         }
     }
 
@@ -231,6 +253,8 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 catch (Exception ex)
                 {
                     Logging.SaveLog(_tag, ex);
+                    await UpdateFunc(item.IndexId, ResUI.SpeedtestingSkip);
+                    completedIds.TryAdd(item.IndexId, 0);
                 }
             });
 
@@ -286,6 +310,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(selecteds);
             if (processService is null)
             {
+                await MarkCoreFailedAsync(selecteds, completedIds, false);
                 return false;
             }
             await Task.Delay(1000, ct);
@@ -316,6 +341,8 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 catch (Exception ex)
                 {
                     Logging.SaveLog(_tag, ex);
+                    await UpdateFunc(it.IndexId, ResUI.SpeedtestingSkip);
+                    completedIds.TryAdd(it.IndexId, 0);
                 }
             });
         }
@@ -377,6 +404,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(selecteds);
             if (processService is null)
             {
+                await MarkCoreFailedAsync(selecteds, completedIds, false);
                 return false;
             }
             await Task.Delay(1000, ct);
@@ -407,6 +435,8 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 catch (Exception ex)
                 {
                     Logging.SaveLog(_tag, ex);
+                    await UpdateFunc(it.IndexId, ResUI.SpeedtestingSkip);
+                    completedIds.TryAdd(it.IndexId, 0);
                 }
             });
         }
@@ -450,7 +480,9 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(it);
                 if (processService is null)
                 {
-                    await UpdateFunc(it.IndexId, "", ResUI.FailedToRunCore);
+                    // Empty delay used to leave the cell on "测试中..." while only the speed column updated.
+                    await UpdateFunc(it.IndexId, ResUI.FailedToRunCore, blSpeedTest ? ResUI.FailedToRunCore : "");
+                    completedIds.TryAdd(it.IndexId, 0);
                     return;
                 }
 
@@ -466,6 +498,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                     else
                     {
                         await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
+                        completedIds.TryAdd(it.IndexId, 0);
                     }
                 }
             }
@@ -476,6 +509,10 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             catch (Exception ex)
             {
                 Logging.SaveLog(_tag, ex);
+                // Keep a delay that already arrived. Only fill the delay cell when this row never got one.
+                var delay = completedIds.ContainsKey(it.IndexId) ? "" : ResUI.FailedToRunCore;
+                await UpdateFunc(it.IndexId, delay, blSpeedTest ? ResUI.FailedToRunCore : "");
+                completedIds.TryAdd(it.IndexId, 0);
             }
             finally
             {
@@ -606,6 +643,21 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
 
         return lstTest;
+    }
+
+    private async Task MarkCoreFailedAsync(List<ServerTestItem> selecteds,
+        ConcurrentDictionary<string, byte> completedIds, bool includeSpeed)
+    {
+        foreach (var it in selecteds)
+        {
+            if (it.IndexId.IsNullOrEmpty() || completedIds.ContainsKey(it.IndexId))
+            {
+                continue;
+            }
+
+            await UpdateFunc(it.IndexId, ResUI.FailedToRunCore, includeSpeed ? ResUI.FailedToRunCore : "");
+            completedIds.TryAdd(it.IndexId, 0);
+        }
     }
 
     private async Task UpdateFunc(string indexId, string delay, string speed = "")

@@ -15,9 +15,104 @@
                 <ResourceInclude Source="Assets/GlobalResources.axaml" />
                 <ResourceInclude Source="Assets/ClaudeTheme.axaml" />
             </ResourceDictionary.MergedDictionaries>
-            <x:Double x:Key="ScrollBarSize">8</x:Double>
-            <SolidColorBrush x:Key="ScrollBarThumbBackgroundColor" Color="#665C574E" />
+            <x:Double x:Key="ScrollBarSize">10</x:Double>
+            <!-- Fluent collapses the thumb with scaleX(0.125), which is the hairline. Keep a real pill. -->
+            <TransformOperations x:Key="VerticalSmallScrollThumbScaleTransform">scaleX(1)</TransformOperations>
+            <TransformOperations x:Key="HorizontalSmallScrollThumbScaleTransform">scaleY(1)</TransformOperations>
+            <x:Double x:Key="ScrollBarTrackBorderThemeThickness">0</x:Double>
+            <SolidColorBrush x:Key="ScrollBarThumbBackgroundColor" Color="#8A6E675C" />
+            <SolidColorBrush x:Key="ScrollBarPanningThumbBackground" Color="#8A6E675C" />
             <SolidColorBrush x:Key="ScrollBarTrackFill" Color="Transparent" />
+            <SolidColorBrush x:Key="ScrollBarTrackStroke" Color="Transparent" />
+            <SolidColorBrush x:Key="ScrollBarBackground" Color="Transparent" />
+            <SolidColorBrush x:Key="DataGridGridLinesBrush" Color="Transparent" />
+            <ControlTheme x:Key="SoftScrollBar" TargetType="ScrollBar">
+                <Setter Property="AllowAutoHide" Value="True" />
+                <Setter Property="ShowDelay" Value="0:0:0.1" />
+                <Setter Property="HideDelay" Value="0:0:0.45" />
+                <Setter Property="MinWidth" Value="10" />
+                <Setter Property="MinHeight" Value="10" />
+                <Setter Property="Background" Value="Transparent" />
+                <Style Selector="^ /template/ Thumb">
+                    <Setter Property="Opacity" Value="0" />
+                </Style>
+                <Style Selector="^[IsExpanded=true] /template/ Thumb">
+                    <Setter Property="Opacity" Value="0.92" />
+                </Style>
+                <Style Selector="^:vertical">
+                    <Setter Property="Width" Value="10" />
+                    <Setter Property="Template">
+                        <ControlTemplate>
+                            <Grid>
+                                <Track
+                                    IsDirectionReversed="True"
+                                    Maximum="{TemplateBinding Maximum}"
+                                    Minimum="{TemplateBinding Minimum}"
+                                    Orientation="Vertical"
+                                    Value="{TemplateBinding Value, Mode=TwoWay}"
+                                    ViewportSize="{TemplateBinding ViewportSize}">
+                                    <Track.DecreaseButton>
+                                        <RepeatButton Name="PART_PageUpButton" Background="Transparent" Focusable="False" />
+                                    </Track.DecreaseButton>
+                                    <Track.IncreaseButton>
+                                        <RepeatButton Name="PART_PageDownButton" Background="Transparent" Focusable="False" />
+                                    </Track.IncreaseButton>
+                                    <Thumb Width="8" MinHeight="32" HorizontalAlignment="Center">
+                                        <Thumb.Transitions>
+                                            <Transitions>
+                                                <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+                                            </Transitions>
+                                        </Thumb.Transitions>
+                                        <Thumb.Template>
+                                            <ControlTemplate>
+                                                <Border Background="#8A6E675C" CornerRadius="4" />
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track>
+                                <RepeatButton Name="PART_LineUpButton" Height="0" IsHitTestVisible="False" Opacity="0" />
+                                <RepeatButton Name="PART_LineDownButton" Height="0" IsHitTestVisible="False" Opacity="0" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter>
+                </Style>
+                <Style Selector="^:horizontal">
+                    <Setter Property="Height" Value="10" />
+                    <Setter Property="Template">
+                        <ControlTemplate>
+                            <Grid>
+                                <Track
+                                    Maximum="{TemplateBinding Maximum}"
+                                    Minimum="{TemplateBinding Minimum}"
+                                    Orientation="Horizontal"
+                                    Value="{TemplateBinding Value, Mode=TwoWay}"
+                                    ViewportSize="{TemplateBinding ViewportSize}">
+                                    <Track.DecreaseButton>
+                                        <RepeatButton Name="PART_PageUpButton" Background="Transparent" Focusable="False" />
+                                    </Track.DecreaseButton>
+                                    <Track.IncreaseButton>
+                                        <RepeatButton Name="PART_PageDownButton" Background="Transparent" Focusable="False" />
+                                    </Track.IncreaseButton>
+                                    <Thumb Height="8" MinWidth="32" VerticalAlignment="Center">
+                                        <Thumb.Transitions>
+                                            <Transitions>
+                                                <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+                                            </Transitions>
+                                        </Thumb.Transitions>
+                                        <Thumb.Template>
+                                            <ControlTemplate>
+                                                <Border Background="#8A6E675C" CornerRadius="4" />
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track>
+                                <RepeatButton Name="PART_LineUpButton" Width="0" IsHitTestVisible="False" Opacity="0" />
+                                <RepeatButton Name="PART_LineDownButton" Width="0" IsHitTestVisible="False" Opacity="0" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter>
+                </Style>
+            </ControlTheme>
         </ResourceDictionary>
     </Application.Resources>
     <Application.Styles>

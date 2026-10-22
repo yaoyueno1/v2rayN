@@ -121,23 +121,33 @@
 
     <Style Selector="Border.node-card">
         <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="CornerRadius" Value="10" />
-        <Setter Property="Padding" Value="8,14" />
-        <Setter Property="Margin" Value="0,3" />
+        <Setter Property="Padding" Value="8,8" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
+
+    <Style Selector="Border.node-card TextBlock.card-title">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="LineHeight" Value="20" />
     </Style>
 
     <Style Selector="Border.node-card:pointerover">
         <Setter Property="Background" Value="{DynamicResource MyHover}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
     </Style>
 
     <Style Selector="Border.node-card.active">
         <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
     </Style>
 
     <Style Selector="Border.node-card.active:pointerover">
         <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="BorderThickness" Value="0" />
     </Style>
 
     <Style Selector="Button.connect">
@@ -324,20 +334,12 @@
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
-    <Style Selector="ScrollViewer.soft">
+    <Style Selector="ScrollViewer">
         <Setter Property="AllowAutoHide" Value="True" />
     </Style>
 
-    <Style Selector="ScrollViewer.soft /template/ ScrollBar RepeatButton#PART_LineUpButton">
-        <Setter Property="IsVisible" Value="False" />
-        <Setter Property="Height" Value="0" />
-        <Setter Property="MinHeight" Value="0" />
-    </Style>
-
-    <Style Selector="ScrollViewer.soft /template/ ScrollBar RepeatButton#PART_LineDownButton">
-        <Setter Property="IsVisible" Value="False" />
-        <Setter Property="Height" Value="0" />
-        <Setter Property="MinHeight" Value="0" />
+    <Style Selector="ScrollBar">
+        <Setter Property="Theme" Value="{StaticResource SoftScrollBar}" />
     </Style>
 
     <Style Selector="Border.soft-pane">
@@ -412,7 +414,24 @@
         <Setter Property="Padding" Value="0" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="CornerRadius" Value="10" />
+    </Style>
+
+    <Style Selector="ListBox.nodes">
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style Selector="ListBox.nodes ListBoxItem">
+        <Setter Property="Width" Value="198" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0,0,6,6" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
     </Style>
 
     <Style Selector="ListBox.flat ListBoxItem:pointerover">
@@ -580,20 +599,124 @@
         <Setter Property="Margin" Value="0,2" />
         <Setter Property="CornerRadius" Value="10" />
         <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FocusAdorner" Value="{x:Null}" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
     </Style>
 
     <Style Selector="ListBoxItem:pointerover">
         <Setter Property="Background" Value="{DynamicResource MyHover}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
     </Style>
 
     <Style Selector="ListBoxItem:selected">
         <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
     </Style>
 
     <Style Selector="ListBoxItem:selected:pointerover">
         <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <!-- Fluent paints the accent onto PART_ContentPresenter and ignores ListBoxItem.Background.
+         That accent is the terracotta frame. Keep a soft fill and no outline. -->
+    <Style Selector="ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBoxItem:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBoxItem:selected:not(:focus) /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBoxItem:selected:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBoxItem:focus /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBoxItem:selected:focus /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <!-- Node cards paint their own soft fill, so the presenter must stay clear or it reads as a frame. -->
+    <Style Selector="ListBox.nodes ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBox.nodes ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBox.nodes ListBoxItem:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBox.nodes ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBox.nodes ListBoxItem:selected:not(:focus) /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBox.nodes ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBox.nodes ListBoxItem:selected:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBox.nodes ListBoxItem:selected:focus /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBox.nodes ListBoxItem:pointerover Border.node-card">
+        <Setter Property="Background" Value="{DynamicResource MyHover}" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBox.nodes ListBoxItem:selected Border.node-card">
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="ListBox.nodes ListBoxItem:selected:pointerover Border.node-card">
+        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="BorderThickness" Value="0" />
     </Style>
 
     <Style Selector="DataGrid">
@@ -601,7 +724,7 @@
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="GridLinesVisibility" Value="None" />
-        <Setter Property="RowHeight" Value="48" />
+        <Setter Property="RowHeight" Value="36" />
         <Setter Property="HorizontalGridLinesBrush" Value="Transparent" />
         <Setter Property="VerticalGridLinesBrush" Value="Transparent" />
     </Style>
@@ -609,14 +732,41 @@
     <Style Selector="DataGridColumnHeader">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
-        <Setter Property="SeparatorBrush" Value="{DynamicResource MyOutline}" />
+        <Setter Property="SeparatorBrush" Value="Transparent" />
+        <Setter Property="AreSeparatorsVisible" Value="False" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="FontWeight" Value="Medium" />
-        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="MinHeight" Value="34" />
+    </Style>
+
+    <Style Selector="DataGridRowHeader">
+        <Setter Property="SeparatorBrush" Value="Transparent" />
+        <Setter Property="AreSeparatorsVisible" Value="False" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <Style Selector="DataGrid /template/ Rectangle#PART_ColumnHeadersAndRowsSeparator">
+        <Setter Property="Fill" Value="Transparent" />
+        <Setter Property="Height" Value="0" />
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="DataGridCell /template/ Grid#FocusVisual">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="DataGrid:focus DataGridCell:current /template/ Grid#FocusVisual">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="DataGridCell:current /template/ Rectangle#CurrencyVisual">
+        <Setter Property="IsVisible" Value="False" />
+        <Setter Property="Opacity" Value="0" />
     </Style>
 
     <Style Selector="DataGridRow">
-        <Setter Property="MinHeight" Value="48" />
+        <Setter Property="MinHeight" Value="36" />
         <Setter Property="Background" Value="Transparent" />
     </Style>
 
