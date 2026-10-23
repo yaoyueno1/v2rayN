@@ -135,28 +135,23 @@
                     Classes="rule-switch" />
             </Grid>
 
-            <Grid ColumnDefinitions="*,*">
-                <ComboBox
-                    x:Name="cmbSystemProxy"
-                    Margin="0,0,4,0"
-                    HorizontalAlignment="Stretch"
-                    Classes="paper sidebar"
-                    ToolTip.Tip="{x:Static resx:ResUI.menuSystemproxy}">
-                    <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyClear}" />
-                    <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxySet}" />
-                    <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyNothing}" />
-                    <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyPac}" />
-                </ComboBox>
-                <ComboBox
-                    x:Name="cmbRouting"
-                    Grid.Column="1"
-                    Margin="4,0,0,0"
-                    HorizontalAlignment="Stretch"
-                    Classes="paper sidebar"
-                    DisplayMemberBinding="{Binding Remarks}"
-                    ItemsSource="{Binding RoutingItems}"
-                    ToolTip.Tip="{Binding SelectedRouting.Remarks}" />
-            </Grid>
+            <ComboBox
+                x:Name="cmbSystemProxy"
+                HorizontalAlignment="Stretch"
+                Classes="paper sidebar"
+                ToolTip.Tip="{x:Static resx:ResUI.menuSystemproxy}">
+                <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyClear}" />
+                <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxySet}" />
+                <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyNothing}" />
+                <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyPac}" />
+            </ComboBox>
+            <ComboBox
+                x:Name="cmbRouting"
+                HorizontalAlignment="Stretch"
+                Classes="paper sidebar"
+                DisplayMemberBinding="{Binding Remarks}"
+                ItemsSource="{Binding RoutingItems}"
+                ToolTip.Tip="{Binding SelectedRouting.Remarks}" />
         </StackPanel>
     </Border>
 </UserControl>
