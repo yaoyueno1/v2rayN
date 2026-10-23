@@ -789,6 +789,9 @@ public class Utils
 
     #region Speed Test
 
+    private static readonly HashSet<int> _reservedLoopbackPorts = [];
+    private static readonly Lock _loopbackPortLock = new();
+
     private static bool PortInUse(int port)
     {
         try
@@ -813,26 +816,152 @@ public class Utils
         return false;
     }
 
+    /// <summary>
+    /// Reserves a loopback port that can actually be bound.
+    /// Windows excluded ranges (Hyper-V / WinNAT) do not show up in netstat, so a
+    /// speed-test batch that starts at localPort+21 (often 10829) dies inside that
+    /// range and every node in the batch is reported as "failed to run core".
+    /// The socket is closed before return; the number stays reserved until
+    /// <see cref="ReleaseLoopbackPort"/> so concurrent tests do not pick it again.
+    /// </summary>
+    public static int ReserveLoopbackPort(int preferredPort)
+    {
+        var start = preferredPort is > 0 and <= 65535 ? preferredPort : 20000;
+        lock (_loopbackPortLock)
+        {
+            var limit = Math.Min(65535, start + 4096);
+            for (var port = start; port <= limit; port++)
+            {
+                if (TryReserveLoopbackPort(port))
+                {
+                    return port;
+                }
+            }
+
+            if (TryTakeOsLoopbackPort(out var osPort))
+            {
+                return osPort;
+            }
+        }
+
+        return 0;
+    }
+
+    public static void ReleaseLoopbackPort(int port)
+    {
+        if (port is <= 0 or > 65535)
+        {
+            return;
+        }
+
+        lock (_loopbackPortLock)
+        {
+            _reservedLoopbackPorts.Remove(port);
+        }
+    }
+
+    private static bool TryReserveLoopbackPort(int port)
+    {
+        if (_reservedLoopbackPorts.Contains(port) || !CanBindLoopback(port))
+        {
+            return false;
+        }
+
+        _reservedLoopbackPorts.Add(port);
+        return true;
+    }
+
+    private static bool TryTakeOsLoopbackPort(out int port)
+    {
+        port = 0;
+        TcpListener? tcp = null;
+        try
+        {
+            tcp = new TcpListener(IPAddress.Loopback, 0);
+            tcp.Start();
+            port = ((IPEndPoint)tcp.LocalEndpoint).Port;
+            tcp.Stop();
+            tcp = null;
+            return port is > 0 and <= 65535 && TryReserveLoopbackPort(port);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            port = 0;
+            return false;
+        }
+        finally
+        {
+            try
+            {
+                tcp?.Stop();
+            }
+            catch
+            {
+                // Ignore
+            }
+        }
+    }
+
+    private static bool CanBindLoopback(int port)
+    {
+        TcpListener? tcp = null;
+        Socket? udp = null;
+        try
+        {
+            tcp = new TcpListener(IPAddress.Loopback, port);
+            tcp.Start();
+            udp = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            udp.Bind(new IPEndPoint(IPAddress.Loopback, port));
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+        finally
+        {
+            try
+            {
+                udp?.Dispose();
+            }
+            catch
+            {
+                // Ignore
+            }
+
+            try
+            {
+                tcp?.Stop();
+            }
+            catch
+            {
+                // Ignore
+            }
+        }
+    }
+
     public static int GetFreePort(int defaultPort)
     {
         try
         {
-            if (!PortInUse(defaultPort))
+            var reserved = ReserveLoopbackPort(defaultPort);
+            if (reserved > 0)
+            {
+                return reserved;
+            }
+
+            if (defaultPort > 0 && !PortInUse(defaultPort))
             {
                 return defaultPort;
             }
-
-            TcpListener l = new(IPAddress.Loopback, 0);
-            l.Start();
-            var port = ((IPEndPoint)l.LocalEndpoint).Port;
-            l.Stop();
-            return port;
         }
-        catch
+        catch (Exception ex)
         {
+            Logging.SaveLog(_tag, ex);
         }
 
-        return 59090;
+        return defaultPort > 0 ? defaultPort : 59090;
     }
 
     public static (List<IPEndPoint> endpoints, List<TcpConnectionInformation> connections) GetActiveNetworkInfo()
@@ -1181,7 +1310,35 @@ public class Utils
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "v2rayN");
         }
 
-        return GetBaseDirectory();
+        return ResolveInstallDirectory();
+    }
+
+    /// <summary>
+    /// Single-file hosts usually report the executable directory as the base directory.
+    /// When they do not, cores live next to the exe (bin/xray), not in the extract folder.
+    /// </summary>
+    private static string ResolveInstallDirectory()
+    {
+        var baseDir = GetBaseDirectory();
+        var exeDir = Path.GetDirectoryName(GetExePath());
+        if (string.IsNullOrEmpty(exeDir))
+        {
+            return baseDir;
+        }
+
+        var baseNorm = Path.TrimEndingDirectorySeparator(baseDir);
+        var exeNorm = Path.TrimEndingDirectorySeparator(exeDir);
+        if (string.Equals(baseNorm, exeNorm, StringComparison.OrdinalIgnoreCase))
+        {
+            return baseDir;
+        }
+
+        if (Directory.Exists(Path.Combine(exeNorm, "bin")))
+        {
+            return exeNorm + Path.DirectorySeparatorChar;
+        }
+
+        return baseDir;
     }
 
     public static string GetTempPath(string filename = "")

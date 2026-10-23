@@ -119,7 +119,7 @@ public class CoreManager
         await UpdateFunc(false, configPath);
 
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
-        return await RunProcess(coreInfo, fileName, true, false);
+        return await RunProcess(coreInfo, configPath, true, false);
     }
 
     public async Task<ProcessService?> LoadCoreConfigSpeedtest(ServerTestItem testItem)
@@ -141,7 +141,7 @@ public class CoreManager
 
         var coreType = context.RunCoreType;
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
-        return await RunProcess(coreInfo, fileName, true, false);
+        return await RunProcess(coreInfo, configPath, true, false);
     }
 
     public async Task CoreStop()
@@ -331,17 +331,41 @@ public class CoreManager
         }
     }
 
+    /// <summary>
+    /// Relative names stay relative (working directory is binConfigs).
+    /// Rooted speed-test paths are quoted so a space in the install directory cannot split the argument.
+    /// </summary>
+    private static string FormatConfigArgument(CoreInfo? coreInfo, string configPath)
+    {
+        var arg = configPath ?? string.Empty;
+        if (coreInfo?.AbsolutePath == true || Path.IsPathRooted(arg))
+        {
+            if (!Path.IsPathRooted(arg))
+            {
+                arg = Utils.GetBinConfigPath(arg);
+            }
+
+            arg = arg.AppendQuotes();
+        }
+
+        return arg;
+    }
+
     private async Task<ProcessService?> RunProcessNormal(string fileName, CoreInfo? coreInfo, string configPath, bool displayLog)
     {
+        var configArg = FormatConfigArgument(coreInfo, configPath);
         var environmentVars = new Dictionary<string, string>();
         foreach (var kv in coreInfo.Environment)
         {
-            environmentVars[kv.Key] = string.Format(kv.Value, coreInfo.AbsolutePath ? Utils.GetBinConfigPath(configPath).AppendQuotes() : configPath);
+            var template = kv.Value ?? string.Empty;
+            environmentVars[kv.Key] = template.Contains("{0}", StringComparison.Ordinal)
+                ? string.Format(template, configArg)
+                : template;
         }
 
         var procService = new ProcessService(
             fileName: fileName,
-            arguments: string.Format(coreInfo.Arguments, coreInfo.AbsolutePath ? Utils.GetBinConfigPath(configPath).AppendQuotes() : configPath),
+            arguments: string.Format(coreInfo.Arguments ?? string.Empty, configArg),
             workingDirectory: Utils.GetBinConfigPath(),
             displayLog: displayLog,
             redirectInput: false,

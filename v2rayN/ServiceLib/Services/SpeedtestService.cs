@@ -358,8 +358,10 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         {
             if (processService != null)
             {
-                await processService?.StopAsync();
+                await processService.StopAsync();
             }
+
+            ReleaseTestPorts(selecteds);
         }
         return true;
     }
@@ -452,8 +454,10 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         {
             if (processService != null)
             {
-                await processService?.StopAsync();
+                await processService.StopAsync();
             }
+
+            ReleaseTestPorts(selecteds);
         }
         return true;
     }
@@ -520,8 +524,21 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 {
                     await processService.StopAsync();
                 }
+
+                ReleaseTestPorts([it]);
             }
         });
+    }
+
+    private static void ReleaseTestPorts(IEnumerable<ServerTestItem> items)
+    {
+        foreach (var it in items)
+        {
+            if (it.AllowTest)
+            {
+                Utils.ReleaseLoopbackPort(it.Port);
+            }
+        }
     }
 
     private async Task<int> DoRealPing(ServerTestItem it,
