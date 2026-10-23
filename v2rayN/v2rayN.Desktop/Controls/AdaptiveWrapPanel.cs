@@ -18,18 +18,23 @@ public class AdaptiveWrapPanel : Panel
     public static readonly StyledProperty<double> VerticalSpacingProperty =
         AvaloniaProperty.Register<AdaptiveWrapPanel, double>(nameof(VerticalSpacing), 8);
 
+    public static readonly StyledProperty<int> MaxColumnsProperty =
+        AvaloniaProperty.Register<AdaptiveWrapPanel, int>(nameof(MaxColumns), int.MaxValue);
+
     static AdaptiveWrapPanel()
     {
         AffectsMeasure<AdaptiveWrapPanel>(
             MinItemWidthProperty,
             MaxItemWidthProperty,
             HorizontalSpacingProperty,
-            VerticalSpacingProperty);
+            VerticalSpacingProperty,
+            MaxColumnsProperty);
         AffectsArrange<AdaptiveWrapPanel>(
             MinItemWidthProperty,
             MaxItemWidthProperty,
             HorizontalSpacingProperty,
-            VerticalSpacingProperty);
+            VerticalSpacingProperty,
+            MaxColumnsProperty);
     }
 
     public double MinItemWidth
@@ -56,22 +61,29 @@ public class AdaptiveWrapPanel : Panel
         set => SetValue(VerticalSpacingProperty, value);
     }
 
+    public int MaxColumns
+    {
+        get => GetValue(MaxColumnsProperty);
+        set => SetValue(MaxColumnsProperty, value);
+    }
+
     protected override Size MeasureOverride(Size availableSize)
     {
-        var (columns, itemWidth) = Compute(availableSize.Width, Children.Count);
+        var children = ActiveChildren();
+        var (columns, itemWidth) = Compute(availableSize.Width, children.Count);
         var gapY = Math.Max(0, VerticalSpacing);
         double height = 0;
         double rowHeight = 0;
         var col = 0;
         var index = 0;
 
-        foreach (var child in Children)
+        foreach (var child in children)
         {
             child.Measure(new Size(itemWidth, double.PositiveInfinity));
             rowHeight = Math.Max(rowHeight, child.DesiredSize.Height);
             col++;
             index++;
-            if (col == columns || index == Children.Count)
+            if (col == columns || index == children.Count)
             {
                 if (height > 0)
                 {
@@ -92,7 +104,8 @@ public class AdaptiveWrapPanel : Panel
 
     protected override Size ArrangeOverride(Size finalSize)
     {
-        var (columns, itemWidth) = Compute(finalSize.Width, Children.Count);
+        var children = ActiveChildren();
+        var (columns, itemWidth) = Compute(finalSize.Width, children.Count);
         var gapX = Math.Max(0, HorizontalSpacing);
         var gapY = Math.Max(0, VerticalSpacing);
         var row = new List<Control>(columns);
@@ -122,7 +135,7 @@ public class AdaptiveWrapPanel : Panel
             row.Clear();
         }
 
-        foreach (var child in Children)
+        foreach (var child in children)
         {
             child.Measure(new Size(itemWidth, double.PositiveInfinity));
             row.Add(child);
@@ -152,11 +165,13 @@ public class AdaptiveWrapPanel : Panel
             return (1, max);
         }
 
+        var columnCap = Math.Max(1, MaxColumns);
         var columns = Math.Max(1, (int)Math.Floor((availableWidth + gap) / (min + gap)));
         columns = Math.Min(columns, childCount);
+        columns = Math.Min(columns, columnCap);
         var itemWidth = (availableWidth - gap * (columns - 1)) / columns;
 
-        while (itemWidth > max && columns < childCount)
+        while (itemWidth > max && columns < childCount && columns < columnCap)
         {
             var next = columns + 1;
             var nextWidth = (availableWidth - gap * (next - 1)) / next;
@@ -176,5 +191,19 @@ public class AdaptiveWrapPanel : Panel
         }
 
         return (columns, itemWidth);
+    }
+
+    private List<Control> ActiveChildren()
+    {
+        var list = new List<Control>(Children.Count);
+        foreach (var child in Children)
+        {
+            if (child.IsVisible)
+            {
+                list.Add(child);
+            }
+        }
+
+        return list;
     }
 }

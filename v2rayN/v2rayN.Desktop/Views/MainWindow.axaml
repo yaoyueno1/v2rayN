@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:shell="clr-namespace:v2rayN.Desktop.Common"
+    xmlns:controls="clr-namespace:v2rayN.Desktop.Controls"
     xmlns:views="clr-namespace:v2rayN.Desktop.Views"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="v2rayN"
@@ -271,63 +272,80 @@
                     </Grid>
                     <Grid
                         x:Name="pageRouting"
-                        Margin="20,16,20,16"
+                        Margin="16"
                         IsVisible="False">
                         <views:RoutingPage x:Name="routingPage" />
                     </Grid>
                     <Grid
                         x:Name="pageSettings"
-                        Margin="20,16,20,16"
+                        Margin="16"
                         IsVisible="False">
                         <views:SettingsPage x:Name="settingsPage" />
                     </Grid>
                     <Grid
                         x:Name="pageHelp"
-                        Margin="20,16,20,16"
-                        IsVisible="False">
-                        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-                            <StackPanel MaxWidth="980" HorizontalAlignment="Stretch" Spacing="16">
-                                <TextBlock
-                                    Classes="page-title"
-                                    Text="{x:Static shell:ShellStrings.HelpTitle}" />
-                                <UniformGrid x:Name="helpLinks" Columns="2">
-                                    <Button
-                                        x:Name="menuCheckUpdate"
-                                        Classes="settings-row"
-                                        Content="{x:Static resx:ResUI.menuCheckUpdate}" />
-                                </UniformGrid>
-                                <StackPanel Spacing="8">
-                                    <TextBlock
-                                        Classes="section-title"
-                                        Text="{x:Static shell:ShellStrings.AboutTitle}" />
-                                    <TextBlock
-                                        x:Name="txtAboutVersion"
-                                        Foreground="{DynamicResource MyOnSurfaceVariant}" />
-                                    <TextBlock
-                                        Text="{x:Static shell:ShellStrings.AboutBody}"
-                                        TextWrapping="Wrap" />
-                                </StackPanel>
-                                <StackPanel
-                                    Margin="0,12,0,8"
-                                    HorizontalAlignment="Center"
-                                    Spacing="8">
-                                    <Image
-                                        Width="88"
-                                        Height="88"
-                                        HorizontalAlignment="Center"
-                                        Source="avares://v2rayN/Assets/ForkMark.png" />
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        Classes="section-title"
-                                        Text="v2rayN" />
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        FontSize="12"
-                                        Foreground="{DynamicResource MyOnSurfaceVariant}"
-                                        Text="{x:Static shell:ShellStrings.FontCredit}" />
-                                </StackPanel>
-                            </StackPanel>
+                        Margin="16"
+                        IsVisible="False"
+                        RowDefinitions="Auto,Auto,*,Auto">
+                        <TextBlock
+                            Classes="page-heading"
+                            Text="{x:Static shell:ShellStrings.HelpTitle}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Margin="0,4,0,12"
+                            Classes="meta"
+                            Text="{x:Static shell:ShellStrings.HelpSubtitle}" />
+                        <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Disabled">
+                            <controls:AdaptiveWrapPanel
+                                x:Name="helpLinks"
+                                MinItemWidth="200"
+                                MaxItemWidth="480"
+                                HorizontalSpacing="8"
+                                VerticalSpacing="8">
+                                <Button
+                                    x:Name="menuCheckUpdate"
+                                    Classes="help-card"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Left">
+                                    <StackPanel Spacing="2">
+                                        <TextBlock
+                                            Classes="help-title"
+                                            Text="{x:Static resx:ResUI.menuCheckUpdate}" />
+                                    </StackPanel>
+                                </Button>
+                            </controls:AdaptiveWrapPanel>
                         </ScrollViewer>
+                        <StackPanel
+                            Grid.Row="3"
+                            Margin="0,24,0,8"
+                            HorizontalAlignment="Left"
+                            Spacing="8">
+                            <Image
+                                Width="64"
+                                Height="64"
+                                HorizontalAlignment="Left"
+                                Source="avares://v2rayN/Assets/ForkMark.png" />
+                            <TextBlock
+                                x:Name="txtAboutVersion"
+                                FontSize="15"
+                                FontWeight="Normal"
+                                LineHeight="22"
+                                Foreground="{DynamicResource color.text.primary}" />
+                            <TextBlock
+                                MaxWidth="640"
+                                FontSize="13"
+                                FontWeight="Normal"
+                                LineHeight="20"
+                                Foreground="{DynamicResource color.text.secondary}"
+                                Text="{x:Static shell:ShellStrings.AboutBody}"
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                FontSize="12"
+                                FontWeight="Normal"
+                                LineHeight="16"
+                                Foreground="{DynamicResource color.text.tertiary}"
+                                Text="{x:Static shell:ShellStrings.FontCredit}" />
+                        </StackPanel>
                     </Grid>
                     <Grid
                         x:Name="pageDetails"

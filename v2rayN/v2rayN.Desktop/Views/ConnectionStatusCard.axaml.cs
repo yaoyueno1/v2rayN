@@ -120,7 +120,7 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
         txtState.Text = connected ? ShellStrings.Connected : ShellStrings.Disconnected;
         txtServer.Text = connected ? ViewModel.RunningServerDisplay : string.Empty;
         var ring = connected
-            ? ResolveBrush("color.accent", ResolveBrush("MyPrimary", Brushes.Gray))
+            ? ResolveBrush("color.latency.fast", ResolveBrush("color.accent", Brushes.Gray))
             : ResolveBrush("color.text.tertiary", Brushes.Gray);
         statusDot.Stroke = ring;
         statusDot.Fill = Brushes.Transparent;

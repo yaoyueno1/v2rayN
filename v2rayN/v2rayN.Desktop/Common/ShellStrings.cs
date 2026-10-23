@@ -75,7 +75,8 @@ public static class ShellStrings
     public static string OutboundProxy => T("代理", "代理", "Proxy");
     public static string OutboundDirect => T("直连", "直連", "Direct");
     public static string OutboundBlock => T("阻止", "封鎖", "Block");
-    public static string EmptyRules => T("这条路由还没有规则", "這條路由還沒有規則", "No rules in this routing profile");
+    public static string EmptyRules => T("暂无规则", "暫無規則", "No rules yet");
+    public static string AddFirstRule => T("添加第一条", "新增第一條", "Add the first rule");
     public static string AdvancedRouting => T("高级路由", "進階路由", "Advanced routing");
 
     public static string SettingsTitle => T("设置", "設定", "Settings");
@@ -88,13 +89,21 @@ public static class ShellStrings
     public static string SettingsClearStats => T("清空统计", "清空統計", "Clear statistics");
     public static string SettingsReload => T("重启服务", "重新啟動服務", "Reload service");
     public static string SettingsUpdate => T("检查更新", "檢查更新", "Check for updates");
-    public static string SettingsPresetDefault => T("区域预设：默认", "區域預設：預設", "Regional preset: default");
-    public static string SettingsPresetRussia => T("区域预设：俄罗斯", "區域預設：俄羅斯", "Regional preset: Russia");
-    public static string SettingsPresetIran => T("区域预设：伊朗", "區域預設：伊朗", "Regional preset: Iran");
+    public static string SettingsPresetDefault => T("默认", "預設", "Default");
+    public static string SettingsPresetRussia => T("俄罗斯", "俄羅斯", "Russia");
+    public static string SettingsPresetIran => T("伊朗", "伊朗", "Iran");
+    public static string SettingsGroupCore => T("核心与网络", "核心與網路", "Core and network");
+    public static string SettingsGroupData => T("数据与维护", "資料與維護", "Data and maintenance");
+    public static string SettingsGroupRegion => T("区域预设", "區域預設", "Regional presets");
+    public static string ClearStatsConfirm => T(
+        "确定清空全部节点统计？此操作不可恢复。",
+        "確定清空全部節點統計？此操作無法還原。",
+        "Clear all node statistics? This cannot be undone.");
     public static string SettingsRebootAdmin => T("以管理员重启", "以系統管理員重新啟動", "Restart as administrator");
     public static string SettingsUwp => T("UWP 回环解锁", "UWP 回環解鎖", "UWP loopback unlock");
     public static string Appearance => T("外观", "外觀", "Appearance");
     public static string HelpTitle => T("帮助", "說明", "Help");
+    public static string HelpSubtitle => T("文档与项目主页", "文件與專案主頁", "Docs and project pages");
     public static string AddProfileTitle => T("添加配置", "新增設定", "Add profile");
 
     public static string AboutTitle => T("关于 v2rayN", "關於 v2rayN", "About v2rayN");

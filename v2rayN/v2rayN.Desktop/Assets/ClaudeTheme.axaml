@@ -76,8 +76,8 @@
             <SolidColorBrush x:Key="MyInkHover" Color="#E4E0D6" />
             <SolidColorBrush x:Key="MyPrimaryContainer" Color="#3A2E28" />
             <SolidColorBrush x:Key="MyHover" Color="#2A2826" />
-            <SolidColorBrush x:Key="MySelected" Color="#302D29" />
-            <SolidColorBrush x:Key="MyNavSelected" Color="#302D29" />
+            <SolidColorBrush x:Key="MySelected" Color="#32302C" />
+            <SolidColorBrush x:Key="MyNavSelected" Color="#32302C" />
             <SolidColorBrush x:Key="MySearch" Color="#2A2825" />
             <SolidColorBrush x:Key="MyChipPurple" Color="#3A322C" />
             <SolidColorBrush x:Key="MyChipPurpleText" Color="#E7C4B0" />

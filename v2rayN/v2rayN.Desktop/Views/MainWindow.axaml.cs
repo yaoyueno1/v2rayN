@@ -364,7 +364,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         base.OnLoaded(sender, e);
         var version = Utils.GetVersionInfo();
         txtVersion.Text = version;
-        txtAboutVersion.Text = version;
+        txtAboutVersion.Text = $"{Global.AppName} {version}";
         ShowPage(0);
         if (_config.UiItem.AutoHideStartup)
         {
@@ -525,14 +525,33 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             .Where(t => t.CoreType is not ECoreType.v2fly
                         and not ECoreType.hysteria))
         {
+            var url = it.Url?.Replace(@"/releases", "");
+            var title = string.Format(ResUI.menuWebsiteItem, it.CoreType.ToString().Replace("_", " ")).UpperFirstChar();
+            var host = string.Empty;
+            if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
+            {
+                host = uri.Host;
+            }
+
+            var body = new StackPanel { Spacing = 2 };
+            var titleBlock = new TextBlock { Text = title };
+            titleBlock.Classes.Add("help-title");
+            body.Children.Add(titleBlock);
+            if (!string.IsNullOrEmpty(host))
+            {
+                var domain = new TextBlock { Text = host };
+                domain.Classes.Add("help-domain");
+                body.Children.Add(domain);
+            }
+
             var item = new Button
             {
-                Tag = it.Url?.Replace(@"/releases", ""),
-                Content = string.Format(ResUI.menuWebsiteItem, it.CoreType.ToString().Replace("_", " ")).UpperFirstChar(),
+                Tag = url,
+                Content = body,
                 HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch,
                 HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Left
             };
-            item.Classes.Add("settings-row");
+            item.Classes.Add("help-card");
             item.Click += HelpLink_Click;
             helpLinks.Children.Add(item);
         }

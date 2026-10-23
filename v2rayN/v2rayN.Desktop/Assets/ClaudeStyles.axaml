@@ -616,28 +616,42 @@
     <Style Selector="ListBox.chips ListBoxItem">
         <Setter Property="Padding" Value="12,8" />
         <Setter Property="Margin" Value="0,0,4,0" />
-        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="CornerRadius" Value="0" />
         <Setter Property="MinHeight" Value="36" />
         <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.secondary}" />
     </Style>
 
     <Style Selector="ListBox.chips ListBoxItem:pointerover">
-        <Setter Property="Background" Value="{DynamicResource MyHover}" />
-        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
     </Style>
 
     <Style Selector="ListBox.chips ListBoxItem:selected">
-        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.accent}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
         <Setter Property="FontWeight" Value="Normal" />
+    </Style>
+
+    <Style Selector="ListBox.chips ListBoxItem:selected:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.accent}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
     </Style>
 
     <Style Selector="Button.chip">
         <Setter Property="CornerRadius" Value="8" />
         <Setter Property="FontSize" Value="12" />
-        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource MyOnSurfaceVariant}" />
         <Setter Property="BorderThickness" Value="0" />
@@ -656,8 +670,8 @@
     </Style>
 
     <Style Selector="Button.chip-proxy.on">
-        <Setter Property="Background" Value="{DynamicResource MySelected}" />
-        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
     </Style>
 
     <Style Selector="Button.chip-direct">
@@ -666,8 +680,8 @@
     </Style>
 
     <Style Selector="Button.chip-direct.on">
-        <Setter Property="Background" Value="{DynamicResource MySelected}" />
-        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
     </Style>
 
     <Style Selector="Button.chip-block">
@@ -676,8 +690,8 @@
     </Style>
 
     <Style Selector="Button.chip-block.on">
-        <Setter Property="Background" Value="{DynamicResource MySelected}" />
-        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
     </Style>
 
     <Style Selector="ToggleButton.segment">
@@ -739,7 +753,7 @@
     </Style>
 
     <Style Selector="RadioButton.mode:checked">
-        <Setter Property="Background" Value="{DynamicResource MySelected}" />
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
     </Style>
 
     <Style Selector="RadioButton.mode.compact">
@@ -814,6 +828,15 @@
         <Setter Property="Foreground" Value="{DynamicResource color.accent}" />
     </Style>
 
+    <Style Selector="Button.text-link.add-first">
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <Style Selector="Button.text-link.add-first TextBlock">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="LineHeight" Value="18" />
+    </Style>
+
     <Style Selector="WrapPanel.settings-board > Button.settings-row">
         <Setter Property="Width" Value="300" />
         <Setter Property="Margin" Value="0,2,16,2" />
@@ -834,20 +857,344 @@
 
     <Style Selector="Button.settings-row">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="{DynamicResource MyOnSurface}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="CornerRadius" Value="10" />
-        <Setter Property="MinHeight" Value="52" />
-        <Setter Property="Padding" Value="8,14" />
-        <Setter Property="Margin" Value="0,2" />
-        <Setter Property="FontSize" Value="15" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.md}" />
+        <Setter Property="Height" Value="44" />
+        <Setter Property="MinHeight" Value="44" />
+        <Setter Property="MaxHeight" Value="44" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="FontSize" Value="13" />
         <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="{TemplateBinding CornerRadius}">
+                    <Grid>
+                        <Border
+                            Classes="row-mark"
+                            Width="3"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Stretch"
+                            Background="Transparent"
+                            IsHitTestVisible="False" />
+                        <Grid Margin="12,0" ColumnDefinitions="*,Auto">
+                            <ContentPresenter
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Content="{TemplateBinding Content}"
+                                Foreground="{TemplateBinding Foreground}" />
+                            <PathIcon
+                                Grid.Column="1"
+                                Classes="row-chevron"
+                                Width="16"
+                                Height="16"
+                                VerticalAlignment="Center"
+                                Data="{StaticResource IconChevron}"
+                                Foreground="{DynamicResource color.text.secondary}" />
+                        </Grid>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
     </Style>
 
     <Style Selector="Button.settings-row:pointerover">
-        <Setter Property="Background" Value="{DynamicResource MyHover}" />
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+    </Style>
+
+    <Style Selector="Button.settings-row.preset /template/ PathIcon.row-chevron">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="Button.settings-row.preset.selected">
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+    </Style>
+
+    <Style Selector="Button.settings-row.preset.selected:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+    </Style>
+
+    <Style Selector="Button.settings-row.preset.selected /template/ Border.row-mark">
+        <Setter Property="Background" Value="{DynamicResource color.accent}" />
+    </Style>
+
+    <Style Selector="Border.settings-cell">
+        <Setter Property="Height" Value="44" />
+        <Setter Property="MinHeight" Value="44" />
+        <Setter Property="MaxHeight" Value="44" />
+        <Setter Property="Padding" Value="12,0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.md}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+
+    <Style Selector="Border.settings-cell:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+    </Style>
+
+    <Style Selector="Border.settings-cell TextBlock">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="LineHeight" Value="18" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+
+    <Style Selector="Border.settings-cell ComboBox">
+        <Setter Property="Foreground" Value="{DynamicResource color.text.secondary}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+    </Style>
+
+    <Style Selector="TextBlock.page-heading">
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="LineHeight" Value="26" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+
+    <Style Selector="TextBlock.group-header">
+        <Setter Property="Margin" Value="0,24,0,8" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="LineHeight" Value="18" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.secondary}" />
+    </Style>
+
+    <Style Selector="Button.add-rule">
+        <Setter Property="Height" Value="32" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="MaxHeight" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource color.accent}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.md}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Button.add-rule:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.accent}" />
+    </Style>
+
+    <Style Selector="Button.add-rule TextBlock">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="LineHeight" Value="18" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="{DynamicResource color.accent}" />
+    </Style>
+
+    <Style Selector="Button.tab">
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="Margin" Value="0,0,4,0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.secondary}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    Padding="{TemplateBinding Padding}">
+                    <ContentPresenter
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="{TemplateBinding Content}"
+                        Foreground="{TemplateBinding Foreground}" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.tab:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+
+    <Style Selector="ToggleButton.tab:checked">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.accent}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="FontWeight" Value="Normal" />
+    </Style>
+
+    <Style Selector="ToggleButton.tab:checked:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.accent}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+    </Style>
+
+    <Style Selector="Border.rule-row">
+        <Setter Property="Height" Value="46" />
+        <Setter Property="MinHeight" Value="44" />
+        <Setter Property="MaxHeight" Value="48" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.md}" />
+    </Style>
+
+    <Style Selector="Border.rule-row:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+    </Style>
+
+    <Style Selector="Border.rule-row TextBlock.rule-label">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="LineHeight" Value="18" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+
+    <Style Selector="Button.outbound">
+        <Setter Property="MinHeight" Value="28" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.tertiary}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.sm}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Normal" />
+    </Style>
+
+    <Style Selector="Button.outbound:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.secondary}" />
+    </Style>
+
+    <Style Selector="Button.outbound.on">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+
+    <Style Selector="Button.outbound.on:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+
+    <Style Selector="ToggleButton.rule-switch">
+        <Setter Property="Width" Value="36" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="MinWidth" Value="36" />
+        <Setter Property="MinHeight" Value="20" />
+        <Setter Property="MaxWidth" Value="36" />
+        <Setter Property="MaxHeight" Value="20" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="{DynamicResource color.border.subtle}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Width="36"
+                    Height="20"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="10">
+                    <Border
+                        Classes="switch-thumb"
+                        Width="16"
+                        Height="16"
+                        Margin="2,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Background="#FFFFFF"
+                        CornerRadius="8" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="ToggleButton.rule-switch:checked">
+        <Setter Property="Background" Value="{DynamicResource color.accent}" />
+    </Style>
+
+    <Style Selector="ToggleButton.rule-switch:checked /template/ Border.switch-thumb">
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Margin" Value="0,0,2,0" />
+    </Style>
+
+    <Style Selector="Button.help-card">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.md}" />
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="FontWeight" Value="Normal" />
+    </Style>
+
+    <Style Selector="Button.help-card:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+    </Style>
+
+    <Style Selector="TextBlock.help-title">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="LineHeight" Value="18" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+
+    <Style Selector="TextBlock.help-domain">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="LineHeight" Value="16" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.tertiary}" />
+    </Style>
+
+    <Style Selector="Button.danger">
+        <Setter Property="Background" Value="{DynamicResource color.latency.slow}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.fg.inverse}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Padding="{TemplateBinding Padding}">
+                    <ContentPresenter
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="{TemplateBinding Content}"
+                        Foreground="{TemplateBinding Foreground}" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.danger:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.latency.slow}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.fg.inverse}" />
+        <Setter Property="Opacity" Value="0.92" />
     </Style>
 
     <Style Selector="ListBox">

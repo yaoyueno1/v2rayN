@@ -22,6 +22,9 @@ public sealed class RoutingRuleCard : ReactiveObject
     public bool IsProxy => string.Equals(Outbound, Global.ProxyTag, StringComparison.OrdinalIgnoreCase);
     public bool IsDirect => string.Equals(Outbound, Global.DirectTag, StringComparison.OrdinalIgnoreCase);
     public bool IsBlock => string.Equals(Outbound, Global.BlockTag, StringComparison.OrdinalIgnoreCase);
+
+    public string Label =>
+        string.IsNullOrWhiteSpace(Pattern) || Pattern == Title ? Title : $"{Title}  {Pattern}";
 }
 
 public partial class RoutingPage : ReactiveUserControl<StatusBarViewModel>
@@ -41,6 +44,7 @@ public partial class RoutingPage : ReactiveUserControl<StatusBarViewModel>
         }
 
         btnAdd.Click += async (_, _) => await AddRuleAsync();
+        btnAddFirst.Click += async (_, _) => await AddRuleAsync();
         btnAdvanced.Click += (_, _) =>
         {
             if (TopLevel.GetTopLevel(this) is not Window { DataContext: MainWindowViewModel main })
@@ -91,7 +95,7 @@ public partial class RoutingPage : ReactiveUserControl<StatusBarViewModel>
                 IsChecked = item.Id == ViewModel.SelectedRouting?.Id,
                 MinWidth = 72,
             };
-            button.Classes.Add("segment");
+            button.Classes.Add("tab");
             button.IsCheckedChanged += ModeChanged;
             ToolTip.SetTip(button, item.Remarks);
             modeBar.Children.Add(button);
@@ -123,7 +127,7 @@ public partial class RoutingPage : ReactiveUserControl<StatusBarViewModel>
         {
             _rules = null;
             lstRules.ItemsSource = null;
-            txtEmpty.IsVisible = true;
+            SetEmpty(true);
             return;
         }
 
@@ -152,7 +156,7 @@ public partial class RoutingPage : ReactiveUserControl<StatusBarViewModel>
 
         _loadingCards = true;
         lstRules.ItemsSource = cards;
-        txtEmpty.IsVisible = cards.Count == 0;
+        SetEmpty(cards.Count == 0);
         _loadingCards = false;
         await Task.CompletedTask;
     }
@@ -174,6 +178,12 @@ public partial class RoutingPage : ReactiveUserControl<StatusBarViewModel>
                 }
             });
         _enabledSubscriptions[card.Id] = sub;
+    }
+
+    private void SetEmpty(bool empty)
+    {
+        txtEmpty.IsVisible = empty;
+        btnAddFirst.IsVisible = empty;
     }
 
     private void ClearEnabledWatch()
