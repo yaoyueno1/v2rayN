@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:shell="clr-namespace:v2rayN.Desktop.Common"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     x:DataType="vms:StatusBarViewModel"
@@ -118,23 +119,44 @@
                 Classes="text-link"
                 Content="{x:Static shell:ShellStrings.ViewDetails}" />
 
-            <StackPanel Orientation="Horizontal" Spacing="4">
-                <RadioButton
-                    x:Name="modeSystem"
-                    Classes="mode segment"
-                    Content="{x:Static shell:ShellStrings.SystemProxy}"
-                    GroupName="outboundMode" />
-                <RadioButton
-                    x:Name="modeTun"
-                    Classes="mode segment"
-                    Content="TUN"
-                    GroupName="outboundMode" />
-                <RadioButton
-                    x:Name="modePac"
-                    Classes="mode segment"
-                    Content="PAC"
-                    GroupName="outboundMode" />
-            </StackPanel>
+            <Grid Height="36" ColumnDefinitions="*,Auto">
+                <TextBlock
+                    Margin="0,0,8,0"
+                    VerticalAlignment="Center"
+                    FontSize="13"
+                    FontWeight="Normal"
+                    Foreground="{DynamicResource color.text.primary}"
+                    LineHeight="18"
+                    Text="{x:Static shell:ShellStrings.EnableTun}" />
+                <ToggleButton
+                    x:Name="togEnableTun"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Classes="rule-switch" />
+            </Grid>
+
+            <Grid ColumnDefinitions="*,*">
+                <ComboBox
+                    x:Name="cmbSystemProxy"
+                    Margin="0,0,4,0"
+                    HorizontalAlignment="Stretch"
+                    Classes="paper sidebar"
+                    ToolTip.Tip="{x:Static resx:ResUI.menuSystemproxy}">
+                    <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyClear}" />
+                    <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxySet}" />
+                    <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyNothing}" />
+                    <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyPac}" />
+                </ComboBox>
+                <ComboBox
+                    x:Name="cmbRouting"
+                    Grid.Column="1"
+                    Margin="4,0,0,0"
+                    HorizontalAlignment="Stretch"
+                    Classes="paper sidebar"
+                    DisplayMemberBinding="{Binding Remarks}"
+                    ItemsSource="{Binding RoutingItems}"
+                    ToolTip.Tip="{Binding SelectedRouting.Remarks}" />
+            </Grid>
         </StackPanel>
     </Border>
 </UserControl>

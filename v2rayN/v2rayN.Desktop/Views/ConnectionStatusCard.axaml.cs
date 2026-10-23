@@ -11,7 +11,6 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
 
     private readonly List<double> _upSamples = [];
     private readonly List<double> _downSamples = [];
-    private bool _syncingMode;
     private DateTime? _connectedAt;
     private bool _wasConnected;
 
@@ -46,6 +45,33 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
         SafeRender();
     }
 
+    public void PreviewTunAndProxy(bool tun, int proxyIndex)
+    {
+        if (ViewModel is null)
+        {
+            return;
+        }
+
+        var config = AppManager.Instance.Config;
+        config.TunModeItem.EnableTun = tun;
+        ViewModel.EnableTun = tun;
+        if (proxyIndex >= 0)
+        {
+            config.SystemProxyItem.SysProxyType = (ESysProxyType)proxyIndex;
+            ViewModel.SystemProxySelected = proxyIndex;
+        }
+    }
+
+    public void OpenProxyDropDown() => cmbSystemProxy.IsDropDownOpen = true;
+
+    public void OpenRoutingDropDown() => cmbRouting.IsDropDownOpen = true;
+
+    public void CloseDropDowns()
+    {
+        cmbSystemProxy.IsDropDownOpen = false;
+        cmbRouting.IsDropDownOpen = false;
+    }
+
     public ConnectionStatusCard()
     {
         InitializeComponent();
@@ -56,9 +82,6 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
         }
 
         ActualThemeVariantChanged += (_, _) => SafeRender();
-        modeSystem.IsCheckedChanged += ModeChanged;
-        modeTun.IsCheckedChanged += ModeChanged;
-        modePac.IsCheckedChanged += ModeChanged;
         btnDetails.Click += (_, _) => DetailsRequested?.Invoke(this, EventArgs.Empty);
 
         this.WhenActivated(disposables =>
@@ -77,6 +100,10 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
                 .ObserveOn(RxSchedulers.MainThreadScheduler)
                 .Subscribe(_ => SafeRender())
                 .DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.EnableTun, v => v.togEnableTun.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SystemProxySelected, v => v.cmbSystemProxy.SelectedIndex).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedRouting, v => v.cmbRouting.SelectedItem).DisposeWith(disposables);
 
             ViewModel.SetClipboardDataInteraction.RegisterHandler(async interaction =>
             {
@@ -172,29 +199,6 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
         DrawSpark(sparkUp, _upSamples);
         DrawSpark(sparkDown, _downSamples);
 
-        modePac.IsVisible = true;
-
-        _syncingMode = true;
-        if (ViewModel.EnableTun)
-        {
-            modeTun.IsChecked = true;
-        }
-        else if (ViewModel.SystemProxySelected == (int)ESysProxyType.Pac)
-        {
-            modePac.IsChecked = true;
-        }
-        else if (ViewModel.SystemProxySelected == (int)ESysProxyType.ForcedChange)
-        {
-            modeSystem.IsChecked = true;
-        }
-        else
-        {
-            modeSystem.IsChecked = false;
-            modeTun.IsChecked = false;
-            modePac.IsChecked = false;
-        }
-
-        _syncingMode = false;
     }
 
     private IBrush ResolveBrush(string key, IBrush fallback)
@@ -226,25 +230,6 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
 
         yield return ThemeVariant.Light;
         yield return ThemeVariant.Dark;
-    }
-
-    private void ModeChanged(object? sender, RoutedEventArgs e)
-    {
-        if (_syncingMode || ViewModel is null || sender is not RadioButton { IsChecked: true })
-        {
-            return;
-        }
-
-        if (ReferenceEquals(sender, modeTun))
-        {
-            ViewModel.EnableTun = true;
-            return;
-        }
-
-        ViewModel.EnableTun = false;
-        ViewModel.SystemProxySelected = ReferenceEquals(sender, modePac)
-            ? (int)ESysProxyType.Pac
-            : (int)ESysProxyType.ForcedChange;
     }
 
     private static void PushSample(List<double> samples, double value)

@@ -1,8 +1,8 @@
-using Avalonia.Controls.Notifications;
 using Avalonia.VisualTree;
 using DialogHostAvalonia;
 using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
+using v2rayN.Desktop.Controls;
 using v2rayN.Desktop.Manager;
 
 namespace v2rayN.Desktop.Views;
@@ -10,7 +10,6 @@ namespace v2rayN.Desktop.Views;
 public partial class MainWindow : WindowBase<MainWindowViewModel>
 {
     private static Config _config;
-    private readonly WindowNotificationManager? _manager;
     private int _page;
     private int _pageBeforeDetails;
     private bool _navSync;
@@ -23,17 +22,14 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         InitializeComponent();
 
         _config = AppManager.Instance.Config;
-        _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.TopRight };
 
         KeyDown += MainWindow_KeyDown;
         menuPromotion.Click += MenuPromotion_Click;
         menuCheckUpdate.Click += MenuCheckUpdate_Click;
         btnNewUpdate.Click += MenuCheckUpdate_Click;
         menuClose.Click += MenuClose_Click;
-        btnConnect.IsCheckedChanged += ConnectToggle_Changed;
         Opened += (_, _) => StartPreviewWatcher();
         btnTheme.Click += BtnTheme_Click;
-        connectionCard.SessionChanged += (_, _) => ApplyConnectLabel();
         navHome.IsCheckedChanged += Nav_Checked;
         navProfiles.IsCheckedChanged += Nav_Checked;
         navSubs.IsCheckedChanged += Nav_Checked;
@@ -77,7 +73,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
             this.BindCommand(ViewModel, vm => vm.ReloadCmd, v => v.menuReload).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.menuReload.IsEnabled).DisposeWith(disposables);
-            this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.btnConnect.IsEnabled).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.BlNewUpdate, v => v.btnNewUpdate.IsVisible).DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.profilesHost.Content).DisposeWith(disposables);
@@ -169,7 +164,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
     private async Task DelegateSnackMsg(string content)
     {
-        _manager?.Show(new Avalonia.Controls.Notifications.Notification(null, content, NotificationType.Information));
+        PaperToasts.Show(toastHost, content);
         await Task.CompletedTask;
     }
 
@@ -467,63 +462,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
     }
 
-    private bool _syncConnect;
-
-    private void ApplyConnectLabel()
-    {
-        _syncConnect = true;
-        btnConnect.IsChecked = connectionCard.IsSessionConnected;
-        _syncConnect = false;
-    }
-
-    private async void ConnectToggle_Changed(object? sender, RoutedEventArgs e)
-    {
-        if (_syncConnect || ViewModel is null)
-        {
-            return;
-        }
-
-        var turnOn = btnConnect.IsChecked == true;
-        btnConnect.IsEnabled = false;
-        try
-        {
-            if (!turnOn)
-            {
-                connectionCard.HoldDisconnected();
-                try
-                {
-                    await ServiceLib.Handler.SysProxy.SysProxyHandler.UpdateSysProxy(AppManager.Instance.Config, true);
-                    await CoreManager.Instance.CoreStop();
-                }
-                catch (Exception ex)
-                {
-                    Logging.SaveLog("ConnectToggle_Changed", ex);
-                }
-
-                return;
-            }
-
-            if (connectionCard.IsSessionConnected)
-            {
-                return;
-            }
-
-            connectionCard.ReleaseDisconnected();
-            var status = StatusBarViewModel.Instance;
-            if (!status.EnableTun && status.SystemProxySelected == (int)ESysProxyType.ForcedClear)
-            {
-                status.SystemProxySelected = (int)ESysProxyType.ForcedChange;
-            }
-
-            await ViewModel.Reload();
-        }
-        finally
-        {
-            btnConnect.IsEnabled = ViewModel?.BlReloadEnabled ?? true;
-            ApplyConnectLabel();
-        }
-    }
-
     private void BtnTheme_Click(object? sender, RoutedEventArgs e)
     {
         if (settingsPage.ThemeSetting.ViewModel is not { } theme)
@@ -629,6 +567,8 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         _trayPreview?.Hide();
         settingsPage.ThemeSetting.CloseDropDowns();
         routingPage.CloseOutboundDropDown();
+        connectionCard.CloseDropDowns();
+        PaperToasts.Clear(toastHost);
 
         switch (shot)
         {
@@ -664,6 +604,25 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                 break;
             case "tray":
                 ShowTrayPreview();
+                break;
+            case "sidebar":
+                ShowPage(0);
+                connectionCard.PreviewTunAndProxy(true, (int)ESysProxyType.ForcedChange);
+                break;
+            case "proxy-open":
+                ShowPage(0);
+                connectionCard.PreviewTunAndProxy(true, (int)ESysProxyType.ForcedChange);
+                Dispatcher.UIThread.Post(() => connectionCard.OpenProxyDropDown(), DispatcherPriority.Background);
+                break;
+            case "routing-side":
+                ShowPage(0);
+                connectionCard.PreviewTunAndProxy(true, (int)ESysProxyType.ForcedChange);
+                Dispatcher.UIThread.Post(() => connectionCard.OpenRoutingDropDown(), DispatcherPriority.Background);
+                break;
+            case "toast":
+                ShowPage(0);
+                PaperToasts.Show(toastHost, "[VLESS] sg新加坡高速08|BGP| CTCU(cfyes***xyz:443)\n186 ms", pin: true);
+                PaperToasts.Show(toastHost, ResUI.SpeedtestingCompleted, pin: true);
                 break;
         }
     }

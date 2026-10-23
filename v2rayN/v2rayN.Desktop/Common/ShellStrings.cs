@@ -112,7 +112,7 @@ public static class ShellStrings
     public static string ThemeDusk => T("暮色", "暮色", "Dusk");
     public static string ThemeNightSky => T("夜空", "夜空", "Night sky");
     public static string FontSizeDefault => T("默认", "預設", "Default");
-    public static string ProxyConnection => T("代理连接", "代理連線", "Proxy");
+    public static string EnableTun => T("启用 TUN", "啟用 TUN", "Enable TUN");
     public static string TrayCopyProxy => T("复制终端代理命令", "複製終端代理命令", "Copy terminal proxy command");
     public static string TrayImport => T("剪贴板导入", "剪貼簿匯入", "Import from clipboard");
     public static string TrayUpdate => T("更新订阅", "更新訂閱", "Update subscriptions");

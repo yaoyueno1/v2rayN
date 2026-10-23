@@ -55,20 +55,6 @@
                 <Border Background="{DynamicResource color.bg.surface}">
                     <DockPanel>
                         <StackPanel Margin="12,12,12,8" DockPanel.Dock="Bottom" Spacing="8">
-                            <Border Classes="connect-row">
-                                <Grid ColumnDefinitions="*,Auto">
-                                    <TextBlock
-                                        Margin="4,0,8,0"
-                                        Classes="connect-label"
-                                        Text="{x:Static shell:ShellStrings.ProxyConnection}" />
-                                    <ToggleButton
-                                        x:Name="btnConnect"
-                                        Grid.Column="1"
-                                        Margin="0,0,2,0"
-                                        VerticalAlignment="Center"
-                                        Classes="rule-switch" />
-                                </Grid>
-                            </Border>
                             <Grid ColumnDefinitions="*,*,*">
                                 <Button
                                     x:Name="btnTheme"
@@ -398,6 +384,12 @@
             VerticalAlignment="Top"
             Background="Transparent"
             IsHitTestVisible="False" />
+        <StackPanel
+            x:Name="toastHost"
+            Margin="0,0,16,16"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Spacing="8" />
         </Grid>
     </dialogHost:DialogHost>
 </Window>
