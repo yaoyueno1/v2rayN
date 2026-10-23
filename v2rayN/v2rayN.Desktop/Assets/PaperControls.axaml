@@ -635,7 +635,7 @@
         <Setter Property="TextWrapping" Value="NoWrap" />
     </Style>
     <Style Selector="TextBlock.update-status.new">
-        <Setter Property="Foreground" Value="{DynamicResource color.accent}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.update.available}" />
     </Style>
     <Style Selector="TextBlock.update-status.latest">
         <Setter Property="Foreground" Value="{DynamicResource color.text.tertiary}" />

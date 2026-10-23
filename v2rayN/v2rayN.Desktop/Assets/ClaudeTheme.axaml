@@ -41,6 +41,7 @@
             <SolidColorBrush x:Key="color.latency.fast" Color="#2F6F4E" />
             <SolidColorBrush x:Key="color.latency.mid" Color="#8A6A1F" />
             <SolidColorBrush x:Key="color.latency.slow" Color="#A13D2D" />
+            <SolidColorBrush x:Key="color.update.available" Color="#C4643C" />
 
             <SolidColorBrush x:Key="MySurface" Color="#F3F1EB" />
             <SolidColorBrush x:Key="MySurfaceDim" Color="#EDEAE3" />
@@ -110,6 +111,7 @@
             <SolidColorBrush x:Key="color.latency.fast" Color="#5CB88A" />
             <SolidColorBrush x:Key="color.latency.mid" Color="#D4A84B" />
             <SolidColorBrush x:Key="color.latency.slow" Color="#E07A6A" />
+            <SolidColorBrush x:Key="color.update.available" Color="#D4A84B" />
 
             <SolidColorBrush x:Key="MySurface" Color="#1C1B19" />
             <SolidColorBrush x:Key="MySurfaceDim" Color="#262522" />
