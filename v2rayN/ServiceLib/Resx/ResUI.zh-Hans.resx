@@ -463,7 +463,7 @@
     <value>不改变系统代理</value>
   </data>
   <data name="menuSystemProxyPac" xml:space="preserve">
-    <value>Pac 模式</value>
+    <value>PAC 模式</value>
   </data>
   <data name="menuSystemProxySet" xml:space="preserve">
     <value>自动配置系统代理</value>
@@ -778,7 +778,7 @@
     <value>自动配置系统代理</value>
   </data>
   <data name="TbSystemProxyPac" xml:space="preserve">
-    <value>Pac 模式</value>
+    <value>PAC 模式</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
     <value>分享</value>
@@ -893,6 +893,12 @@
   </data>
   <data name="FailedToRunCore" xml:space="preserve">
     <value>运行 Core 失败，请查看提示信息</value>
+  </data>
+  <data name="LocalPortBindExcluded" xml:space="preserve">
+    <value>本地端口 {0} 无法绑定，落在 Windows 保留段 {1}-{2}（Hyper-V/WinNAT）。配置未修改，仍使用 {0}。请在参数设置里把本地监听端口改到保留段之外，否则系统代理会指向无人监听的端口。</value>
+  </data>
+  <data name="LocalPortBindFailed" xml:space="preserve">
+    <value>本地端口 {0} 无法绑定（端口被占用，或被 Hyper-V/WinNAT 保留）。配置未修改，仍使用 {0}。请在参数设置里更换本地监听端口，否则系统代理会指向无人监听的端口。</value>
   </data>
   <data name="LvFilter" xml:space="preserve">
     <value>别名正则过滤</value>

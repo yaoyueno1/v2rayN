@@ -2,19 +2,23 @@ namespace v2rayN.Desktop.Common;
 
 public static class AppBuilderExtension
 {
-    private static readonly string DefaultFontFamilyName =
-        Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC");
+    /// <summary>
+    /// UI face is embedded MiSans (Xiaomi HyperOS). One family covers Latin and Chinese.
+    /// System CJK faces stay behind it for glyphs the embedded cut does not include.
+    /// </summary>
+    private static readonly string EmbeddedUiFamily =
+        Global.AvaAssets + "Fonts#MiSans";
+
+    private static readonly string DefaultFontFamilyName = EmbeddedUiFamily;
 
     public static AppBuilder WithFontByDefault(this AppBuilder appBuilder)
     {
-        var fallbacks = new List<FontFallback>();
-
-        var notoSansSc = new FontFamily(DefaultFontFamilyName);
-
-        fallbacks.Add(new FontFallback
+        var fallbacks = new List<FontFallback>
         {
-            FontFamily = notoSansSc
-        });
+            new() { FontFamily = new FontFamily("PingFang SC") },
+            new() { FontFamily = new FontFamily("Microsoft YaHei UI") },
+            new() { FontFamily = new FontFamily("Microsoft YaHei") },
+        };
 
         if (OperatingSystem.IsWindows())
         {

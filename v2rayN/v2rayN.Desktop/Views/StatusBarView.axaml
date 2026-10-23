@@ -43,8 +43,7 @@
                 <ToggleSwitch
                     x:Name="togEnableTun"
                     Margin="{StaticResource Margin4}"
-                    HorizontalAlignment="Center"
-                    Theme="{DynamicResource SimpleToggleSwitch}" />
+                    HorizontalAlignment="Center" />
             </StackPanel>
 
             <StackPanel

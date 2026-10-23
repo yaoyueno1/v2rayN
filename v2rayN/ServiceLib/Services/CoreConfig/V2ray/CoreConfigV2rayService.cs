@@ -106,8 +106,6 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 return ret;
             }
 
-            var (lstIpEndPoints, lstTcpConns) = Utils.GetActiveNetworkInfo();
-
             GenLog();
             _coreConfig.inbounds.Clear();
             _coreConfig.outbounds.Clear();
@@ -132,29 +130,15 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                     continue;
                 }
 
-                //find unused port
-                var port = initPort;
-                for (var k = initPort; k < Global.MaxPort; k++)
+                // Bind-probe. Excluded Windows ports are invisible to netstat and kill the whole core.
+                var port = Utils.ReserveLoopbackPort(initPort);
+                if (port <= 0)
                 {
-                    if (lstIpEndPoints?.FindIndex(_it => _it.Port == k) >= 0)
-                    {
-                        continue;
-                    }
-                    if (lstTcpConns?.FindIndex(_it => _it.LocalEndPoint.Port == k) >= 0)
-                    {
-                        continue;
-                    }
-                    //found
-                    port = k;
-                    initPort = port + 1;
-                    break;
-                }
-
-                //Port In Used
-                if (lstIpEndPoints?.FindIndex(_it => _it.Port == port) >= 0)
-                {
+                    it.AllowTest = false;
                     continue;
                 }
+
+                initPort = port + 1;
                 it.Port = port;
                 it.AllowTest = true;
 

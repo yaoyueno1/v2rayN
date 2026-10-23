@@ -1,0 +1,135 @@
+<UserControl
+    x:Class="v2rayN.Desktop.Views.SettingsPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:v2rayN.Desktop.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shell="clr-namespace:v2rayN.Desktop.Common"
+    xmlns:views="clr-namespace:v2rayN.Desktop.Views"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    x:DataType="vms:MainWindowViewModel"
+    mc:Ignorable="d">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
+            <TextBlock
+                Classes="page-heading"
+                Text="{x:Static shell:ShellStrings.SettingsTitle}" />
+            <views:ThemeSettingView
+                x:Name="themeSetting"
+                Height="0"
+                IsHitTestVisible="False"
+                Opacity="0" />
+
+            <TextBlock
+                Classes="group-header"
+                Text="{x:Static shell:ShellStrings.Appearance}" />
+            <controls:AdaptiveWrapPanel
+                x:Name="appearanceBoard"
+                MinItemWidth="280"
+                MaxItemWidth="800"
+                MaxColumns="2"
+                HorizontalSpacing="24"
+                VerticalSpacing="0" />
+
+            <TextBlock
+                Classes="group-header"
+                Text="{x:Static shell:ShellStrings.SettingsGroupCore}" />
+            <controls:AdaptiveWrapPanel
+                x:Name="coreBoard"
+                MinItemWidth="280"
+                MaxItemWidth="800"
+                MaxColumns="2"
+                HorizontalSpacing="24"
+                VerticalSpacing="0">
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding OptionSettingCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsCore}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding DNSSettingCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsDns}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding RoutingSettingCmd}"
+                    Content="{x:Static shell:ShellStrings.AdvancedRouting}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding FullConfigTemplateCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsTemplate}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding GlobalHotkeySettingCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsHotkey}"
+                    IsVisible="{Binding BlIsWindows}" />
+                <Button
+                    x:Name="btnUwp"
+                    Classes="settings-row"
+                    Content="{x:Static shell:ShellStrings.SettingsUwp}"
+                    IsVisible="{Binding BlIsWindows}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding RebootAsAdminCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsRebootAdmin}"
+                    IsVisible="{Binding BlIsWindows}" />
+            </controls:AdaptiveWrapPanel>
+
+            <TextBlock
+                Classes="group-header"
+                Text="{x:Static shell:ShellStrings.SettingsGroupData}" />
+            <controls:AdaptiveWrapPanel
+                x:Name="dataBoard"
+                MinItemWidth="280"
+                MaxItemWidth="800"
+                MaxColumns="2"
+                HorizontalSpacing="24"
+                VerticalSpacing="0">
+                <Button
+                    x:Name="btnBackup"
+                    Classes="settings-row"
+                    Content="{x:Static shell:ShellStrings.SettingsBackup}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding OpenTheFileLocationCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsFolder}" />
+                <Button
+                    x:Name="btnClearStats"
+                    Classes="settings-row"
+                    Content="{x:Static shell:ShellStrings.SettingsClearStats}" />
+                <Button
+                    x:Name="btnUpdate"
+                    Classes="settings-row"
+                    Content="{x:Static shell:ShellStrings.SettingsUpdate}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding ReloadCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsReload}" />
+            </controls:AdaptiveWrapPanel>
+
+            <TextBlock
+                Classes="group-header"
+                Text="{x:Static shell:ShellStrings.SettingsGroupRegion}" />
+            <controls:AdaptiveWrapPanel
+                x:Name="presetBoard"
+                MinItemWidth="280"
+                MaxItemWidth="800"
+                MaxColumns="2"
+                HorizontalSpacing="24"
+                VerticalSpacing="0">
+                <Button
+                    x:Name="btnPresetDefault"
+                    Classes="settings-row preset selected"
+                    Content="{x:Static shell:ShellStrings.SettingsPresetDefault}" />
+                <Button
+                    x:Name="btnPresetRussia"
+                    Classes="settings-row preset"
+                    Content="{x:Static shell:ShellStrings.SettingsPresetRussia}" />
+                <Button
+                    x:Name="btnPresetIran"
+                    Classes="settings-row preset"
+                    Content="{x:Static shell:ShellStrings.SettingsPresetIran}" />
+            </controls:AdaptiveWrapPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

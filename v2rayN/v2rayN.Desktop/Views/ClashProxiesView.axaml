@@ -96,8 +96,7 @@
                         <Label
                             Width="160"
                             Margin="-4,-6"
-                            Padding="0"
-                            Theme="{DynamicResource TagLabel}">
+                            Padding="0">
                             <Grid Margin="{StaticResource Margin4}" RowDefinitions="1*,8,1*">
                                 <DockPanel Grid.Row="0">
                                     <TextBlock DockPanel.Dock="Right" Text="{Binding Type}" />
@@ -130,8 +129,7 @@
                         <Label
                             Width="160"
                             Margin="-10,-6"
-                            Padding="0"
-                            Theme="{DynamicResource TagLabel}">
+                            Padding="0">
                             <DockPanel>
                                 <Border
                                     Width="5"

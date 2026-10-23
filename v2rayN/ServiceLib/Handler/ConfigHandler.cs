@@ -7,6 +7,32 @@ public static class ConfigHandler
     private static readonly string _configRes = Global.ConfigFileName;
     private static readonly string _tag = "ConfigHandler";
 
+    /// <summary>
+    /// New installs get <see cref="Global.DefaultLocalPort"/>.
+    /// An inbound that already exists keeps its LocalPort.
+    /// </summary>
+    public static void EnsureDefaultInbound(Config config)
+    {
+        if (config.Inbound == null)
+        {
+            config.Inbound = [];
+            config.Inbound.Add(new InItem
+            {
+                Protocol = nameof(EInboundProtocol.socks),
+                LocalPort = Global.DefaultLocalPort,
+                UdpEnabled = true,
+                SniffingEnabled = true,
+                RouteOnly = false,
+            });
+            return;
+        }
+
+        if (config.Inbound.Count > 0)
+        {
+            config.Inbound.First().Protocol = nameof(EInboundProtocol.socks);
+        }
+    }
+
     #region ConfigHandler
 
     /// <summary>
@@ -41,27 +67,7 @@ public static class ConfigHandler
             Loglevel = "warning",
         };
 
-        if (config.Inbound == null)
-        {
-            config.Inbound = [];
-            InItem inItem = new()
-            {
-                Protocol = nameof(EInboundProtocol.socks),
-                LocalPort = 10808,
-                UdpEnabled = true,
-                SniffingEnabled = true,
-                RouteOnly = false,
-            };
-
-            config.Inbound.Add(inItem);
-        }
-        else
-        {
-            if (config.Inbound.Count > 0)
-            {
-                config.Inbound.First().Protocol = nameof(EInboundProtocol.socks);
-            }
-        }
+        EnsureDefaultInbound(config);
 
         config.RoutingBasicItem ??= new();
         if (config.RoutingBasicItem.DomainStrategy.IsNullOrEmpty())
@@ -107,9 +113,8 @@ public static class ConfigHandler
 
         if (config.UiItem.CurrentLanguage.IsNullOrEmpty())
         {
-            config.UiItem.CurrentLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.Equals("zh", StringComparison.CurrentCultureIgnoreCase)
-                ? Global.Languages.First()
-                : Global.Languages[2];
+            // Desktop shell chrome defaults to Simplified Chinese. Other languages stay selectable.
+            config.UiItem.CurrentLanguage = Global.Languages.First();
         }
 
         config.ConstItem ??= new ConstItem();

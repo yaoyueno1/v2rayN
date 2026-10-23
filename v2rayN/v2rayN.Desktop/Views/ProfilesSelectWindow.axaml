@@ -47,8 +47,7 @@
                         x:Name="lstGroup"
                         Margin="{StaticResource MarginLr4}"
                         DisplayMemberBinding="{Binding Remarks}"
-                        ItemsSource="{Binding SubItems}"
-                        Theme="{DynamicResource ButtonRadioGroupListBox}">
+                        ItemsSource="{Binding SubItems}">
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel />
@@ -80,10 +79,10 @@
                 <DataGrid
                     x:Name="lstProfiles"
                     AutoGenerateColumns="False"
-                    BorderThickness="1"
+                    BorderThickness="0"
                     CanUserReorderColumns="True"
                     CanUserResizeColumns="True"
-                    GridLinesVisibility="All"
+                    GridLinesVisibility="None"
                     HeadersVisibility="All"
                     IsReadOnly="True"
                     ItemsSource="{Binding ProfileItems}"

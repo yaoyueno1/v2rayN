@@ -1,7 +1,6 @@
 using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
 using AvaloniaEdit;
-using Semi.Avalonia;
 
 namespace v2rayN.Desktop.ViewModels;
 
@@ -75,19 +74,21 @@ public partial class ThemeSettingViewModel : MyReactiveObject
     private void ModifyTheme()
     {
         var app = Application.Current;
-        if (app is not null)
+        if (app is null)
         {
-            app.RequestedThemeVariant = CurrentTheme switch
-            {
-                nameof(ETheme.Dark) => ThemeVariant.Dark,
-                nameof(ETheme.Light) => ThemeVariant.Light,
-                nameof(ETheme.Aquatic) => SemiTheme.Aquatic,
-                nameof(ETheme.Desert) => SemiTheme.Desert,
-                nameof(ETheme.Dusk) => SemiTheme.Dusk,
-                nameof(ETheme.NightSky) => SemiTheme.NightSky,
-                _ => ThemeVariant.Default,
-            };
+            return;
         }
+
+        app.RequestedThemeVariant = CurrentTheme switch
+        {
+            nameof(ETheme.Dark) => ThemeVariant.Dark,
+            nameof(ETheme.Light) => ThemeVariant.Light,
+            nameof(ETheme.Aquatic) => ThemeVariant.Light,
+            nameof(ETheme.Desert) => ThemeVariant.Light,
+            nameof(ETheme.Dusk) => ThemeVariant.Dark,
+            nameof(ETheme.NightSky) => ThemeVariant.Dark,
+            _ => ThemeVariant.Default,
+        };
     }
 
     private void ModifyFontSize()
@@ -132,7 +133,8 @@ public partial class ThemeSettingViewModel : MyReactiveObject
     private void ModifyFontFamily()
     {
         var currentFontFamily = _config.UiItem.CurrentFontFamily;
-        if (currentFontFamily.IsNullOrEmpty())
+        if (currentFontFamily.IsNullOrEmpty()
+            || currentFontFamily is "Inter" or "Noto Sans SC" or "Noto Sans CJK SC")
         {
             return;
         }

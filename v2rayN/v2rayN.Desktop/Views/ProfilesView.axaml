@@ -3,10 +3,13 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:conv="using:v2rayN.Desktop.Converters"
+    xmlns:controls="clr-namespace:v2rayN.Desktop.Controls"
+    xmlns:shell="clr-namespace:v2rayN.Desktop.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:dto="clr-namespace:ServiceLib.Models.Dto;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     x:Name="Root"
     d:DesignHeight="450"
@@ -16,16 +19,136 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <conv:DelayColorConverter x:Key="DelayColorConverter" />
+        <conv:DelayTextConverter x:Key="DelayTextConverter" />
+        <conv:DelayLatencyBrushConverter x:Key="DelayLatencyBrushConverter" />
     </UserControl.Resources>
     <Grid>
+        <Grid
+            x:Name="cardRoot"
+            Margin="4,0,4,0"
+            RowDefinitions="Auto,Auto,*,Auto">
+            <Grid Margin="0,0,0,8" ColumnDefinitions="*,Auto">
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Classes="page-title"
+                    Text="{x:Static shell:ShellStrings.NodeList}" />
+                <TextBlock
+                    x:Name="txtAvailable"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Classes="meta" />
+            </Grid>
+            <ListBox
+                x:Name="lstGroupCard"
+                Grid.Row="1"
+                Margin="0,0,0,8"
+                Classes="chips"
+                DisplayMemberBinding="{Binding Remarks}"
+                ItemsSource="{Binding SubItems}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+            <ListBox
+                x:Name="lstNodes"
+                Grid.Row="2"
+                Classes="flat nodes"
+                ItemsSource="{Binding ProfileItems}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <controls:AdaptiveWrapPanel
+                            MinItemWidth="168"
+                            MaxItemWidth="280"
+                            HorizontalSpacing="8"
+                            VerticalSpacing="8" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.KeyBindings>
+                    <KeyBinding Command="{Binding SetDefaultServerCmd}" Gesture="Enter" />
+                </ListBox.KeyBindings>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="menuCardSetDefault" Header="{x:Static resx:ResUI.menuSetDefaultServer}" />
+                        <MenuItem x:Name="menuCardEdit" Header="{x:Static resx:ResUI.menuEditServer}" />
+                        <MenuItem x:Name="menuCardCopy" Header="{x:Static resx:ResUI.menuCopyServer}" />
+                        <MenuItem x:Name="menuCardRemove" Header="{x:Static resx:ResUI.menuRemoveServer}" />
+                        <Separator />
+                        <MenuItem x:Name="menuCardRealPing" Header="{x:Static resx:ResUI.menuRealPingServer}" />
+                        <MenuItem x:Name="menuCardShare" Header="{x:Static resx:ResUI.menuShareServer}" />
+                        <MenuItem x:Name="menuCardSort" Header="{x:Static resx:ResUI.menuSortServerResult}" />
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="dto:ProfileItemModel">
+                        <Border Classes="node-card" Classes.active="{Binding IsActive}" Tapped="NodeCard_Tapped">
+                            <Grid ColumnDefinitions="3,*">
+                                <Border Classes="node-accent" />
+                                <StackPanel Grid.Column="1" Margin="9,8,8,8" Spacing="2">
+                                    <TextBlock
+                                        Classes="card-title"
+                                        Text="{Binding Remarks}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                    <TextBlock
+                                        Classes="card-delay"
+                                        Text="{Binding DelayVal, Converter={StaticResource DelayTextConverter}}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap"
+                                        ToolTip.Tip="{Binding DelayVal}">
+                                        <TextBlock.Foreground>
+                                            <MultiBinding Converter="{StaticResource DelayLatencyBrushConverter}">
+                                                <Binding Path="DelayVal" />
+                                                <Binding Path="ActualThemeVariant" RelativeSource="{RelativeSource AncestorType=Window}" />
+                                            </MultiBinding>
+                                        </TextBlock.Foreground>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Grid Grid.Row="3" Margin="4,8,4,0" ColumnDefinitions="*,Auto">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <PathIcon
+                        Width="16"
+                        Height="16"
+                        Data="{StaticResource SemiIconRefresh}"
+                        Foreground="{DynamicResource MyOnSurfaceVariant}" />
+                    <TextBlock
+                        x:Name="txtRefreshed"
+                        VerticalAlignment="Center"
+                        Foreground="{DynamicResource MyOnSurfaceVariant}"
+                        Text="{x:Static shell:ShellStrings.NotTestedYet}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4">
+                    <Button
+                        x:Name="btnCardRefresh"
+                        Classes="IconButton"
+                        ToolTip.Tip="{x:Static resx:ResUI.menuFastRealPing}">
+                        <PathIcon Data="{StaticResource SemiIconRefresh}" />
+                    </Button>
+                    <Button
+                        x:Name="btnCardSort"
+                        Classes="IconButton"
+                        ToolTip.Tip="{x:Static resx:ResUI.menuSortServerResult}">
+                        <PathIcon Data="{StaticResource IconSort}" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <Grid x:Name="detailRoot" IsVisible="False">
         <DockPanel>
             <WrapPanel Margin="2" DockPanel.Dock="Top">
                 <ListBox
                     x:Name="lstGroup"
                     Margin="{StaticResource MarginLr4}"
+                    Classes="chips"
                     DisplayMemberBinding="{Binding Remarks}"
-                    ItemsSource="{Binding SubItems}"
-                    Theme="{DynamicResource PureCardRadioGroupListBox}">
+                    ItemsSource="{Binding SubItems}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel />
@@ -63,8 +186,10 @@
 
                     <TextBox
                         x:Name="txtServerFilter"
-                        Width="200"
+                        Width="220"
                         Margin="{StaticResource MarginLr4}"
+                        Padding="14,0"
+                        Classes="search"
                         VerticalContentAlignment="Center"
                         PlaceholderText="{x:Static resx:ResUI.MsgServerTitle}"
                         ToolTip.Tip="{x:Static resx:ResUI.MsgServerTitle}" />
@@ -103,11 +228,11 @@
             <DataGrid
                 x:Name="lstProfiles"
                 AutoGenerateColumns="False"
-                BorderThickness="1"
+                BorderThickness="0"
                 CanUserReorderColumns="True"
                 CanUserResizeColumns="True"
                 Classes.InsetContent="True"
-                GridLinesVisibility="All"
+                GridLinesVisibility="None"
                 HeadersVisibility="All"
                 IsReadOnly="True"
                 ItemsSource="{Binding ProfileItems}">
@@ -225,8 +350,7 @@
                                         Margin="{StaticResource MarginLr4}"
                                         Classes="Solid Red"
                                         Content="{x:Static resx:ResUI.TipActiveServer}"
-                                        IsVisible="{Binding IsActive}"
-                                        Theme="{DynamicResource TagLabel}" />
+                                        IsVisible="{Binding IsActive}" />
                                     <TextBlock
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
@@ -261,7 +385,7 @@
                         Binding="{Binding SubRemarks}"
                         Header="{x:Static resx:ResUI.LvSubscription}"
                         Tag="SubRemarks" />
-                    <DataGridTemplateColumn SortMemberPath="Delay" Tag="DelayVal">
+                    <DataGridTemplateColumn Width="168" SortMemberPath="Delay" Tag="DelayVal">
                         <DataGridTemplateColumn.Header>
                             <TextBlock Text="{x:Static resx:ResUI.LvTestDelay}" />
                         </DataGridTemplateColumn.Header>
@@ -272,7 +396,9 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Foreground="{Binding Delay, Converter={StaticResource DelayColorConverter}}"
-                                    Text="{Binding Path=DelayVal, Mode=OneWay}" />
+                                    Text="{Binding Path=DelayVal, Mode=OneWay}"
+                                    TextTrimming="CharacterEllipsis"
+                                    ToolTip.Tip="{Binding DelayVal}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -319,5 +445,6 @@
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
+        </Grid>
     </Grid>
 </UserControl>

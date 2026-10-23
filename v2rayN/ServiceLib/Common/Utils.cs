@@ -789,6 +789,9 @@ public class Utils
 
     #region Speed Test
 
+    private static readonly HashSet<int> _reservedLoopbackPorts = [];
+    private static readonly Lock _loopbackPortLock = new();
+
     private static bool PortInUse(int port)
     {
         try
@@ -813,26 +816,356 @@ public class Utils
         return false;
     }
 
+    /// <summary>
+    /// Reserves a loopback port that can actually be bound.
+    /// Windows excluded ranges (Hyper-V / WinNAT) do not show up in netstat, so a
+    /// speed-test batch that starts at localPort+21 (often 10829) dies inside that
+    /// range and every node in the batch is reported as "failed to run core".
+    /// The socket is closed before return; the number stays reserved until
+    /// <see cref="ReleaseLoopbackPort"/> so concurrent tests do not pick it again.
+    /// </summary>
+    public static int ReserveLoopbackPort(int preferredPort)
+    {
+        var start = preferredPort is > 0 and <= 65535 ? preferredPort : 20000;
+        lock (_loopbackPortLock)
+        {
+            var limit = Math.Min(65535, start + 4096);
+            for (var port = start; port <= limit; port++)
+            {
+                if (TryReserveLoopbackPort(port))
+                {
+                    return port;
+                }
+            }
+
+            if (TryTakeOsLoopbackPort(out var osPort))
+            {
+                return osPort;
+            }
+        }
+
+        return 0;
+    }
+
+    public static void ReleaseLoopbackPort(int port)
+    {
+        if (port is <= 0 or > 65535)
+        {
+            return;
+        }
+
+        lock (_loopbackPortLock)
+        {
+            _reservedLoopbackPorts.Remove(port);
+        }
+    }
+
+    private static bool TryReserveLoopbackPort(int port)
+    {
+        if (_reservedLoopbackPorts.Contains(port) || !CanBindLoopback(port))
+        {
+            return false;
+        }
+
+        _reservedLoopbackPorts.Add(port);
+        return true;
+    }
+
+    private static bool TryTakeOsLoopbackPort(out int port)
+    {
+        port = 0;
+        TcpListener? tcp = null;
+        try
+        {
+            tcp = new TcpListener(IPAddress.Loopback, 0);
+            tcp.Start();
+            port = ((IPEndPoint)tcp.LocalEndpoint).Port;
+            tcp.Stop();
+            tcp = null;
+            return port is > 0 and <= 65535 && TryReserveLoopbackPort(port);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            port = 0;
+            return false;
+        }
+        finally
+        {
+            try
+            {
+                tcp?.Stop();
+            }
+            catch
+            {
+                // Ignore
+            }
+        }
+    }
+
+    /// <summary>
+    /// Checks whether TCP and UDP can bind 127.0.0.1 on <paramref name="port"/>.
+    /// Does not reserve the port and does not change any saved LocalPort.
+    /// </summary>
+    public static bool CanBindLoopbackPort(int port)
+    {
+        if (port is <= 0 or > 65535)
+        {
+            return false;
+        }
+
+        return CanBindLoopback(port);
+    }
+
+    public readonly record struct PortRange(int Start, int End);
+
+    /// <summary>
+    /// Parses `netsh interface ipv4 show excludedportrange` output.
+    /// Headers are localized, so only lines with a start/end pair are used.
+    /// </summary>
+    public static PortRange? FindExcludedPortRange(int port, string? netshOutput)
+    {
+        if (port is <= 0 or > 65535 || string.IsNullOrWhiteSpace(netshOutput))
+        {
+            return null;
+        }
+
+        foreach (var raw in netshOutput.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries))
+        {
+            var matches = Regex.Matches(raw, @"\d+");
+            if (matches.Count < 2)
+            {
+                continue;
+            }
+
+            if (!int.TryParse(matches[0].Value, out var start) || !int.TryParse(matches[1].Value, out var end))
+            {
+                continue;
+            }
+
+            if (start > end)
+            {
+                (start, end) = (end, start);
+            }
+
+            if (start is <= 0 or > 65535 || end is <= 0 or > 65535)
+            {
+                continue;
+            }
+
+            if (port >= start && port <= end)
+            {
+                return new PortRange(start, end);
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// On Windows, returns the Hyper-V/WinNAT excluded range that contains <paramref name="port"/>.
+    /// Failure to run netsh yields null; the caller still keeps the configured port.
+    /// </summary>
+    public static PortRange? QueryWindowsExcludedPortRange(int port)
+    {
+        if (!IsWindows() || port is <= 0 or > 65535)
+        {
+            return null;
+        }
+
+        try
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = "netsh",
+                Arguments = "interface ipv4 show excludedportrange protocol=tcp",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            };
+            using var process = Process.Start(psi);
+            if (process == null)
+            {
+                return null;
+            }
+
+            var output = process.StandardOutput.ReadToEnd();
+            if (!process.WaitForExit(2000))
+            {
+                try
+                {
+                    process.Kill(entireProcessTree: true);
+                }
+                catch
+                {
+                    // Ignore
+                }
+            }
+
+            return FindExcludedPortRange(port, output);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            return null;
+        }
+    }
+
+    public static string DescribeUnboundLocalPort(int port, PortRange? excludedRange)
+    {
+        return excludedRange is { } range
+            ? string.Format(ResUI.LocalPortBindExcluded, port, range.Start, range.End)
+            : string.Format(ResUI.LocalPortBindFailed, port);
+    }
+
+    public static readonly string[] XrayGeoFileNames = ["geoip.dat", "geosite.dat"];
+
+    /// <summary>
+    /// Xray opens geoip.dat/geosite.dat beside the executable when XRAY_LOCATION_ASSET is unset
+    /// (`xray run -test`). The geo updater writes the same files under bin\.
+    /// Mirror whichever side is missing, and return a directory that contains both when possible.
+    /// </summary>
+    public static string AlignXrayAssetDirectory(string xrayExePath, string? assetSourceDirectory = null)
+    {
+        var exeDir = Path.GetDirectoryName(xrayExePath);
+        var binDir = string.IsNullOrEmpty(assetSourceDirectory) ? GetBinPath("") : assetSourceDirectory;
+        if (string.IsNullOrEmpty(exeDir))
+        {
+            return binDir;
+        }
+
+        try
+        {
+            Directory.CreateDirectory(exeDir);
+            Directory.CreateDirectory(binDir);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+
+        var sameDir = string.Equals(
+            Path.GetFullPath(exeDir),
+            Path.GetFullPath(binDir),
+            StringComparison.OrdinalIgnoreCase);
+        if (!sameDir)
+        {
+            foreach (var name in XrayGeoFileNames)
+            {
+                MirrorGeoFile(Path.Combine(binDir, name), Path.Combine(exeDir, name));
+            }
+        }
+
+        if (XrayGeoFileNames.All(name => File.Exists(Path.Combine(exeDir, name))))
+        {
+            return exeDir;
+        }
+
+        return binDir;
+    }
+
+    private static void MirrorGeoFile(string binFile, string exeFile)
+    {
+        try
+        {
+            var binExists = File.Exists(binFile);
+            var exeExists = File.Exists(exeFile);
+            if (!binExists && !exeExists)
+            {
+                return;
+            }
+
+            if (binExists && !exeExists)
+            {
+                CopyGeoFile(binFile, exeFile);
+                return;
+            }
+
+            if (!binExists && exeExists)
+            {
+                CopyGeoFile(exeFile, binFile);
+                return;
+            }
+
+            var binInfo = new FileInfo(binFile);
+            var exeInfo = new FileInfo(exeFile);
+            if (binInfo.LastWriteTimeUtc > exeInfo.LastWriteTimeUtc)
+            {
+                CopyGeoFile(binFile, exeFile);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+    }
+
+    private static void CopyGeoFile(string source, string destination)
+    {
+        File.Copy(source, destination, true);
+        File.SetLastWriteTimeUtc(destination, File.GetLastWriteTimeUtc(source));
+    }
+
+    private static bool CanBindLoopback(int port)
+    {
+        TcpListener? tcp = null;
+        Socket? udp = null;
+        try
+        {
+            tcp = new TcpListener(IPAddress.Loopback, port);
+            tcp.Start();
+            udp = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            udp.Bind(new IPEndPoint(IPAddress.Loopback, port));
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+        finally
+        {
+            try
+            {
+                udp?.Dispose();
+            }
+            catch
+            {
+                // Ignore
+            }
+
+            try
+            {
+                tcp?.Stop();
+            }
+            catch
+            {
+                // Ignore
+            }
+        }
+    }
+
     public static int GetFreePort(int defaultPort)
     {
         try
         {
-            if (!PortInUse(defaultPort))
+            var reserved = ReserveLoopbackPort(defaultPort);
+            if (reserved > 0)
+            {
+                return reserved;
+            }
+
+            if (defaultPort > 0 && !PortInUse(defaultPort))
             {
                 return defaultPort;
             }
-
-            TcpListener l = new(IPAddress.Loopback, 0);
-            l.Start();
-            var port = ((IPEndPoint)l.LocalEndpoint).Port;
-            l.Stop();
-            return port;
         }
-        catch
+        catch (Exception ex)
         {
+            Logging.SaveLog(_tag, ex);
         }
 
-        return 59090;
+        return defaultPort > 0 ? defaultPort : 59090;
     }
 
     public static (List<IPEndPoint> endpoints, List<TcpConnectionInformation> connections) GetActiveNetworkInfo()
@@ -1181,7 +1514,35 @@ public class Utils
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "v2rayN");
         }
 
-        return GetBaseDirectory();
+        return ResolveInstallDirectory();
+    }
+
+    /// <summary>
+    /// Single-file hosts usually report the executable directory as the base directory.
+    /// When they do not, cores live next to the exe (bin/xray), not in the extract folder.
+    /// </summary>
+    private static string ResolveInstallDirectory()
+    {
+        var baseDir = GetBaseDirectory();
+        var exeDir = Path.GetDirectoryName(GetExePath());
+        if (string.IsNullOrEmpty(exeDir))
+        {
+            return baseDir;
+        }
+
+        var baseNorm = Path.TrimEndingDirectorySeparator(baseDir);
+        var exeNorm = Path.TrimEndingDirectorySeparator(exeDir);
+        if (string.Equals(baseNorm, exeNorm, StringComparison.OrdinalIgnoreCase))
+        {
+            return baseDir;
+        }
+
+        if (Directory.Exists(Path.Combine(exeNorm, "bin")))
+        {
+            return exeNorm + Path.DirectorySeparatorChar;
+        }
+
+        return baseDir;
     }
 
     public static string GetTempPath(string filename = "")
