@@ -91,6 +91,7 @@ public class CoreManager
             await WindowsUtils.RemoveTunDevice();
         }
 
+        await WarnIfLocalPortCannotBind();
         await CoreStart(mainContext);
         await WaitForProxyPort(preContext);
         await CoreStartPreService(preContext);
@@ -311,6 +312,8 @@ public class CoreManager
             return null;
         }
 
+        AlignXrayEnvironment(coreInfo, fileName);
+
         try
         {
             if (mayNeedSudo
@@ -349,6 +352,42 @@ public class CoreManager
         }
 
         return arg;
+    }
+
+    /// <summary>
+    /// Probes the configured socks LocalPort. On failure, tells the user the port
+    /// cannot be bound (and the Hyper-V/WinNAT range when netsh reports one).
+    /// The saved port is left as-is. New installs default to 20808; an existing LocalPort is not rewritten.
+    /// </summary>
+    private async Task WarnIfLocalPortCannotBind()
+    {
+        try
+        {
+            var port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
+            if (Utils.CanBindLoopbackPort(port))
+            {
+                return;
+            }
+
+            var excluded = Utils.QueryWindowsExcludedPortRange(port);
+            await UpdateFunc(true, Utils.DescribeUnboundLocalPort(port, excluded));
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+    }
+
+    private static void AlignXrayEnvironment(CoreInfo? coreInfo, string fileName)
+    {
+        if (coreInfo?.CoreType != ECoreType.Xray)
+        {
+            return;
+        }
+
+        var assetDir = Utils.AlignXrayAssetDirectory(fileName);
+        coreInfo.Environment[Global.XrayLocalAsset] = assetDir;
+        coreInfo.Environment[Global.XrayLocalCert] = assetDir;
     }
 
     private async Task<ProcessService?> RunProcessNormal(string fileName, CoreInfo? coreInfo, string configPath, bool displayLog)

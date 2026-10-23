@@ -903,6 +903,210 @@ public class Utils
         }
     }
 
+    /// <summary>
+    /// Checks whether TCP and UDP can bind 127.0.0.1 on <paramref name="port"/>.
+    /// Does not reserve the port and does not change any saved LocalPort.
+    /// </summary>
+    public static bool CanBindLoopbackPort(int port)
+    {
+        if (port is <= 0 or > 65535)
+        {
+            return false;
+        }
+
+        return CanBindLoopback(port);
+    }
+
+    public readonly record struct PortRange(int Start, int End);
+
+    /// <summary>
+    /// Parses `netsh interface ipv4 show excludedportrange` output.
+    /// Headers are localized, so only lines with a start/end pair are used.
+    /// </summary>
+    public static PortRange? FindExcludedPortRange(int port, string? netshOutput)
+    {
+        if (port is <= 0 or > 65535 || string.IsNullOrWhiteSpace(netshOutput))
+        {
+            return null;
+        }
+
+        foreach (var raw in netshOutput.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries))
+        {
+            var matches = Regex.Matches(raw, @"\d+");
+            if (matches.Count < 2)
+            {
+                continue;
+            }
+
+            if (!int.TryParse(matches[0].Value, out var start) || !int.TryParse(matches[1].Value, out var end))
+            {
+                continue;
+            }
+
+            if (start > end)
+            {
+                (start, end) = (end, start);
+            }
+
+            if (start is <= 0 or > 65535 || end is <= 0 or > 65535)
+            {
+                continue;
+            }
+
+            if (port >= start && port <= end)
+            {
+                return new PortRange(start, end);
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// On Windows, returns the Hyper-V/WinNAT excluded range that contains <paramref name="port"/>.
+    /// Failure to run netsh yields null; the caller still keeps the configured port.
+    /// </summary>
+    public static PortRange? QueryWindowsExcludedPortRange(int port)
+    {
+        if (!IsWindows() || port is <= 0 or > 65535)
+        {
+            return null;
+        }
+
+        try
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = "netsh",
+                Arguments = "interface ipv4 show excludedportrange protocol=tcp",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            };
+            using var process = Process.Start(psi);
+            if (process == null)
+            {
+                return null;
+            }
+
+            var output = process.StandardOutput.ReadToEnd();
+            if (!process.WaitForExit(2000))
+            {
+                try
+                {
+                    process.Kill(entireProcessTree: true);
+                }
+                catch
+                {
+                    // Ignore
+                }
+            }
+
+            return FindExcludedPortRange(port, output);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            return null;
+        }
+    }
+
+    public static string DescribeUnboundLocalPort(int port, PortRange? excludedRange)
+    {
+        return excludedRange is { } range
+            ? string.Format(ResUI.LocalPortBindExcluded, port, range.Start, range.End)
+            : string.Format(ResUI.LocalPortBindFailed, port);
+    }
+
+    public static readonly string[] XrayGeoFileNames = ["geoip.dat", "geosite.dat"];
+
+    /// <summary>
+    /// Xray opens geoip.dat/geosite.dat beside the executable when XRAY_LOCATION_ASSET is unset
+    /// (`xray run -test`). The geo updater writes the same files under bin\.
+    /// Mirror whichever side is missing, and return a directory that contains both when possible.
+    /// </summary>
+    public static string AlignXrayAssetDirectory(string xrayExePath, string? assetSourceDirectory = null)
+    {
+        var exeDir = Path.GetDirectoryName(xrayExePath);
+        var binDir = string.IsNullOrEmpty(assetSourceDirectory) ? GetBinPath("") : assetSourceDirectory;
+        if (string.IsNullOrEmpty(exeDir))
+        {
+            return binDir;
+        }
+
+        try
+        {
+            Directory.CreateDirectory(exeDir);
+            Directory.CreateDirectory(binDir);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+
+        var sameDir = string.Equals(
+            Path.GetFullPath(exeDir),
+            Path.GetFullPath(binDir),
+            StringComparison.OrdinalIgnoreCase);
+        if (!sameDir)
+        {
+            foreach (var name in XrayGeoFileNames)
+            {
+                MirrorGeoFile(Path.Combine(binDir, name), Path.Combine(exeDir, name));
+            }
+        }
+
+        if (XrayGeoFileNames.All(name => File.Exists(Path.Combine(exeDir, name))))
+        {
+            return exeDir;
+        }
+
+        return binDir;
+    }
+
+    private static void MirrorGeoFile(string binFile, string exeFile)
+    {
+        try
+        {
+            var binExists = File.Exists(binFile);
+            var exeExists = File.Exists(exeFile);
+            if (!binExists && !exeExists)
+            {
+                return;
+            }
+
+            if (binExists && !exeExists)
+            {
+                CopyGeoFile(binFile, exeFile);
+                return;
+            }
+
+            if (!binExists && exeExists)
+            {
+                CopyGeoFile(exeFile, binFile);
+                return;
+            }
+
+            var binInfo = new FileInfo(binFile);
+            var exeInfo = new FileInfo(exeFile);
+            if (binInfo.LastWriteTimeUtc > exeInfo.LastWriteTimeUtc)
+            {
+                CopyGeoFile(binFile, exeFile);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+    }
+
+    private static void CopyGeoFile(string source, string destination)
+    {
+        File.Copy(source, destination, true);
+        File.SetLastWriteTimeUtc(destination, File.GetLastWriteTimeUtc(source));
+    }
+
     private static bool CanBindLoopback(int port)
     {
         TcpListener? tcp = null;

@@ -894,6 +894,12 @@
   <data name="FailedToRunCore" xml:space="preserve">
     <value>執行 Core 失敗，請查看提示訊息</value>
   </data>
+  <data name="LocalPortBindExcluded" xml:space="preserve">
+    <value>本地端口 {0} 無法綁定，落在 Windows 保留段 {1}-{2}（Hyper-V/WinNAT）。設定未修改，仍使用 {0}。請在參數設定裡把本地監聽端口改到保留段之外，否則系統代理會指向無人監聽的端口。</value>
+  </data>
+  <data name="LocalPortBindFailed" xml:space="preserve">
+    <value>本地端口 {0} 無法綁定（端口被佔用，或被 Hyper-V/WinNAT 保留）。設定未修改，仍使用 {0}。請在參數設定裡更換本地監聽端口，否則系統代理會指向無人監聽的端口。</value>
+  </data>
   <data name="LvFilter" xml:space="preserve">
     <value>別名正則過濾</value>
   </data>

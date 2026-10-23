@@ -894,6 +894,12 @@
   <data name="FailedToRunCore" xml:space="preserve">
     <value>Failed to run Core, please check the prompt information</value>
   </data>
+  <data name="LocalPortBindExcluded" xml:space="preserve">
+    <value>Local port {0} cannot be bound. It falls in the Windows excluded range {1}-{2} (Hyper-V/WinNAT). The config was not changed and still uses {0}. Change the local port in settings to a port outside that range, or the system proxy will point at a port with nothing listening.</value>
+  </data>
+  <data name="LocalPortBindFailed" xml:space="preserve">
+    <value>Local port {0} cannot be bound (in use, or reserved by Hyper-V/WinNAT). The config was not changed and still uses {0}. Change the local port in settings, or the system proxy will point at a port with nothing listening.</value>
+  </data>
   <data name="LvFilter" xml:space="preserve">
     <value>Remarks regular filter</value>
   </data>
