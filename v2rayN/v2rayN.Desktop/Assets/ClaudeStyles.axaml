@@ -648,6 +648,50 @@
         <Setter Property="BorderThickness" Value="0,0,0,2" />
     </Style>
 
+    <!-- Fluent draws selection on PART_ContentPresenter, so the underline has to live there. -->
+    <Style Selector="ListBox.chips ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+    <Style Selector="ListBox.chips ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+    <Style Selector="ListBox.chips ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.accent}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+    <Style Selector="ListBox.chips ListBoxItem:selected:not(:focus) /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.accent}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+    <Style Selector="ListBox.chips ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.accent}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+    <Style Selector="ListBox.chips ListBoxItem:selected:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.accent}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+    <Style Selector="ListBox.chips ListBoxItem:selected:focus /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.accent}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+
     <Style Selector="Button.chip">
         <Setter Property="CornerRadius" Value="8" />
         <Setter Property="FontSize" Value="12" />
@@ -1000,7 +1044,7 @@
         <Setter Property="Foreground" Value="{DynamicResource color.accent}" />
     </Style>
 
-    <Style Selector="Button.tab">
+    <Style Selector="Button.tab, ToggleButton.tab">
         <Setter Property="MinHeight" Value="36" />
         <Setter Property="MinWidth" Value="0" />
         <Setter Property="Padding" Value="12,8" />
@@ -1029,7 +1073,7 @@
         </Setter>
     </Style>
 
-    <Style Selector="Button.tab:pointerover">
+    <Style Selector="Button.tab:pointerover, ToggleButton.tab:pointerover">
         <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
         <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
     </Style>
@@ -1488,5 +1532,30 @@
         <Setter Property="Padding" Value="0" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+
+    <Style Selector="ListBox.chips ListBoxItem:selected:not(:focus) /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.accent}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+    <Style Selector="ListBox.chips ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.accent}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+    <Style Selector="ListBox.chips ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.accent}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+    <Style Selector="ListBox.chips ListBoxItem:selected:focus /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.accent}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="CornerRadius" Value="0" />
     </Style>
 </Styles>

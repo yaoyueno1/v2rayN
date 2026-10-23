@@ -45,6 +45,7 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
             ViewModel = StatusBarViewModel.Instance;
         }
 
+        ActualThemeVariantChanged += (_, _) => SafeRender();
         modeSystem.IsCheckedChanged += ModeChanged;
         modeTun.IsCheckedChanged += ModeChanged;
         modePac.IsCheckedChanged += ModeChanged;
