@@ -29,6 +29,7 @@ public static class ShellStrings
     public static string SearchNodes => T("搜索节点...", "搜尋節點...", "Search nodes...");
     public static string SearchShortcut => OperatingSystem.IsMacOS() ? "⌘K" : "Ctrl+K";
     public static string Connect => T("连接", "連線", "Connect");
+    public static string Disconnect => T("断开", "斷開", "Disconnect");
     public static string More => T("更多", "更多", "More");
 
     public static string NodeList => T("节点列表", "節點列表", "Nodes");

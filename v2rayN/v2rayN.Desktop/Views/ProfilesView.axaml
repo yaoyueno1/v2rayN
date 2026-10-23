@@ -26,18 +26,22 @@
         <Grid
             x:Name="cardRoot"
             Margin="4,0,4,0"
-            RowDefinitions="Auto,Auto,Auto,*,Auto">
-            <TextBlock
-                Classes="page-title"
-                Text="{x:Static shell:ShellStrings.NodeList}" />
-            <TextBlock
-                x:Name="txtAvailable"
-                Grid.Row="1"
-                Margin="0,2,0,12"
-                Classes="meta" />
+            RowDefinitions="Auto,Auto,*,Auto">
+            <Grid Margin="0,0,0,8" ColumnDefinitions="*,Auto">
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Classes="page-title"
+                    Text="{x:Static shell:ShellStrings.NodeList}" />
+                <TextBlock
+                    x:Name="txtAvailable"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Classes="meta" />
+            </Grid>
             <ListBox
                 x:Name="lstGroupCard"
-                Grid.Row="2"
+                Grid.Row="1"
                 Margin="0,0,0,8"
                 Classes="chips"
                 DisplayMemberBinding="{Binding Remarks}"
@@ -50,7 +54,7 @@
             </ListBox>
             <ListBox
                 x:Name="lstNodes"
-                Grid.Row="3"
+                Grid.Row="2"
                 Classes="flat nodes"
                 ItemsSource="{Binding ProfileItems}">
                 <ListBox.ItemsPanel>
@@ -107,7 +111,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Grid Grid.Row="4" Margin="4,8,4,0" ColumnDefinitions="*,Auto">
+            <Grid Grid.Row="3" Margin="4,8,4,0" ColumnDefinitions="*,Auto">
                 <StackPanel Orientation="Horizontal" Spacing="6">
                     <PathIcon
                         Width="16"

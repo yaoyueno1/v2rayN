@@ -116,18 +116,8 @@
 
             <Button
                 x:Name="btnDetails"
-                HorizontalAlignment="Left"
-                MinHeight="0"
-                Padding="0"
-                Classes="ghost"
-                FontSize="12"
-                FontWeight="Normal">
-                <TextBlock
-                    FontSize="12"
-                    FontWeight="Normal"
-                    LineHeight="16"
-                    Text="{x:Static shell:ShellStrings.ViewDetails}" />
-            </Button>
+                Classes="text-link"
+                Content="{x:Static shell:ShellStrings.ViewDetails}" />
 
             <StackPanel Orientation="Horizontal" Spacing="4">
                 <RadioButton

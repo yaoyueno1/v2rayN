@@ -17,6 +17,25 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
 
     public event EventHandler? DetailsRequested;
 
+    public event EventHandler? SessionChanged;
+
+    private bool _holdDisconnected;
+    private bool _isSessionConnected;
+
+    public bool IsSessionConnected => _isSessionConnected;
+
+    public void HoldDisconnected()
+    {
+        _holdDisconnected = true;
+        SafeRender();
+    }
+
+    public void ReleaseDisconnected()
+    {
+        _holdDisconnected = false;
+        SafeRender();
+    }
+
     public ConnectionStatusCard()
     {
         InitializeComponent();
@@ -93,8 +112,11 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
             return;
         }
 
-        var connected = ViewModel.RunningServerDisplay.IsNotEmpty()
-                        && ViewModel.RunningServerDisplay != ResUI.CheckServerSettings;
+        var live = ViewModel.RunningServerDisplay.IsNotEmpty()
+                   && ViewModel.RunningServerDisplay != ResUI.CheckServerSettings;
+        var connected = live && !_holdDisconnected;
+        _isSessionConnected = connected;
+        SessionChanged?.Invoke(this, EventArgs.Empty);
         txtState.Text = connected ? ShellStrings.Connected : ShellStrings.Disconnected;
         txtServer.Text = connected ? ViewModel.RunningServerDisplay : string.Empty;
         var ring = connected
@@ -137,14 +159,14 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
         DrawSpark(sparkUp, _upSamples);
         DrawSpark(sparkDown, _downSamples);
 
-        modePac.IsVisible = ViewModel.BlSystemProxyPacVisible;
+        modePac.IsVisible = true;
 
         _syncingMode = true;
         if (ViewModel.EnableTun)
         {
             modeTun.IsChecked = true;
         }
-        else if (ViewModel.SystemProxySelected == (int)ESysProxyType.Pac && ViewModel.BlSystemProxyPacVisible)
+        else if (ViewModel.SystemProxySelected == (int)ESysProxyType.Pac)
         {
             modePac.IsChecked = true;
         }

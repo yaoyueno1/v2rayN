@@ -9,6 +9,7 @@
             <SolidColorBrush x:Key="color.text.tertiary" Color="#8A8478" />
             <SolidColorBrush x:Key="color.accent" Color="#C4643C" />
             <SolidColorBrush x:Key="color.border.subtle" Color="#E0DBD2" />
+            <SolidColorBrush x:Key="color.bg.selected" Color="#E3DDD2" />
             <SolidColorBrush x:Key="color.latency.fast" Color="#2F6F4E" />
             <SolidColorBrush x:Key="color.latency.mid" Color="#8A6A1F" />
             <SolidColorBrush x:Key="color.latency.slow" Color="#A13D2D" />
@@ -49,6 +50,7 @@
             <SolidColorBrush x:Key="color.text.tertiary" Color="#8A8478" />
             <SolidColorBrush x:Key="color.accent" Color="#D47852" />
             <SolidColorBrush x:Key="color.border.subtle" Color="#3A3732" />
+            <SolidColorBrush x:Key="color.bg.selected" Color="#32302C" />
             <SolidColorBrush x:Key="color.latency.fast" Color="#5CB88A" />
             <SolidColorBrush x:Key="color.latency.mid" Color="#D4A84B" />
             <SolidColorBrush x:Key="color.latency.slow" Color="#E07A6A" />

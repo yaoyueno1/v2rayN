@@ -74,7 +74,7 @@
                                         Height="16"
                                         Data="{StaticResource IconPlug}"
                                         Foreground="{DynamicResource MyOnInk}" />
-                                    <TextBlock Text="{x:Static shell:ShellStrings.Connect}" />
+                                    <TextBlock x:Name="txtConnect" Text="{x:Static shell:ShellStrings.Connect}" />
                                 </StackPanel>
                             </Button>
                             <Grid ColumnDefinitions="*,*,*">

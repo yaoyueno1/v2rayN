@@ -32,6 +32,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         menuClose.Click += MenuClose_Click;
         btnConnect.Click += BtnConnect_Click;
         btnTheme.Click += BtnTheme_Click;
+        connectionCard.SessionChanged += (_, _) => ApplyConnectLabel();
         navHome.IsCheckedChanged += Nav_Checked;
         navProfiles.IsCheckedChanged += Nav_Checked;
         navSubs.IsCheckedChanged += Nav_Checked;
@@ -456,6 +457,11 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
     }
 
+    private void ApplyConnectLabel()
+    {
+        txtConnect.Text = connectionCard.IsSessionConnected ? ShellStrings.Disconnect : ShellStrings.Connect;
+    }
+
     private async void BtnConnect_Click(object? sender, RoutedEventArgs e)
     {
         if (ViewModel is null)
@@ -463,6 +469,23 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             return;
         }
 
+        if (connectionCard.IsSessionConnected)
+        {
+            connectionCard.HoldDisconnected();
+            try
+            {
+                await ServiceLib.Handler.SysProxy.SysProxyHandler.UpdateSysProxy(AppManager.Instance.Config, true);
+                await CoreManager.Instance.CoreStop();
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog("BtnConnect_Click", ex);
+            }
+
+            return;
+        }
+
+        connectionCard.ReleaseDisconnected();
         var status = StatusBarViewModel.Instance;
         if (!status.EnableTun && status.SystemProxySelected == (int)ESysProxyType.ForcedClear)
         {
