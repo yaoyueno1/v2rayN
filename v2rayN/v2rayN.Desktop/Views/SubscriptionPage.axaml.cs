@@ -10,6 +10,7 @@ public sealed class SubscriptionCard
     public string Url { get; init; } = string.Empty;
     public string Meta { get; init; } = string.Empty;
     public string CountText { get; init; } = string.Empty;
+    public bool Selected { get; init; }
 }
 
 public partial class SubscriptionPage : ReactiveUserControl<SubSettingViewModel>
@@ -107,7 +108,8 @@ public partial class SubscriptionPage : ReactiveUserControl<SubSettingViewModel>
         }
 
         await ViewModel.RefreshSubItems();
-        var cards = new List<SubscriptionCard>();
+        var currentId = AppManager.Instance.Config.SubIndexId ?? string.Empty;
+        var pending = new List<SubItem>();
         foreach (var item in ViewModel.SubItems)
         {
             if (item.Id.IsNullOrEmpty() && item.Url.IsNullOrEmpty() && item.Remarks.IsNullOrEmpty())
@@ -115,9 +117,19 @@ public partial class SubscriptionPage : ReactiveUserControl<SubSettingViewModel>
                 continue;
             }
 
+            pending.Add(item);
+        }
+
+        var matched = pending.Any(item => item.Id == currentId);
+        var cards = new List<SubscriptionCard>();
+        var first = true;
+        foreach (var item in pending)
+        {
             var profiles = item.Id.IsNullOrEmpty()
                 ? null
                 : await AppManager.Instance.ProfileItems(item.Id);
+            var selected = matched ? item.Id == currentId : first;
+            first = false;
             cards.Add(new SubscriptionCard
             {
                 Source = item,
@@ -125,6 +137,7 @@ public partial class SubscriptionPage : ReactiveUserControl<SubSettingViewModel>
                 Url = item.Url ?? string.Empty,
                 Meta = ShellStrings.FormatUpdated(item.UpdateTime),
                 CountText = ShellStrings.NodeCount(profiles?.Count ?? 0),
+                Selected = selected,
             });
         }
 

@@ -6,6 +6,7 @@
     xmlns:chrome="clr-namespace:Avalonia.Controls.Chrome;assembly=Avalonia.Controls"
     xmlns:fluent="clr-namespace:Avalonia.Themes.Fluent;assembly=Avalonia.Themes.Fluent"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:shell="clr-namespace:v2rayN.Desktop.Common"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Name="v2rayN"
     x:DataType="vms:StatusBarViewModel"
@@ -239,6 +240,7 @@
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <StyleInclude Source="Assets/GlobalStyles.axaml" />
         <StyleInclude Source="Assets/ClaudeStyles.axaml" />
+        <StyleInclude Source="Assets/PaperControls.axaml" />
         <dialogHost:DialogHostStyles />
 
         <Style Selector="dialogHost|DialogHost">
@@ -264,7 +266,7 @@
                             Command="{Binding NotifyLeftClickCmd}"
                             Header="{x:Static resx:ResUI.menuShowOrHideMainWindow}"
                             IsVisible="{Binding BlIsNonWindows}" />
-                        <NativeMenuItem Command="{Binding CopyProxyCmdToClipboardCmd}" Header="{x:Static resx:ResUI.menuCopyProxyCmdToClipboard}" />
+                        <NativeMenuItem Command="{Binding CopyProxyCmdToClipboardCmd}" Header="{x:Static shell:ShellStrings.TrayCopyProxy}" />
                         <NativeMenuItemSeparator />
                         <NativeMenuItem
                             Command="{Binding SystemProxyClearCmd}"
@@ -283,14 +285,13 @@
                             ToggleType="Radio" />
                         <NativeMenuItem
                             Command="{Binding SystemProxyPacCmd}"
-                            Header="{x:Static resx:ResUI.menuSystemProxyPac}"
+                            Header="{x:Static shell:ShellStrings.TrayPac}"
                             IsChecked="{Binding BlSystemProxyPac}"
-                            IsVisible="{Binding BlSystemProxyPacVisible}"
                             ToggleType="Radio" />
                         <NativeMenuItemSeparator />
-                        <NativeMenuItem Click="MenuAddServerViaClipboardClick" Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
-                        <NativeMenuItem Command="{Binding SubUpdateCmd}" Header="{x:Static resx:ResUI.menuSubUpdate}" />
-                        <NativeMenuItem Command="{Binding SubUpdateViaProxyCmd}" Header="{x:Static resx:ResUI.menuSubUpdateViaProxy}" />
+                        <NativeMenuItem Click="MenuAddServerViaClipboardClick" Header="{x:Static shell:ShellStrings.TrayImport}" />
+                        <NativeMenuItem Command="{Binding SubUpdateCmd}" Header="{x:Static shell:ShellStrings.TrayUpdate}" />
+                        <NativeMenuItem Command="{Binding SubUpdateViaProxyCmd}" Header="{x:Static shell:ShellStrings.TrayUpdateViaProxy}" />
                         <NativeMenuItemSeparator />
                         <NativeMenuItem Click="MenuExit_Click" Header="{x:Static resx:ResUI.menuExit}" />
                     </NativeMenu>

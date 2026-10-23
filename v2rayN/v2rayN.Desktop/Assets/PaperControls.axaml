@@ -1,0 +1,403 @@
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Appearance / routing combos. Selected fill is warm gray, never Accent. -->
+    <Style Selector="ComboBox.paper">
+        <Setter Property="Height" Value="32" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="MaxHeight" Value="32" />
+        <Setter Property="MinWidth" Value="96" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.md}" />
+        <Setter Property="Background" Value="{DynamicResource color.bg.elevated}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.border.subtle}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="PlaceholderForeground" Value="{DynamicResource color.text.tertiary}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="MaxDropDownHeight" Value="256" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="ComboBox.paper.outbound">
+        <Setter Property="Width" Value="100" />
+        <Setter Property="MinWidth" Value="100" />
+        <Setter Property="MaxWidth" Value="100" />
+    </Style>
+
+    <Style Selector="ComboBox.paper TextBlock">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="LineHeight" Value="18" />
+        <Setter Property="FontWeight" Value="Normal" />
+    </Style>
+
+    <Style Selector="ComboBox.paper /template/ Border#Background">
+        <Setter Property="Background" Value="{DynamicResource color.bg.elevated}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.border.subtle}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.md}" />
+    </Style>
+    <Style Selector="ComboBox.paper:pointerover /template/ Border#Background">
+        <Setter Property="Background" Value="{DynamicResource color.bg.elevated}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.border.hover}" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+    <Style Selector="ComboBox.paper:focus /template/ Border#Background">
+        <Setter Property="Background" Value="{DynamicResource color.bg.elevated}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.border.subtle}" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+    <Style Selector="ComboBox.paper:dropdownopen /template/ Border#Background">
+        <Setter Property="Background" Value="{DynamicResource color.bg.elevated}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.border.subtle}" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+    <Style Selector="ComboBox.paper:focus-visible /template/ Border#Background">
+        <Setter Property="Background" Value="{DynamicResource color.bg.elevated}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.accent}" />
+        <Setter Property="BorderThickness" Value="2" />
+    </Style>
+    <Style Selector="ComboBox.paper:focus /template/ Border#HighlightBackground">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="ComboBox.paper:focus-visible /template/ Border#HighlightBackground">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="ComboBox.paper:dropdownopen /template/ Border#HighlightBackground">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="ComboBox.paper /template/ PathIcon#DropDownGlyph">
+        <Setter Property="Width" Value="12" />
+        <Setter Property="Height" Value="12" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.tertiary}" />
+    </Style>
+    <Style Selector="ComboBox.paper:pointerover /template/ PathIcon#DropDownGlyph">
+        <Setter Property="Foreground" Value="{DynamicResource color.text.tertiary}" />
+    </Style>
+    <Style Selector="ComboBox.paper:focus /template/ PathIcon#DropDownGlyph">
+        <Setter Property="Foreground" Value="{DynamicResource color.text.tertiary}" />
+    </Style>
+    <Style Selector="ComboBox.paper:focus-visible /template/ PathIcon#DropDownGlyph">
+        <Setter Property="Foreground" Value="{DynamicResource color.text.tertiary}" />
+    </Style>
+    <Style Selector="ComboBox.paper /template/ ContentControl#ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+    <Style Selector="ComboBox.paper:focus /template/ ContentControl#ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+    <Style Selector="ComboBox.paper:focus-visible /template/ ContentControl#ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+    <Style Selector="ComboBox.paper /template/ TextBlock#PlaceholderTextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource color.text.tertiary}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="ComboBox.paper /template/ Border#PopupBorder">
+        <Setter Property="Background" Value="{DynamicResource color.bg.elevated}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.border.subtle}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.md}" />
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="Margin" Value="0,4,0,8" />
+        <Setter Property="BoxShadow" Value="0 8 24 0 #1F000000" />
+    </Style>
+
+    <Style Selector="ComboBox.paper ComboBoxItem">
+        <Setter Property="Height" Value="32" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="MaxHeight" Value="32" />
+        <Setter Property="Padding" Value="12,0" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.sm}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="ComboBox.paper ComboBoxItem TextBlock">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="LineHeight" Value="18" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+    <Style Selector="ComboBox.paper ComboBoxItem /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.sm}" />
+    </Style>
+    <Style Selector="ComboBox.paper ComboBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+    <Style Selector="ComboBox.paper ComboBoxItem:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+    <Style Selector="ComboBox.paper ComboBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+    </Style>
+    <Style Selector="ComboBox.paper ComboBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+    <Style Selector="ComboBox.paper ComboBoxItem:selected:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+    <Style Selector="ComboBox.paper ComboBoxItem:selected:focus /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+    <Style Selector="ComboBox.paper ComboBoxItem:selected:pointerover:focus /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+    <Style Selector="ComboBox.paper ComboBoxItem:focus /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+
+    <!-- Tray menu. Avalonia 12 draws the tray popup with MenuFlyoutPresenter. -->
+    <Style Selector="MenuFlyoutPresenter">
+        <Setter Property="Background" Value="{DynamicResource color.bg.elevated}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.border.subtle}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.md}" />
+        <Setter Property="Padding" Value="6,6" />
+        <Setter Property="MinWidth" Value="220" />
+        <Setter Property="FontFamily" Value="avares://v2rayN/Assets/Fonts#MiSans" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter /template/ Border#LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource color.bg.elevated}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.border.subtle}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.md}" />
+        <Setter Property="Padding" Value="6,6" />
+        <Setter Property="BoxShadow" Value="0 8 24 0 #1F000000" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.sm}" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="MaxHeight" Value="32" />
+        <Setter Property="Padding" Value="12,0" />
+        <Setter Property="FontFamily" Value="avares://v2rayN/Assets/Fonts#MiSans" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem TextBlock">
+        <Setter Property="FontFamily" Value="avares://v2rayN/Assets/Fonts#MiSans" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="LineHeight" Value="18" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem /template/ Border#PART_LayoutRoot">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.sm}" />
+        <Setter Property="Padding" Value="12,0" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="MinHeight" Value="32" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem:pointerover /template/ Border#PART_LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem:selected /template/ Border#PART_LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem:pressed /template/ Border#PART_LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem:pressed /template/ Border#PART_LayoutRoot:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem:checked /template/ Border#PART_LayoutRoot">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem:checked:pointerover /template/ Border#PART_LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem:checked:selected /template/ Border#PART_LayoutRoot">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem /template/ ContentPresenter#PART_HeaderPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem:selected /template/ ContentPresenter#PART_HeaderPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem:pointerover /template/ ContentPresenter#PART_HeaderPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem:pressed /template/ ContentPresenter#PART_HeaderPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem:radio /template/ ContentControl#PART_ToggleIconPresenter">
+        <Setter Property="IsVisible" Value="True" />
+        <Setter Property="Width" Value="14" />
+        <Setter Property="MinWidth" Value="14" />
+        <Setter Property="Height" Value="14" />
+        <Setter Property="Margin" Value="0,0,8,0" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem:checked:radio /template/ ContentControl#PART_ToggleIconPresenter">
+        <Setter Property="IsVisible" Value="True" />
+        <Setter Property="Width" Value="14" />
+        <Setter Property="MinWidth" Value="14" />
+        <Setter Property="Content">
+            <Template>
+                <Path
+                    Width="12"
+                    Height="12"
+                    Stretch="Uniform"
+                    Data="{StaticResource IconCheck}"
+                    Fill="{DynamicResource color.text.secondary}" />
+            </Template>
+        </Setter>
+    </Style>
+    <Style Selector="MenuFlyoutPresenter MenuItem:checked:toggle /template/ ContentControl#PART_ToggleIconPresenter">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter Separator">
+        <Setter Property="Height" Value="8" />
+        <Setter Property="MinHeight" Value="8" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Height="8" Background="Transparent" />
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.quiet-link">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.secondary}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.sm}" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="MinHeight" Value="28" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="MaxHeight" Value="32" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button.quiet-link:pointerover">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+    </Style>
+    <Style Selector="Button.quiet-link TextBlock">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="LineHeight" Value="18" />
+        <Setter Property="FontWeight" Value="Normal" />
+    </Style>
+
+    <Style Selector="Border.sub-card">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surface}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.md}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0,0,0,8" />
+        <Setter Property="ClipToBounds" Value="True" />
+    </Style>
+    <Style Selector="Border.sub-card:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+    </Style>
+    <Style Selector="Border.sub-card.selected">
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+    </Style>
+    <Style Selector="Border.sub-card.selected:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+    </Style>
+    <Style Selector="Border.sub-accent">
+        <Setter Property="Width" Value="3" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="IsHitTestVisible" Value="False" />
+    </Style>
+    <Style Selector="Border.sub-card.selected Border.sub-accent">
+        <Setter Property="Background" Value="{DynamicResource color.accent}" />
+    </Style>
+    <Style Selector="TextBlock.sub-name">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="LineHeight" Value="18" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+    <Style Selector="TextBlock.sub-url">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="LineHeight" Value="16" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.tertiary}" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+    <Style Selector="TextBlock.sub-meta">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="LineHeight" Value="16" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.tertiary}" />
+    </Style>
+    <Style Selector="TextBlock.sub-count">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="LineHeight" Value="16" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.secondary}" />
+    </Style>
+
+    <Style Selector="Border.connect-row">
+        <Setter Property="Height" Value="36" />
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.md}" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+    <Style Selector="Border.connect-row:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+    </Style>
+    <Style Selector="TextBlock.connect-label">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="LineHeight" Value="18" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="ToggleButton.rule-switch:disabled">
+        <Setter Property="Opacity" Value="0.45" />
+    </Style>
+
+    <Style Selector="Button.title-update">
+        <Setter Property="Width" Value="28" />
+        <Setter Property="Height" Value="28" />
+        <Setter Property="MinWidth" Value="28" />
+        <Setter Property="MinHeight" Value="28" />
+        <Setter Property="MaxWidth" Value="28" />
+        <Setter Property="MaxHeight" Value="28" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.sm}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.updateIcon}" />
+    </Style>
+    <Style Selector="Button.title-update:pointerover">
+        <Setter Property="Background" Value="{DynamicResource color.bg.surfaceHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="Button.title-update:pressed">
+        <Setter Property="Background" Value="{DynamicResource color.bg.selected}" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+</Styles>

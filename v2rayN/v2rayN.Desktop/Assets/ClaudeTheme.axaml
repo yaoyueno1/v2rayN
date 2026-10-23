@@ -14,6 +14,30 @@
             <SolidColorBrush x:Key="color.fg.inverse" Color="#F3F1EB" />
             <SolidColorBrush x:Key="color.bg.inverse.hover" Color="#2A2927" />
             <SolidColorBrush x:Key="color.bg.surfaceHover" Color="#E6E1D8" />
+            <SolidColorBrush x:Key="color.border.hover" Color="#C9C3B8" />
+            <SolidColorBrush x:Key="color.updateIcon" Color="#5C574F" />
+            <SolidColorBrush x:Key="ComboBoxItemBackground" Color="#00000000" />
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundPointerOver" Color="#E6E1D8" />
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundPressed" Color="#E3DDD2" />
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundSelected" Color="#E3DDD2" />
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundSelectedPointerOver" Color="#E3DDD2" />
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundSelectedPressed" Color="#E3DDD2" />
+            <SolidColorBrush x:Key="ComboBoxItemForeground" Color="#1C1B19" />
+            <SolidColorBrush x:Key="ComboBoxItemForegroundPointerOver" Color="#1C1B19" />
+            <SolidColorBrush x:Key="ComboBoxItemForegroundPressed" Color="#1C1B19" />
+            <SolidColorBrush x:Key="ComboBoxItemForegroundSelected" Color="#1C1B19" />
+            <SolidColorBrush x:Key="ComboBoxItemForegroundSelectedPointerOver" Color="#1C1B19" />
+            <SolidColorBrush x:Key="ComboBoxItemForegroundSelectedPressed" Color="#1C1B19" />
+            <SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="ComboBoxDropDownBorderBrush" Color="#E0DBD2" />
+            <SolidColorBrush x:Key="MenuFlyoutPresenterBackground" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="MenuFlyoutPresenterBorderBrush" Color="#E0DBD2" />
+            <SolidColorBrush x:Key="MenuFlyoutItemBackground" Color="#00000000" />
+            <SolidColorBrush x:Key="MenuFlyoutItemBackgroundPointerOver" Color="#E6E1D8" />
+            <SolidColorBrush x:Key="MenuFlyoutItemBackgroundPressed" Color="#E3DDD2" />
+            <SolidColorBrush x:Key="MenuFlyoutItemForeground" Color="#1C1B19" />
+            <SolidColorBrush x:Key="MenuFlyoutItemForegroundPointerOver" Color="#1C1B19" />
+            <SolidColorBrush x:Key="MenuFlyoutItemForegroundPressed" Color="#1C1B19" />
             <SolidColorBrush x:Key="color.latency.fast" Color="#2F6F4E" />
             <SolidColorBrush x:Key="color.latency.mid" Color="#8A6A1F" />
             <SolidColorBrush x:Key="color.latency.slow" Color="#A13D2D" />
@@ -59,6 +83,30 @@
             <SolidColorBrush x:Key="color.fg.inverse" Color="#1C1B19" />
             <SolidColorBrush x:Key="color.bg.inverse.hover" Color="#E4E2DD" />
             <SolidColorBrush x:Key="color.bg.surfaceHover" Color="#2E2C28" />
+            <SolidColorBrush x:Key="color.border.hover" Color="#4A4640" />
+            <SolidColorBrush x:Key="color.updateIcon" Color="#8A8478" />
+            <SolidColorBrush x:Key="ComboBoxItemBackground" Color="#00000000" />
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundPointerOver" Color="#2E2C28" />
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundPressed" Color="#32302C" />
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundSelected" Color="#32302C" />
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundSelectedPointerOver" Color="#32302C" />
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundSelectedPressed" Color="#32302C" />
+            <SolidColorBrush x:Key="ComboBoxItemForeground" Color="#F3F1EB" />
+            <SolidColorBrush x:Key="ComboBoxItemForegroundPointerOver" Color="#F3F1EB" />
+            <SolidColorBrush x:Key="ComboBoxItemForegroundPressed" Color="#F3F1EB" />
+            <SolidColorBrush x:Key="ComboBoxItemForegroundSelected" Color="#F3F1EB" />
+            <SolidColorBrush x:Key="ComboBoxItemForegroundSelectedPointerOver" Color="#F3F1EB" />
+            <SolidColorBrush x:Key="ComboBoxItemForegroundSelectedPressed" Color="#F3F1EB" />
+            <SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#2F2D29" />
+            <SolidColorBrush x:Key="ComboBoxDropDownBorderBrush" Color="#3A3732" />
+            <SolidColorBrush x:Key="MenuFlyoutPresenterBackground" Color="#2F2D29" />
+            <SolidColorBrush x:Key="MenuFlyoutPresenterBorderBrush" Color="#3A3732" />
+            <SolidColorBrush x:Key="MenuFlyoutItemBackground" Color="#00000000" />
+            <SolidColorBrush x:Key="MenuFlyoutItemBackgroundPointerOver" Color="#2E2C28" />
+            <SolidColorBrush x:Key="MenuFlyoutItemBackgroundPressed" Color="#32302C" />
+            <SolidColorBrush x:Key="MenuFlyoutItemForeground" Color="#F3F1EB" />
+            <SolidColorBrush x:Key="MenuFlyoutItemForegroundPointerOver" Color="#F3F1EB" />
+            <SolidColorBrush x:Key="MenuFlyoutItemForegroundPressed" Color="#F3F1EB" />
             <SolidColorBrush x:Key="color.latency.fast" Color="#5CB88A" />
             <SolidColorBrush x:Key="color.latency.mid" Color="#D4A84B" />
             <SolidColorBrush x:Key="color.latency.slow" Color="#E07A6A" />

@@ -30,7 +30,8 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         menuCheckUpdate.Click += MenuCheckUpdate_Click;
         btnNewUpdate.Click += MenuCheckUpdate_Click;
         menuClose.Click += MenuClose_Click;
-        btnConnect.Click += BtnConnect_Click;
+        btnConnect.IsCheckedChanged += ConnectToggle_Changed;
+        Opened += (_, _) => StartPreviewWatcher();
         btnTheme.Click += BtnTheme_Click;
         connectionCard.SessionChanged += (_, _) => ApplyConnectLabel();
         navHome.IsCheckedChanged += Nav_Checked;
@@ -200,7 +201,12 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
         switch (e.CloseReason)
         {
-            case WindowCloseReason.OwnerWindowClosing or WindowCloseReason.WindowClosing:
+            case WindowCloseReason.WindowClosing:
+                e.Cancel = true;
+                await ExitNowAsync();
+                break;
+
+            case WindowCloseReason.OwnerWindowClosing:
                 e.Cancel = true;
                 ShowHideWindow(false);
                 break;
@@ -287,19 +293,23 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         DialogHost.Show(_backupAndRestoreView);
     }
 
+    private async Task ExitNowAsync()
+    {
+        if (_blCloseByUser)
+        {
+            return;
+        }
+
+        _blCloseByUser = true;
+        StorageUI();
+        await AppManager.Instance.AppExitAsync(true);
+    }
+
     private async void MenuClose_Click(object? sender, RoutedEventArgs e)
     {
         try
         {
-            if (await UI.ShowYesNo(ResUI.menuExitTips) != ButtonResult.Yes)
-            {
-                return;
-            }
-
-            _blCloseByUser = true;
-            StorageUI();
-
-            await AppManager.Instance.AppExitAsync(true);
+            await ExitNowAsync();
         }
         catch
         {
@@ -457,54 +467,61 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
     }
 
+    private bool _syncConnect;
+
     private void ApplyConnectLabel()
     {
-        var connected = connectionCard.IsSessionConnected;
-        txtConnect.Text = connected ? ShellStrings.Disconnect : ShellStrings.Connect;
-        if (connected)
-        {
-            if (!btnConnect.Classes.Contains("connected"))
-            {
-                btnConnect.Classes.Add("connected");
-            }
-        }
-        else
-        {
-            btnConnect.Classes.Remove("connected");
-        }
+        _syncConnect = true;
+        btnConnect.IsChecked = connectionCard.IsSessionConnected;
+        _syncConnect = false;
     }
 
-    private async void BtnConnect_Click(object? sender, RoutedEventArgs e)
+    private async void ConnectToggle_Changed(object? sender, RoutedEventArgs e)
     {
-        if (ViewModel is null)
+        if (_syncConnect || ViewModel is null)
         {
             return;
         }
 
-        if (connectionCard.IsSessionConnected)
+        var turnOn = btnConnect.IsChecked == true;
+        btnConnect.IsEnabled = false;
+        try
         {
-            connectionCard.HoldDisconnected();
-            try
+            if (!turnOn)
             {
-                await ServiceLib.Handler.SysProxy.SysProxyHandler.UpdateSysProxy(AppManager.Instance.Config, true);
-                await CoreManager.Instance.CoreStop();
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog("BtnConnect_Click", ex);
+                connectionCard.HoldDisconnected();
+                try
+                {
+                    await ServiceLib.Handler.SysProxy.SysProxyHandler.UpdateSysProxy(AppManager.Instance.Config, true);
+                    await CoreManager.Instance.CoreStop();
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog("ConnectToggle_Changed", ex);
+                }
+
+                return;
             }
 
-            return;
+            if (connectionCard.IsSessionConnected)
+            {
+                return;
+            }
+
+            connectionCard.ReleaseDisconnected();
+            var status = StatusBarViewModel.Instance;
+            if (!status.EnableTun && status.SystemProxySelected == (int)ESysProxyType.ForcedClear)
+            {
+                status.SystemProxySelected = (int)ESysProxyType.ForcedChange;
+            }
+
+            await ViewModel.Reload();
         }
-
-        connectionCard.ReleaseDisconnected();
-        var status = StatusBarViewModel.Instance;
-        if (!status.EnableTun && status.SystemProxySelected == (int)ESysProxyType.ForcedClear)
+        finally
         {
-            status.SystemProxySelected = (int)ESysProxyType.ForcedChange;
+            btnConnect.IsEnabled = ViewModel?.BlReloadEnabled ?? true;
+            ApplyConnectLabel();
         }
-
-        await ViewModel.Reload();
     }
 
     private void BtnTheme_Click(object? sender, RoutedEventArgs e)
@@ -563,6 +580,132 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         {
             ProcUtils.ProcessStart(item.Tag?.ToString());
         }
+    }
+
+    private MenuFlyout? _trayPreview;
+    private string _previewShot = string.Empty;
+
+    private void StartPreviewWatcher()
+    {
+        if (Environment.GetEnvironmentVariable("V2RAYN_PREVIEW") != "1")
+        {
+            return;
+        }
+
+        _ = WatchPreviewAsync();
+    }
+
+    private async Task WatchPreviewAsync()
+    {
+        const string path = "/tmp/v2rayn-preview.txt";
+        while (true)
+        {
+            try
+            {
+                await Task.Delay(250);
+                if (!File.Exists(path))
+                {
+                    continue;
+                }
+
+                var shot = (await File.ReadAllTextAsync(path)).Trim();
+                if (shot.Length == 0 || shot == _previewShot)
+                {
+                    continue;
+                }
+
+                _previewShot = shot;
+                await Dispatcher.UIThread.InvokeAsync(() => ApplyPreviewShot(shot));
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog("WatchPreviewAsync", ex);
+            }
+        }
+    }
+
+    private void ApplyPreviewShot(string shot)
+    {
+        _trayPreview?.Hide();
+        settingsPage.ThemeSetting.CloseDropDowns();
+        routingPage.CloseOutboundDropDown();
+
+        switch (shot)
+        {
+            case "settings":
+                ShowPage(4);
+                break;
+            case "theme":
+                ShowPage(4);
+                Dispatcher.UIThread.Post(() => settingsPage.ThemeSetting.OpenThemeDropDown(), DispatcherPriority.Background);
+                break;
+            case "subs":
+                ShowPage(2);
+                break;
+            case "routing":
+                ShowPage(3);
+                break;
+            case "routing-open":
+                ShowPage(3);
+                Dispatcher.UIThread.Post(() => routingPage.OpenFirstOutbound(), DispatcherPriority.Loaded);
+                break;
+            case "update":
+                if (ViewModel is not null)
+                {
+                    ViewModel.BlNewUpdate = true;
+                }
+
+                break;
+            case "connect-on":
+                connectionCard.PreviewConnected("预览节点");
+                break;
+            case "connect-off":
+                connectionCard.HoldDisconnected();
+                break;
+            case "tray":
+                ShowTrayPreview();
+                break;
+        }
+    }
+
+    private void ShowTrayPreview()
+    {
+        var status = StatusBarViewModel.Instance;
+        var flyout = new MenuFlyout
+        {
+            Placement = PlacementMode.BottomEdgeAlignedLeft,
+        };
+
+        MenuItem Item(string header, System.Windows.Input.ICommand? command = null, bool radio = false, bool check = false)
+        {
+            return new MenuItem
+            {
+                Header = header,
+                Command = command,
+                ToggleType = radio ? MenuItemToggleType.Radio : MenuItemToggleType.None,
+                IsChecked = check,
+            };
+        }
+
+        flyout.Items.Add(Item(ShellStrings.TrayCopyProxy, status.CopyProxyCmdToClipboardCmd));
+        flyout.Items.Add(new Separator());
+        flyout.Items.Add(Item(ResUI.menuSystemProxyClear, status.SystemProxyClearCmd, true, status.BlSystemProxyClear));
+        flyout.Items.Add(Item(ResUI.menuSystemProxySet, status.SystemProxySetCmd, true, status.BlSystemProxySet));
+        flyout.Items.Add(Item(ResUI.menuSystemProxyNothing, status.SystemProxyNothingCmd, true, status.BlSystemProxyNothing));
+        flyout.Items.Add(Item(ShellStrings.TrayPac, status.SystemProxyPacCmd, true, status.BlSystemProxyPac));
+        flyout.Items.Add(new Separator());
+        var import = Item(ShellStrings.TrayImport);
+        import.Click += async (_, _) => await AddServerViaClipboardAsync();
+        flyout.Items.Add(import);
+        flyout.Items.Add(Item(ShellStrings.TrayUpdate, status.SubUpdateCmd));
+        flyout.Items.Add(Item(ShellStrings.TrayUpdateViaProxy, status.SubUpdateViaProxyCmd));
+        flyout.Items.Add(new Separator());
+        var exit = Item(ResUI.menuExit);
+        exit.Click += (_, _) => MenuClose_Click(this, new RoutedEventArgs());
+        flyout.Items.Add(exit);
+
+        _trayPreview = flyout;
+        flyout.ShowAt(trayPreviewAnchor, false);
     }
 
     #endregion UI

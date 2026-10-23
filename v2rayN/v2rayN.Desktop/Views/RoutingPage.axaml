@@ -89,31 +89,14 @@
                                         Text="{Binding Label}"
                                         TextTrimming="CharacterEllipsis"
                                         ToolTip.Tip="{Binding Pattern}" />
-                                    <StackPanel
+                                    <ComboBox
                                         Grid.Column="2"
+                                        Width="100"
                                         Margin="0,0,8,0"
-                                        Orientation="Horizontal"
-                                        Spacing="2"
-                                        VerticalAlignment="Center">
-                                        <Button
-                                            Classes="outbound"
-                                            Classes.on="{Binding IsProxy}"
-                                            Click="Outbound_Click"
-                                            Content="{x:Static shell:ShellStrings.OutboundProxy}"
-                                            Tag="proxy" />
-                                        <Button
-                                            Classes="outbound"
-                                            Classes.on="{Binding IsDirect}"
-                                            Click="Outbound_Click"
-                                            Content="{x:Static shell:ShellStrings.OutboundDirect}"
-                                            Tag="direct" />
-                                        <Button
-                                            Classes="outbound"
-                                            Classes.on="{Binding IsBlock}"
-                                            Click="Outbound_Click"
-                                            Content="{x:Static shell:ShellStrings.OutboundBlock}"
-                                            Tag="block" />
-                                    </StackPanel>
+                                        VerticalAlignment="Center"
+                                        Classes="paper outbound"
+                                        ItemsSource="{Binding OutboundChoices}"
+                                        SelectedItem="{Binding OutboundLabel, Mode=TwoWay}" />
                                     <ToggleButton
                                         Grid.Column="3"
                                         Margin="4,0,0,0"

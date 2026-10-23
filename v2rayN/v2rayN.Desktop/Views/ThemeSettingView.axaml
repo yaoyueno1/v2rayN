@@ -6,6 +6,7 @@
     xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:shell="clr-namespace:v2rayN.Desktop.Common"
     xmlns:vms="clr-namespace:v2rayN.Desktop.ViewModels"
     x:DataType="vms:ThemeSettingViewModel"
     Design.DataContext="{x:Static dd:DesignData.ThemeSetting}"
@@ -19,7 +20,9 @@
                 <ComboBox
                     x:Name="cmbCurrentTheme"
                     Grid.Column="1"
-                    MinWidth="120" />
+                    Classes="paper"
+                    MinWidth="128"
+                    PlaceholderText="{x:Static shell:ShellStrings.ThemeFollowSystem}" />
             </Grid>
         </Border>
         <Border Classes="settings-cell">
@@ -30,18 +33,31 @@
                 <ComboBox
                     x:Name="cmbCurrentFontSize"
                     Grid.Column="1"
-                    MinWidth="120" />
+                    Classes="paper"
+                    MinWidth="128"
+                    PlaceholderForeground="{DynamicResource color.text.tertiary}"
+                    PlaceholderText="{x:Static shell:ShellStrings.FontSizeDefault}" />
             </Grid>
         </Border>
         <Border Classes="settings-cell">
             <Grid ColumnDefinitions="*,Auto">
-                <TextBlock
+                <StackPanel
                     VerticalAlignment="Center"
-                    Text="{x:Static resx:ResUI.TbSettingsLanguage}" />
+                    Orientation="Horizontal"
+                    Spacing="4">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Text="{x:Static shell:ShellStrings.LanguageLabel}" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Classes="hint"
+                        Text="{x:Static shell:ShellStrings.RestartHint}" />
+                </StackPanel>
                 <ComboBox
                     x:Name="cmbCurrentLanguage"
                     Grid.Column="1"
-                    MinWidth="120" />
+                    Classes="paper"
+                    MinWidth="128" />
             </Grid>
         </Border>
     </StackPanel>

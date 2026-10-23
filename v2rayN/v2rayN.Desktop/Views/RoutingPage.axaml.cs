@@ -1,5 +1,6 @@
 using System.Collections.Specialized;
 using Avalonia.Controls.Primitives;
+using Avalonia.VisualTree;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
@@ -7,11 +8,26 @@ namespace v2rayN.Desktop.Views;
 public sealed class RoutingRuleCard : ReactiveObject
 {
     private bool _enabled;
+    private string _outboundLabel;
 
     public required string Id { get; init; }
     public string Title { get; init; } = string.Empty;
     public string Pattern { get; init; } = string.Empty;
-    public string Outbound { get; init; } = Global.ProxyTag;
+    public string OutboundKey { get; private set; } = Global.ProxyTag;
+
+    public IReadOnlyList<string> OutboundChoices { get; } = ChoiceLabels;
+
+    private static readonly string[] ChoiceLabels =
+    [
+        ShellStrings.OutboundProxy,
+        ShellStrings.OutboundDirect,
+        ShellStrings.OutboundBlock,
+    ];
+
+    public RoutingRuleCard()
+    {
+        _outboundLabel = ShellStrings.OutboundProxy;
+    }
 
     public bool Enabled
     {
@@ -19,12 +35,62 @@ public sealed class RoutingRuleCard : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _enabled, value);
     }
 
-    public bool IsProxy => string.Equals(Outbound, Global.ProxyTag, StringComparison.OrdinalIgnoreCase);
-    public bool IsDirect => string.Equals(Outbound, Global.DirectTag, StringComparison.OrdinalIgnoreCase);
-    public bool IsBlock => string.Equals(Outbound, Global.BlockTag, StringComparison.OrdinalIgnoreCase);
+    public string OutboundLabel
+    {
+        get => _outboundLabel;
+        set
+        {
+            var key = KeyOf(value);
+            if (key == OutboundKey && value == _outboundLabel)
+            {
+                return;
+            }
+
+            OutboundKey = key;
+            this.RaiseAndSetIfChanged(ref _outboundLabel, LabelOf(key));
+        }
+    }
+
+    public void SetOutbound(string? tag)
+    {
+        OutboundKey = KeyOf(tag);
+        _outboundLabel = LabelOf(OutboundKey);
+    }
+
+    public static string KeyOf(string? label)
+    {
+        if (string.Equals(label, Global.DirectTag, StringComparison.OrdinalIgnoreCase)
+            || label == ShellStrings.OutboundDirect)
+        {
+            return Global.DirectTag;
+        }
+
+        if (string.Equals(label, Global.BlockTag, StringComparison.OrdinalIgnoreCase)
+            || label == ShellStrings.OutboundBlock)
+        {
+            return Global.BlockTag;
+        }
+
+        return Global.ProxyTag;
+    }
 
     public string Label =>
         string.IsNullOrWhiteSpace(Pattern) || Pattern == Title ? Title : $"{Title}  {Pattern}";
+
+    private static string LabelOf(string tag)
+    {
+        if (tag == Global.DirectTag)
+        {
+            return ShellStrings.OutboundDirect;
+        }
+
+        if (tag == Global.BlockTag)
+        {
+            return ShellStrings.OutboundBlock;
+        }
+
+        return ShellStrings.OutboundProxy;
+    }
 }
 
 public partial class RoutingPage : ReactiveUserControl<StatusBarViewModel>
@@ -147,11 +213,11 @@ public partial class RoutingPage : ReactiveUserControl<StatusBarViewModel>
                 Id = rule.Id,
                 Title = title,
                 Pattern = pattern,
-                Outbound = rule.OutboundTag ?? Global.ProxyTag,
                 Enabled = rule.Enabled,
             };
+            card.SetOutbound(rule.OutboundTag);
             cards.Add(card);
-            WatchEnabled(card);
+            WatchCard(card);
         }
 
         _loadingCards = true;
@@ -161,23 +227,58 @@ public partial class RoutingPage : ReactiveUserControl<StatusBarViewModel>
         await Task.CompletedTask;
     }
 
-    private void WatchEnabled(RoutingRuleCard card)
+    private void WatchCard(RoutingRuleCard card)
     {
-        var sub = card.WhenAnyValue(x => x.Enabled)
+        var enabled = card.WhenAnyValue(x => x.Enabled)
             .Skip(1)
-            .SubscribeAsync(async enabled =>
+            .SubscribeAsync(async value =>
             {
                 if (_loadingCards || _rules is null)
                 {
                     return;
                 }
 
-                if (await _rules.SetRuleEnabledAsync(card.Id, enabled))
+                if (await _rules.SetRuleEnabledAsync(card.Id, value))
                 {
                     StatusBarViewModel.Instance.ReloadRequested.Publish();
                 }
             });
-        _enabledSubscriptions[card.Id] = sub;
+        var outbound = card.WhenAnyValue(x => x.OutboundLabel)
+            .Skip(1)
+            .SubscribeAsync(async _ =>
+            {
+                if (_loadingCards || _rules is null)
+                {
+                    return;
+                }
+
+                if (await _rules.SetRuleOutboundAsync(card.Id, card.OutboundKey))
+                {
+                    StatusBarViewModel.Instance.ReloadRequested.Publish();
+                }
+            });
+        _enabledSubscriptions[card.Id] = new ActionDisposable(() =>
+        {
+            enabled.Dispose();
+            outbound.Dispose();
+        });
+    }
+
+    public void OpenFirstOutbound()
+    {
+        var combo = this.GetVisualDescendants().OfType<ComboBox>().FirstOrDefault(item => item.Classes.Contains("outbound"));
+        if (combo is not null)
+        {
+            combo.IsDropDownOpen = true;
+        }
+    }
+
+    public void CloseOutboundDropDown()
+    {
+        foreach (var combo in this.GetVisualDescendants().OfType<ComboBox>())
+        {
+            combo.IsDropDownOpen = false;
+        }
     }
 
     private void SetEmpty(bool empty)
@@ -194,20 +295,6 @@ public partial class RoutingPage : ReactiveUserControl<StatusBarViewModel>
         }
 
         _enabledSubscriptions.Clear();
-    }
-
-    private async void Outbound_Click(object? sender, RoutedEventArgs e)
-    {
-        if (_rules is null || sender is not Button { DataContext: RoutingRuleCard card, Tag: string tag })
-        {
-            return;
-        }
-
-        if (await _rules.SetRuleOutboundAsync(card.Id, tag))
-        {
-            StatusBarViewModel.Instance.ReloadRequested.Publish();
-            await LoadRulesAsync(ViewModel?.SelectedRouting);
-        }
     }
 
     private async Task AddRuleAsync()

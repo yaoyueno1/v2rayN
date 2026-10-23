@@ -21,6 +21,16 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
 
     private bool _holdDisconnected;
     private bool _isSessionConnected;
+    private bool _previewConnected;
+    private string _previewName = string.Empty;
+
+    public void PreviewConnected(string name)
+    {
+        _holdDisconnected = false;
+        _previewConnected = true;
+        _previewName = name;
+        SafeRender();
+    }
 
     public bool IsSessionConnected => _isSessionConnected;
 
@@ -115,11 +125,13 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
 
         var live = ViewModel.RunningServerDisplay.IsNotEmpty()
                    && ViewModel.RunningServerDisplay != ResUI.CheckServerSettings;
-        var connected = live && !_holdDisconnected;
+        var connected = (live || _previewConnected) && !_holdDisconnected;
         _isSessionConnected = connected;
         SessionChanged?.Invoke(this, EventArgs.Empty);
         txtState.Text = connected ? ShellStrings.Connected : ShellStrings.Disconnected;
-        txtServer.Text = connected ? ViewModel.RunningServerDisplay : string.Empty;
+        txtServer.Text = connected
+            ? live ? ViewModel.RunningServerDisplay : _previewName
+            : string.Empty;
         var ring = connected
             ? ResolveBrush("color.latency.fast", ResolveBrush("color.accent", Brushes.Gray))
             : ResolveBrush("color.text.tertiary", Brushes.Gray);

@@ -990,15 +990,28 @@
         <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
     </Style>
 
+    <Style Selector="Border.settings-cell TextBlock.hint">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="LineHeight" Value="14" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.tertiary}" />
+    </Style>
+
     <Style Selector="Border.settings-cell ComboBox">
-        <Setter Property="Foreground" Value="{DynamicResource color.text.secondary}" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource color.text.primary}" />
+        <Setter Property="Background" Value="{DynamicResource color.bg.elevated}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource color.border.subtle}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{StaticResource radius.md}" />
         <Setter Property="MinHeight" Value="32" />
+        <Setter Property="MaxHeight" Value="32" />
         <Setter Property="Height" Value="32" />
+        <Setter Property="MinWidth" Value="128" />
+        <Setter Property="Padding" Value="10,0" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
     <Style Selector="TextBlock.page-heading">
@@ -1168,7 +1181,7 @@
                         Margin="2,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Background="#FFFFFF"
+                        Background="{DynamicResource color.bg.elevated}"
                         CornerRadius="8" />
                 </Border>
             </ControlTemplate>
