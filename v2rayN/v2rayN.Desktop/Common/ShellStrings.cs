@@ -35,6 +35,9 @@ public static class ShellStrings
     public static string NodesAvailable(int count) => T($"{count} 个节点可用", $"{count} 個節點可用", $"{count} nodes available");
     public static string RefreshJustNow => T("刚刚刷新", "剛剛重新整理", "Just now");
     public static string NotTestedYet => T("尚未测速", "尚未測速", "Not tested yet");
+    public static string LatencyFailed => T("失败", "失敗", "Failed");
+    public static string LatencyTesting => T("测试中", "測試中", "Testing");
+    public static string LatencySkipped => T("跳过", "跳過", "Skipped");
 
     public static string ConnectionStatus => T("连接状态", "連線狀態", "Status");
     public static string Connected => T("已连接", "已連線", "Connected");

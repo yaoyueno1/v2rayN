@@ -7,16 +7,16 @@ namespace v2rayN.Desktop.Controls;
 public class AdaptiveWrapPanel : Panel
 {
     public static readonly StyledProperty<double> MinItemWidthProperty =
-        AvaloniaProperty.Register<AdaptiveWrapPanel, double>(nameof(MinItemWidth), 180);
+        AvaloniaProperty.Register<AdaptiveWrapPanel, double>(nameof(MinItemWidth), 168);
 
     public static readonly StyledProperty<double> MaxItemWidthProperty =
         AvaloniaProperty.Register<AdaptiveWrapPanel, double>(nameof(MaxItemWidth), 280);
 
     public static readonly StyledProperty<double> HorizontalSpacingProperty =
-        AvaloniaProperty.Register<AdaptiveWrapPanel, double>(nameof(HorizontalSpacing), 6);
+        AvaloniaProperty.Register<AdaptiveWrapPanel, double>(nameof(HorizontalSpacing), 8);
 
     public static readonly StyledProperty<double> VerticalSpacingProperty =
-        AvaloniaProperty.Register<AdaptiveWrapPanel, double>(nameof(VerticalSpacing), 6);
+        AvaloniaProperty.Register<AdaptiveWrapPanel, double>(nameof(VerticalSpacing), 8);
 
     static AdaptiveWrapPanel()
     {

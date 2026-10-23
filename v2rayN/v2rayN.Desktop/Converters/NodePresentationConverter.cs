@@ -1,4 +1,6 @@
+using Avalonia.Data;
 using Avalonia.Data.Converters;
+using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Converters;
 
@@ -96,23 +98,141 @@ public class RemarksToFlagConverter : IValueConverter
     }
 }
 
-public class DelayTextConverter : IValueConverter
+public enum LatencyTier
 {
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    Untested,
+    Fast,
+    Mid,
+    Slow,
+    Pending,
+    Skipped,
+}
+
+public static class LatencyFormat
+{
+    public const int FastMaxMs = 100;
+    public const int MidMaxMs = 300;
+
+    public static LatencyTier Classify(object? value, out int milliseconds)
     {
-        var text = value?.ToString();
-        if (text.IsNullOrEmpty())
+        milliseconds = 0;
+        if (value is null or UnsetValueType or BindingNotification)
         {
-            return "—";
+            return LatencyTier.Untested;
         }
 
-        if (int.TryParse(text, out var delay))
+        var text = value.ToString()?.Trim();
+        if (string.IsNullOrEmpty(text) || text == "—")
         {
-            return delay > 0 ? $"{delay} ms" : "—";
+            return LatencyTier.Untested;
         }
 
-        return text;
+        if (int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out milliseconds)
+            || int.TryParse(text, NumberStyles.Integer, CultureInfo.CurrentCulture, out milliseconds))
+        {
+            if (milliseconds <= 0)
+            {
+                return LatencyTier.Untested;
+            }
+
+            if (milliseconds <= FastMaxMs)
+            {
+                return LatencyTier.Fast;
+            }
+
+            if (milliseconds <= MidMaxMs)
+            {
+                return LatencyTier.Mid;
+            }
+
+            return LatencyTier.Slow;
+        }
+
+        if (Contains(text, "跳过", "跳過", "Skip"))
+        {
+            return LatencyTier.Skipped;
+        }
+
+        if (Contains(text, "失败", "失敗", "fail", "error", "超时", "超時", "timeout"))
+        {
+            return LatencyTier.Slow;
+        }
+
+        if (Contains(text, "测试", "測試", "Testing", "test"))
+        {
+            return LatencyTier.Pending;
+        }
+
+        return LatencyTier.Slow;
     }
 
+    public static string Format(object? value)
+    {
+        var tier = Classify(value, out var milliseconds);
+        return tier switch
+        {
+            LatencyTier.Untested => "—",
+            LatencyTier.Fast or LatencyTier.Mid => $"{milliseconds} ms",
+            LatencyTier.Slow when milliseconds > 0 => $"{milliseconds} ms",
+            LatencyTier.Pending => ShellStrings.LatencyTesting,
+            LatencyTier.Skipped => ShellStrings.LatencySkipped,
+            _ => ShellStrings.LatencyFailed,
+        };
+    }
+
+    public static string BrushKey(LatencyTier tier) => tier switch
+    {
+        LatencyTier.Fast => "color.latency.fast",
+        LatencyTier.Mid => "color.latency.mid",
+        LatencyTier.Slow => "color.latency.slow",
+        _ => "color.text.tertiary",
+    };
+
+    private static bool Contains(string text, params string[] needles)
+    {
+        foreach (var needle in needles)
+        {
+            if (text.Contains(needle, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+public class DelayTextConverter : IValueConverter
+{
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        LatencyFormat.Format(value);
+
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => null;
+}
+
+public class DelayLatencyBrushConverter : IMultiValueConverter
+{
+    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
+    {
+        var sample = values.Count > 0 ? values[0] : null;
+        var tier = LatencyFormat.Classify(sample, out _);
+        return ResolveBrush(LatencyFormat.BrushKey(tier));
+    }
+
+    private static IBrush ResolveBrush(string key)
+    {
+        var app = Application.Current;
+        if (app is not null)
+        {
+            foreach (var theme in new ThemeVariant?[] { app.ActualThemeVariant, app.RequestedThemeVariant, ThemeVariant.Light, ThemeVariant.Dark })
+            {
+                if (theme is not null && app.TryGetResource(key, theme, out var value) && value is IBrush brush)
+                {
+                    return brush;
+                }
+            }
+        }
+
+        return Brushes.Gray;
+    }
 }

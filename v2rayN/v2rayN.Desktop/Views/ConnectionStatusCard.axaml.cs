@@ -97,13 +97,14 @@ public partial class ConnectionStatusCard : ReactiveUserControl<StatusBarViewMod
                         && ViewModel.RunningServerDisplay != ResUI.CheckServerSettings;
         txtState.Text = connected ? ShellStrings.Connected : ShellStrings.Disconnected;
         txtServer.Text = connected ? ViewModel.RunningServerDisplay : string.Empty;
-        // Theme dictionaries are not visible to FindResource(key): it returns UnsetValue,
-        // and casting that sentinel to IBrush throws InvalidCastException on Loaded.
-        statusDot.Fill = connected ? ResolveBrush("MyPrimary", Brushes.MediumSeaGreen) : Brushes.Gray;
-        statusBadge.Background = connected
-            ? ResolveBrush("MyPrimary", Brushes.MediumSeaGreen)
-            : ResolveBrush("MySurfaceDim", new SolidColorBrush(Color.Parse("#E8E3F1")));
+        var ring = connected
+            ? ResolveBrush("color.accent", ResolveBrush("MyPrimary", Brushes.Gray))
+            : ResolveBrush("color.text.tertiary", Brushes.Gray);
+        statusDot.Stroke = ring;
+        statusDot.Fill = Brushes.Transparent;
+        statusBadge.Background = ring;
         ringArc.IsVisible = connected;
+        txtServer.IsVisible = connected;
 
         if (connected && !_wasConnected)
         {

@@ -1,13 +1,25 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
+            <SolidColorBrush x:Key="color.bg.canvas" Color="#F3F1EB" />
+            <SolidColorBrush x:Key="color.bg.surface" Color="#EDEAE3" />
+            <SolidColorBrush x:Key="color.bg.elevated" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="color.text.primary" Color="#1C1B19" />
+            <SolidColorBrush x:Key="color.text.secondary" Color="#5C574F" />
+            <SolidColorBrush x:Key="color.text.tertiary" Color="#8A8478" />
+            <SolidColorBrush x:Key="color.accent" Color="#C4643C" />
+            <SolidColorBrush x:Key="color.border.subtle" Color="#E0DBD2" />
+            <SolidColorBrush x:Key="color.latency.fast" Color="#2F6F4E" />
+            <SolidColorBrush x:Key="color.latency.mid" Color="#8A6A1F" />
+            <SolidColorBrush x:Key="color.latency.slow" Color="#A13D2D" />
+
             <SolidColorBrush x:Key="MySurface" Color="#F3F1EB" />
-            <SolidColorBrush x:Key="MySurfaceDim" Color="#E6E2D8" />
-            <SolidColorBrush x:Key="MyCard" Color="#FBFAF7" />
+            <SolidColorBrush x:Key="MySurfaceDim" Color="#EDEAE3" />
+            <SolidColorBrush x:Key="MyCard" Color="#FFFFFF" />
             <SolidColorBrush x:Key="MyCardMuted" Color="#F6F4EE" />
-            <SolidColorBrush x:Key="MyOnSurface" Color="#1C1B17" />
-            <SolidColorBrush x:Key="MyOnSurfaceVariant" Color="#6E6A62" />
-            <SolidColorBrush x:Key="MyOutline" Color="#E3DED2" />
+            <SolidColorBrush x:Key="MyOnSurface" Color="#1C1B19" />
+            <SolidColorBrush x:Key="MyOnSurfaceVariant" Color="#5C574F" />
+            <SolidColorBrush x:Key="MyOutline" Color="#E0DBD2" />
             <SolidColorBrush x:Key="MyPrimary" Color="#C4643C" />
             <SolidColorBrush x:Key="MyOnPrimary" Color="#FFFBF7" />
             <SolidColorBrush x:Key="MyInk" Color="#2A2824" />
@@ -24,25 +36,36 @@
             <SolidColorBrush x:Key="MyChipGreenText" Color="#3F5C45" />
             <SolidColorBrush x:Key="MyChipRed" Color="#F6E6E2" />
             <SolidColorBrush x:Key="MyChipRedText" Color="#9C4036" />
-            <SolidColorBrush x:Key="MyRingTrack" Color="#E7E2D8" />
+            <SolidColorBrush x:Key="MyRingTrack" Color="#E0DBD2" />
             <SolidColorBrush x:Key="MyKbd" Color="#EFEBE3" />
             <SolidColorBrush x:Key="MyShadow" Color="#12000000" />
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush x:Key="color.bg.canvas" Color="#1C1B19" />
+            <SolidColorBrush x:Key="color.bg.surface" Color="#262522" />
+            <SolidColorBrush x:Key="color.bg.elevated" Color="#2F2D29" />
+            <SolidColorBrush x:Key="color.text.primary" Color="#F3F1EB" />
+            <SolidColorBrush x:Key="color.text.secondary" Color="#B8B2A6" />
+            <SolidColorBrush x:Key="color.text.tertiary" Color="#8A8478" />
+            <SolidColorBrush x:Key="color.accent" Color="#D47852" />
+            <SolidColorBrush x:Key="color.border.subtle" Color="#3A3732" />
+            <SolidColorBrush x:Key="color.latency.fast" Color="#5CB88A" />
+            <SolidColorBrush x:Key="color.latency.mid" Color="#D4A84B" />
+            <SolidColorBrush x:Key="color.latency.slow" Color="#E07A6A" />
+
             <SolidColorBrush x:Key="MySurface" Color="#1C1B19" />
-            <SolidColorBrush x:Key="MySurfaceDim" Color="#2A2825" />
-            <SolidColorBrush x:Key="MyCard" Color="#242321" />
-            <SolidColorBrush x:Key="MyCardMuted" Color="#201F1C" />
-            <SolidColorBrush x:Key="MyOnSurface" Color="#F3F0E8" />
-            <SolidColorBrush x:Key="MyOnSurfaceVariant" Color="#B7B1A6" />
-            <SolidColorBrush x:Key="MyOutline" Color="#3A3833" />
-            <SolidColorBrush x:Key="MyPrimary" Color="#E0926A" />
+            <SolidColorBrush x:Key="MySurfaceDim" Color="#262522" />
+            <SolidColorBrush x:Key="MyCard" Color="#2F2D29" />
+            <SolidColorBrush x:Key="MyOnSurface" Color="#F3F1EB" />
+            <SolidColorBrush x:Key="MyOnSurfaceVariant" Color="#B8B2A6" />
+            <SolidColorBrush x:Key="MyOutline" Color="#3A3732" />
+            <SolidColorBrush x:Key="MyPrimary" Color="#D47852" />
             <SolidColorBrush x:Key="MyOnPrimary" Color="#1C1B19" />
-            <SolidColorBrush x:Key="MyInk" Color="#F3F0E8" />
+            <SolidColorBrush x:Key="MyInk" Color="#F3F1EB" />
             <SolidColorBrush x:Key="MyOnInk" Color="#1C1B19" />
             <SolidColorBrush x:Key="MyInkHover" Color="#E4E0D6" />
             <SolidColorBrush x:Key="MyPrimaryContainer" Color="#3A2E28" />
-            <SolidColorBrush x:Key="MyHover" Color="#262421" />
+            <SolidColorBrush x:Key="MyHover" Color="#2A2826" />
             <SolidColorBrush x:Key="MySelected" Color="#302D29" />
             <SolidColorBrush x:Key="MyNavSelected" Color="#302D29" />
             <SolidColorBrush x:Key="MySearch" Color="#2A2825" />
@@ -52,9 +75,22 @@
             <SolidColorBrush x:Key="MyChipGreenText" Color="#C9D7C4" />
             <SolidColorBrush x:Key="MyChipRed" Color="#3A2826" />
             <SolidColorBrush x:Key="MyChipRedText" Color="#F0B8B0" />
-            <SolidColorBrush x:Key="MyRingTrack" Color="#3A3833" />
+            <SolidColorBrush x:Key="MyRingTrack" Color="#3A3732" />
             <SolidColorBrush x:Key="MyKbd" Color="#33312C" />
             <SolidColorBrush x:Key="MyShadow" Color="#66000000" />
+            <SolidColorBrush x:Key="MyCardMuted" Color="#201F1C" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
+
+    <CornerRadius x:Key="radius.sm">6</CornerRadius>
+    <CornerRadius x:Key="radius.md">10</CornerRadius>
+    <CornerRadius x:Key="radius.lg">14</CornerRadius>
+    <x:Double x:Key="sidebar.width">228</x:Double>
+    <x:Double x:Key="titlebar.height">36</x:Double>
+    <x:Double x:Key="spacing.4">4</x:Double>
+    <x:Double x:Key="spacing.8">8</x:Double>
+    <x:Double x:Key="spacing.12">12</x:Double>
+    <x:Double x:Key="spacing.16">16</x:Double>
+    <x:Double x:Key="spacing.24">24</x:Double>
+    <x:Double x:Key="spacing.32">32</x:Double>
 </ResourceDictionary>

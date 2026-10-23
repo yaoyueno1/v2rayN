@@ -151,7 +151,7 @@
                 </Style>
             </ControlTheme>
             <ControlTheme x:Key="PaperWindowDecorations" TargetType="chrome:WindowDrawnDecorations">
-                <Setter Property="DefaultTitleBarHeight" Value="36" />
+                <Setter Property="DefaultTitleBarHeight" Value="{StaticResource titlebar.height}" />
                 <Setter Property="DefaultFrameThickness" Value="0" />
                 <Setter Property="DefaultShadowThickness" Value="0" />
                 <Setter Property="Template">
@@ -162,7 +162,7 @@
                                     <Border
                                         Height="{TemplateBinding TitleBarHeight}"
                                         VerticalAlignment="Top"
-                                        Background="{DynamicResource MySurface}"
+                                        Background="{DynamicResource color.bg.canvas}"
                                         IsVisible="{TemplateBinding HasTitleBar}"
                                         chrome:WindowDecorationProperties.ElementRole="TitleBar" />
                                 </Panel>
@@ -174,7 +174,7 @@
                                         VerticalAlignment="Center"
                                         FontSize="12"
                                         LineHeight="16"
-                                        Foreground="{DynamicResource MyOnSurface}"
+                                        Foreground="{DynamicResource color.text.primary}"
                                         IsHitTestVisible="False"
                                         Text="{TemplateBinding Title}"
                                         TextTrimming="CharacterEllipsis" />
@@ -233,7 +233,7 @@
         <fluent:FluentTheme>
             <fluent:FluentTheme.Palettes>
                 <fluent:ColorPaletteResources x:Key="Light" Accent="#C4643C" RegionColor="#F3F1EB" />
-                <fluent:ColorPaletteResources x:Key="Dark" Accent="#E0926A" RegionColor="#1C1B19" />
+                <fluent:ColorPaletteResources x:Key="Dark" Accent="#D47852" RegionColor="#1C1B19" />
             </fluent:FluentTheme.Palettes>
         </fluent:FluentTheme>
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />

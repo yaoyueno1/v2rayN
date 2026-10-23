@@ -20,6 +20,7 @@
     <UserControl.Resources>
         <conv:DelayColorConverter x:Key="DelayColorConverter" />
         <conv:DelayTextConverter x:Key="DelayTextConverter" />
+        <conv:DelayLatencyBrushConverter x:Key="DelayLatencyBrushConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid
@@ -55,10 +56,10 @@
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <controls:AdaptiveWrapPanel
-                            MinItemWidth="176"
+                            MinItemWidth="168"
                             MaxItemWidth="280"
-                            HorizontalSpacing="6"
-                            VerticalSpacing="4" />
+                            HorizontalSpacing="8"
+                            VerticalSpacing="8" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.KeyBindings>
@@ -79,17 +80,29 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="dto:ProfileItemModel">
                         <Border Classes="node-card" Classes.active="{Binding IsActive}" Tapped="NodeCard_Tapped">
-                            <StackPanel Spacing="1">
-                                <TextBlock
-                                    Classes="card-title"
-                                    Text="{Binding Remarks}"
-                                    TextTrimming="CharacterEllipsis" />
-                                <TextBlock
-                                    Classes="card-delay"
-                                    Text="{Binding DelayVal, Converter={StaticResource DelayTextConverter}}"
-                                    TextTrimming="CharacterEllipsis"
-                                    ToolTip.Tip="{Binding DelayVal}" />
-                            </StackPanel>
+                            <Grid ColumnDefinitions="3,*">
+                                <Border Classes="node-accent" />
+                                <StackPanel Grid.Column="1" Margin="9,8,8,8" Spacing="2">
+                                    <TextBlock
+                                        Classes="card-title"
+                                        Text="{Binding Remarks}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                    <TextBlock
+                                        Classes="card-delay"
+                                        Text="{Binding DelayVal, Converter={StaticResource DelayTextConverter}}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap"
+                                        ToolTip.Tip="{Binding DelayVal}">
+                                        <TextBlock.Foreground>
+                                            <MultiBinding Converter="{StaticResource DelayLatencyBrushConverter}">
+                                                <Binding Path="DelayVal" />
+                                                <Binding Path="ActualThemeVariant" RelativeSource="{RelativeSource AncestorType=Window}" />
+                                            </MultiBinding>
+                                        </TextBlock.Foreground>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid>
                         </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

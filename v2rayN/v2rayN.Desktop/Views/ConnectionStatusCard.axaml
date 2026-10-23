@@ -10,90 +10,78 @@
     x:DataType="vms:StatusBarViewModel"
     Design.DataContext="{x:Static dd:DesignData.StatusBar}"
     mc:Ignorable="d">
-    <Border Classes="surface-card" Padding="2,0,2,0">
-        <StackPanel Spacing="6">
-            <Grid ColumnDefinitions="40,*">
-                <Viewbox Width="36" Height="36" HorizontalAlignment="Left" VerticalAlignment="Center">
-                    <Grid Width="132" Height="132">
-                        <Ellipse
-                            Width="112"
-                            Height="112"
-                            Stroke="{DynamicResource MyRingTrack}"
-                            StrokeThickness="10" />
-                        <Path
-                            x:Name="ringArc"
-                            Width="112"
-                            Height="112"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Data="M56,8 A48,48 0 1 1 22,86"
-                            Stroke="{DynamicResource MyPrimary}"
-                            StrokeLineCap="Round"
-                            StrokeThickness="10" />
-                        <Border
-                            x:Name="statusBadge"
-                            Width="64"
-                            Height="64"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Background="{DynamicResource MyInk}"
-                            CornerRadius="32">
-                            <PathIcon
-                                Width="28"
-                                Height="28"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Data="{StaticResource IconCheck}"
-                                Foreground="{DynamicResource MyOnInk}" />
-                        </Border>
-                    </Grid>
-                </Viewbox>
-                <StackPanel Grid.Column="1" Margin="6,0,0,0" VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" Spacing="6">
-                        <Ellipse
-                            x:Name="statusDot"
-                            Width="7"
-                            Height="7"
-                            VerticalAlignment="Center"
-                            Fill="{DynamicResource MyPrimary}" />
-                        <TextBlock
-                            x:Name="txtState"
-                            VerticalAlignment="Center"
-                            FontSize="14"
-                            FontWeight="Medium"
-                            LineHeight="18"
-                            Text="{x:Static shell:ShellStrings.Disconnected}" />
-                    </StackPanel>
+    <Border Classes="surface-card" Padding="0">
+        <StackPanel Spacing="8">
+            <Grid ColumnDefinitions="16,*">
+                <Ellipse
+                    x:Name="statusDot"
+                    Width="10"
+                    Height="10"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Fill="Transparent"
+                    Stroke="{DynamicResource color.text.tertiary}"
+                    StrokeThickness="2" />
+                <Panel IsHitTestVisible="False" IsVisible="False">
+                    <Path
+                        x:Name="ringArc"
+                        Data="M56,8 A48,48 0 1 1 22,86"
+                        Stroke="{DynamicResource color.accent}"
+                        StrokeThickness="10" />
+                    <Border
+                        x:Name="statusBadge"
+                        Width="10"
+                        Height="10"
+                        Background="Transparent" />
+                </Panel>
+                <StackPanel
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="8">
+                    <TextBlock
+                        x:Name="txtState"
+                        VerticalAlignment="Center"
+                        FontSize="13"
+                        FontWeight="Normal"
+                        Foreground="{DynamicResource color.text.primary}"
+                        LineHeight="18"
+                        Text="{x:Static shell:ShellStrings.Disconnected}" />
                     <TextBlock
                         x:Name="txtSince"
-                        Margin="0,1,0,0"
-                        FontSize="11"
-                        LineHeight="14"
-                        Foreground="{DynamicResource MyOnSurfaceVariant}"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap" />
-                    <TextBlock
-                        x:Name="txtServer"
-                        FontSize="11"
-                        LineHeight="14"
-                        Foreground="{DynamicResource MyOnSurfaceVariant}"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        FontWeight="Normal"
+                        Foreground="{DynamicResource color.text.secondary}"
+                        LineHeight="16"
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="NoWrap" />
                 </StackPanel>
             </Grid>
 
-            <StackPanel Orientation="Horizontal" Spacing="14">
+            <TextBlock
+                x:Name="txtServer"
+                FontSize="12"
+                FontWeight="Normal"
+                Foreground="{DynamicResource color.text.secondary}"
+                IsVisible="False"
+                LineHeight="16"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="NoWrap" />
+
+            <StackPanel Orientation="Horizontal" Spacing="12">
                 <StackPanel Orientation="Horizontal" Spacing="4">
                     <PathIcon
                         Width="12"
                         Height="12"
                         VerticalAlignment="Center"
                         Data="{StaticResource IconUpload}"
-                        Foreground="{DynamicResource MyPrimary}" />
+                        Foreground="{DynamicResource color.text.tertiary}" />
                     <TextBlock
                         x:Name="txtUp"
                         VerticalAlignment="Center"
                         FontSize="12"
+                        FontWeight="Normal"
                         LineHeight="16"
                         Text="0 B/s" />
                 </StackPanel>
@@ -103,11 +91,12 @@
                         Height="12"
                         VerticalAlignment="Center"
                         Data="{StaticResource IconDownload}"
-                        Foreground="{DynamicResource MyChipPurpleText}" />
+                        Foreground="{DynamicResource color.text.tertiary}" />
                     <TextBlock
                         x:Name="txtDown"
                         VerticalAlignment="Center"
                         FontSize="12"
+                        FontWeight="Normal"
                         LineHeight="16"
                         Text="0 B/s" />
                 </StackPanel>
@@ -116,41 +105,47 @@
                     Width="0"
                     Height="0"
                     IsVisible="False"
-                    Stroke="{DynamicResource MyPrimary}" />
+                    Stroke="{DynamicResource color.accent}" />
                 <Polyline
                     x:Name="sparkDown"
                     Width="0"
                     Height="0"
                     IsVisible="False"
-                    Stroke="{DynamicResource MyChipPurpleText}" />
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" Spacing="2">
-                <RadioButton
-                    x:Name="modeSystem"
-                    Classes="mode segment"
-                    GroupName="outboundMode"
-                    Content="{x:Static shell:ShellStrings.SystemProxy}" />
-                <RadioButton
-                    x:Name="modeTun"
-                    Classes="mode segment"
-                    GroupName="outboundMode"
-                    Content="TUN" />
-                <RadioButton
-                    x:Name="modePac"
-                    Classes="mode segment"
-                    GroupName="outboundMode"
-                    Content="PAC" />
+                    Stroke="{DynamicResource color.text.secondary}" />
             </StackPanel>
 
             <Button
                 x:Name="btnDetails"
                 HorizontalAlignment="Left"
-                MinHeight="26"
-                Padding="2,2"
+                MinHeight="0"
+                Padding="0"
                 Classes="ghost"
-                Content="{x:Static shell:ShellStrings.ViewDetails}"
-                FontSize="12" />
+                FontSize="12"
+                FontWeight="Normal">
+                <TextBlock
+                    FontSize="12"
+                    FontWeight="Normal"
+                    LineHeight="16"
+                    Text="{x:Static shell:ShellStrings.ViewDetails}" />
+            </Button>
+
+            <StackPanel Orientation="Horizontal" Spacing="4">
+                <RadioButton
+                    x:Name="modeSystem"
+                    Classes="mode segment"
+                    Content="{x:Static shell:ShellStrings.SystemProxy}"
+                    GroupName="outboundMode" />
+                <RadioButton
+                    x:Name="modeTun"
+                    Classes="mode segment"
+                    Content="TUN"
+                    GroupName="outboundMode" />
+                <RadioButton
+                    x:Name="modePac"
+                    Classes="mode segment"
+                    Content="PAC"
+                    GroupName="outboundMode" />
+            </StackPanel>
         </StackPanel>
     </Border>
 </UserControl>
