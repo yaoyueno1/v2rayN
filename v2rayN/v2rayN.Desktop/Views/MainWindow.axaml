@@ -68,13 +68,21 @@
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Center"
                                 Classes="connect">
-                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
                                     <PathIcon
                                         Width="16"
                                         Height="16"
+                                        VerticalAlignment="Center"
                                         Data="{StaticResource IconPlug}"
-                                        Foreground="{DynamicResource MyOnInk}" />
-                                    <TextBlock x:Name="txtConnect" Text="{x:Static shell:ShellStrings.Connect}" />
+                                        Foreground="{Binding $parent[Button].Foreground}" />
+                                    <TextBlock
+                                        x:Name="txtConnect"
+                                        VerticalAlignment="Center"
+                                        FontSize="14"
+                                        FontWeight="Normal"
+                                        LineHeight="20"
+                                        Margin="0"
+                                        Text="{x:Static shell:ShellStrings.Connect}" />
                                 </StackPanel>
                             </Button>
                             <Grid ColumnDefinitions="*,*,*">

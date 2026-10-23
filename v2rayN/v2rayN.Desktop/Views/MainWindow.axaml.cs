@@ -459,7 +459,19 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
     private void ApplyConnectLabel()
     {
-        txtConnect.Text = connectionCard.IsSessionConnected ? ShellStrings.Disconnect : ShellStrings.Connect;
+        var connected = connectionCard.IsSessionConnected;
+        txtConnect.Text = connected ? ShellStrings.Disconnect : ShellStrings.Connect;
+        if (connected)
+        {
+            if (!btnConnect.Classes.Contains("connected"))
+            {
+                btnConnect.Classes.Add("connected");
+            }
+        }
+        else
+        {
+            btnConnect.Classes.Remove("connected");
+        }
     }
 
     private async void BtnConnect_Click(object? sender, RoutedEventArgs e)
