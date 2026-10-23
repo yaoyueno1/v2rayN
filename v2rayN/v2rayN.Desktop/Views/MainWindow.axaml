@@ -27,7 +27,7 @@
     ShowInTaskbar="True"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <dialogHost:DialogHost CloseOnClickAway="True" DisableOpeningAnimation="True">
+    <dialogHost:DialogHost x:Name="rootDialog" CloseOnClickAway="True" DisableOpeningAnimation="True">
         <Grid>
         <Grid
             Margin="{Binding WindowDecorationMargin, RelativeSource={RelativeSource AncestorType=Window}}"

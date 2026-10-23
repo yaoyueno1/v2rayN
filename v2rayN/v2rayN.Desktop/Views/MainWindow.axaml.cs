@@ -14,6 +14,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     private int _pageBeforeDetails;
     private bool _navSync;
     private CheckUpdateView? _checkUpdateView;
+    private int _paperDialogEpoch;
     private BackupAndRestoreView? _backupAndRestoreView;
     private bool _blCloseByUser = false;
 
@@ -272,13 +273,60 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         ShowHideWindow(true);
     }
 
-    private void MenuCheckUpdate_Click(object? sender, RoutedEventArgs e)
+    private async void MenuCheckUpdate_Click(object? sender, RoutedEventArgs e)
     {
         _checkUpdateView ??= new CheckUpdateView();
         _checkUpdateView.ViewModel = ViewModel?.CheckUpdateViewModel;
-        DialogHost.Show(_checkUpdateView);
+        await ShowCheckUpdateAsync();
 
         AppEvents.HasUpdateNotified.Publish(false);
+    }
+
+    private async Task ShowCheckUpdateAsync()
+    {
+        if (DialogHost.IsDialogOpen(null!))
+        {
+            return;
+        }
+
+        var epoch = UsePaperDialogChrome();
+        try
+        {
+            await DialogHost.Show(_checkUpdateView);
+        }
+        finally
+        {
+            RestoreDialogChrome(epoch);
+        }
+    }
+
+    private int UsePaperDialogChrome()
+    {
+        var epoch = ++_paperDialogEpoch;
+        rootDialog.Background = Brushes.Transparent;
+        rootDialog.DialogMargin = new Thickness(0);
+        DialogHostStyle.SetBorderThickness(rootDialog, new Thickness(0));
+        DialogHostStyle.SetBorderBrush(rootDialog, Brushes.Transparent);
+        DialogHostStyle.SetCornerRadius(rootDialog, new CornerRadius(0));
+        DialogHostStyle.SetClipToBounds(rootDialog, false);
+        DialogHostStyle.SetBoxShadow(rootDialog, new BoxShadows(new BoxShadow { Color = Colors.Transparent }));
+        return epoch;
+    }
+
+    private void RestoreDialogChrome(int epoch)
+    {
+        if (epoch != _paperDialogEpoch || DialogHost.IsDialogOpen(null!))
+        {
+            return;
+        }
+
+        rootDialog.ClearValue(DialogHost.BackgroundProperty);
+        rootDialog.ClearValue(DialogHost.DialogMarginProperty);
+        rootDialog.ClearValue(DialogHostStyle.BorderThicknessProperty);
+        rootDialog.ClearValue(DialogHostStyle.BorderBrushProperty);
+        rootDialog.ClearValue(DialogHostStyle.CornerRadiusProperty);
+        rootDialog.ClearValue(DialogHostStyle.ClipToBoundsProperty);
+        rootDialog.ClearValue(DialogHostStyle.BoxShadowProperty);
     }
 
     private void MenuBackupAndRestore_Click(object? sender, RoutedEventArgs e)
@@ -569,6 +617,10 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         routingPage.CloseOutboundDropDown();
         connectionCard.CloseDropDowns();
         PaperToasts.Clear(toastHost);
+        if (DialogHost.IsDialogOpen(null!))
+        {
+            DialogHost.Close(null);
+        }
 
         switch (shot)
         {
@@ -624,7 +676,41 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                 PaperToasts.Show(toastHost, "[VLESS] sg新加坡高速08|BGP| CTCU(cfyes***xyz:443)\n186 ms", pin: true);
                 PaperToasts.Show(toastHost, ResUI.SpeedtestingCompleted, pin: true);
                 break;
+            case "check-update":
+                _ = ShowCheckUpdatePreviewAsync(false);
+                break;
+            case "check-update-dark":
+                _ = ShowCheckUpdatePreviewAsync(true);
+                break;
         }
+    }
+
+    private async Task ShowCheckUpdatePreviewAsync(bool dark)
+    {
+        if (Application.Current is not null)
+        {
+            Application.Current.RequestedThemeVariant = dark ? ThemeVariant.Dark : ThemeVariant.Light;
+        }
+
+        if (DialogHost.IsDialogOpen(null!))
+        {
+            DialogHost.Close(null);
+            await Task.Delay(250);
+        }
+
+        _checkUpdateView ??= new CheckUpdateView();
+        _checkUpdateView.ViewModel = ViewModel?.CheckUpdateViewModel;
+        _checkUpdateView.PreviewSample();
+        if (DialogHost.IsDialogOpen(null!))
+        {
+            return;
+        }
+
+        var epoch = UsePaperDialogChrome();
+        var shown = DialogHost.Show(_checkUpdateView);
+        _ = shown.ContinueWith(_ => Dispatcher.UIThread.Post(() => RestoreDialogChrome(epoch)));
+        await Task.Delay(350);
+        _checkUpdateView.SelectLastRow();
     }
 
     private void ShowTrayPreview()

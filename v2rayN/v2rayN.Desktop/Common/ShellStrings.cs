@@ -89,6 +89,10 @@ public static class ShellStrings
     public static string SettingsClearStats => T("清空统计", "清空統計", "Clear statistics");
     public static string SettingsReload => T("重启服务", "重新啟動服務", "Reload service");
     public static string SettingsUpdate => T("检查更新", "檢查更新", "Check for updates");
+    public static string PreRelease => T("预发布", "預發布", "Pre-release");
+    public static string UpdateChecking => T("检查中…", "檢查中…", "Checking…");
+    public static string UpdateAvailable(string version) => T($"有新版本 {version}", $"有新版本 {version}", $"New version {version}");
+    public static string UpdateLatest(string version) => T($"已是最新 {version}", $"已是最新 {version}", $"Up to date {version}");
     public static string SettingsPresetDefault => T("默认", "預設", "Default");
     public static string SettingsPresetRussia => T("俄罗斯", "俄羅斯", "Russia");
     public static string SettingsPresetIran => T("伊朗", "伊朗", "Iran");
