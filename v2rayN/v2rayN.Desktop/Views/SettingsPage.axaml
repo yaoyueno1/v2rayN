@@ -64,10 +64,6 @@
                     Content="{x:Static shell:ShellStrings.SettingsHotkey}"
                     IsVisible="{Binding BlIsWindows}" />
                 <Button
-                    Classes="settings-row"
-                    Command="{Binding ReloadCmd}"
-                    Content="{x:Static shell:ShellStrings.SettingsReload}" />
-                <Button
                     x:Name="btnUwp"
                     Classes="settings-row"
                     Content="{x:Static shell:ShellStrings.SettingsUwp}"
@@ -105,6 +101,10 @@
                     x:Name="btnUpdate"
                     Classes="settings-row"
                     Content="{x:Static shell:ShellStrings.SettingsUpdate}" />
+                <Button
+                    Classes="settings-row"
+                    Command="{Binding ReloadCmd}"
+                    Content="{x:Static shell:ShellStrings.SettingsReload}" />
             </controls:AdaptiveWrapPanel>
 
             <TextBlock

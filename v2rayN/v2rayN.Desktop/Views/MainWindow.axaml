@@ -321,8 +321,8 @@
                             HorizontalAlignment="Left"
                             Spacing="8">
                             <Image
-                                Width="64"
-                                Height="64"
+                                Width="48"
+                                Height="48"
                                 HorizontalAlignment="Left"
                                 Source="avares://v2rayN/Assets/ForkMark.png" />
                             <TextBlock
