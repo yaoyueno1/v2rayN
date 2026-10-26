@@ -10,6 +10,13 @@ public class Global
 
     public const string PromotionUrl = @"aHR0cHM6Ly85LjIzNDQ1Ni54eXovYWJjLmh0bWw=";
     public const string ConfigFileName = "guiNConfig.json";
+
+    /// <summary>
+    /// Port stored only when guiNConfig has no inbound yet.
+    /// 20808 is outside the common Hyper-V/WinNAT exclusion 10790-10889.
+    /// A LocalPort already saved in guiNConfig is never replaced.
+    /// </summary>
+    public const int DefaultLocalPort = 20808;
     public const string CoreConfigFileName = "config.json";
     public const string CorePreConfigFileName = "configPre.json";
     public const string CoreSpeedtestConfigFileName = "configTest{0}.json";

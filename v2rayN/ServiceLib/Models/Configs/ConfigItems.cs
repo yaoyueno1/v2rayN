@@ -100,6 +100,15 @@ public class UIItem
     public bool DoubleClick2Activate { get; set; }
     public bool AutoHideStartup { get; set; }
     public bool Hide2TrayWhenClose { get; set; }
+
+    /// <summary>
+    /// Null means the user has not chosen. New installs and existing configs
+    /// without this key hide the main window to the tray. False exits on close.
+    /// Sidebar and tray Exit still quit the process.
+    /// </summary>
+    public bool? CloseMainWindowToTray { get; set; }
+
+    public bool ShouldCloseMainWindowToTray() => CloseMainWindowToTray != false;
     public bool MacOSShowInDock { get; set; }
     public List<ColumnItem> MainColumnItem { get; set; }
     public List<WindowSizeItem> WindowSizeItem { get; set; }

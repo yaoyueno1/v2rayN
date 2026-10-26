@@ -1,7 +1,8 @@
-using Avalonia.Controls.Notifications;
+using Avalonia.VisualTree;
 using DialogHostAvalonia;
 using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
+using v2rayN.Desktop.Controls;
 using v2rayN.Desktop.Manager;
 
 namespace v2rayN.Desktop.Views;
@@ -9,9 +10,11 @@ namespace v2rayN.Desktop.Views;
 public partial class MainWindow : WindowBase<MainWindowViewModel>
 {
     private static Config _config;
-    private readonly SingleReplaceableDisposable _layoutBindingsDisposable = new();
-    private readonly WindowNotificationManager? _manager;
+    private int _page;
+    private int _pageBeforeDetails;
+    private bool _navSync;
     private CheckUpdateView? _checkUpdateView;
+    private int _paperDialogEpoch;
     private BackupAndRestoreView? _backupAndRestoreView;
     private bool _blCloseByUser = false;
 
@@ -20,17 +23,24 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         InitializeComponent();
 
         _config = AppManager.Instance.Config;
-        _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.TopRight };
 
         KeyDown += MainWindow_KeyDown;
-        menuSettingsSetUWP.Click += MenuSettingsSetUWP_Click;
         menuPromotion.Click += MenuPromotion_Click;
         menuCheckUpdate.Click += MenuCheckUpdate_Click;
         btnNewUpdate.Click += MenuCheckUpdate_Click;
-        menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
         menuClose.Click += MenuClose_Click;
-
-        conTheme.Content ??= new ThemeSettingView();
+        Opened += (_, _) => StartPreviewWatcher();
+        btnTheme.Click += BtnTheme_Click;
+        navHome.IsCheckedChanged += Nav_Checked;
+        navProfiles.IsCheckedChanged += Nav_Checked;
+        navSubs.IsCheckedChanged += Nav_Checked;
+        navRouting.IsCheckedChanged += Nav_Checked;
+        navSettings.IsCheckedChanged += Nav_Checked;
+        navHelp.IsCheckedChanged += Nav_Checked;
+        connectionCard.DetailsRequested += (_, _) => ShowDetails();
+        settingsPage.BackupRequested += (_, _) => MenuBackupAndRestore_Click(this, new RoutedEventArgs());
+        settingsPage.CheckUpdateRequested += (_, _) => MenuCheckUpdate_Click(this, new RoutedEventArgs());
+        settingsPage.UwpRequested += (_, _) => MenuSettingsSetUWP_Click(this, new RoutedEventArgs());
 
         this.WhenActivated(disposables =>
         {
@@ -62,31 +72,17 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             this.BindCommand(ViewModel, vm => vm.SubGroupUpdateCmd, v => v.menuSubGroupUpdate).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SubGroupUpdateViaProxyCmd, v => v.menuSubGroupUpdateViaProxy).DisposeWith(disposables);
 
-            //setting
-            this.BindCommand(ViewModel, vm => vm.OptionSettingCmd, v => v.menuOptionSetting).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.RoutingSettingCmd, v => v.menuRoutingSetting).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.DNSSettingCmd, v => v.menuDNSSetting).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.FullConfigTemplateCmd, v => v.menuFullConfigTemplate).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.GlobalHotkeySettingCmd, v => v.menuGlobalHotkeySetting).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.RebootAsAdminCmd, v => v.menuRebootAsAdmin).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.ClearServerStatisticsCmd, v => v.menuClearServerStatistics).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.OpenTheFileLocationCmd, v => v.menuOpenTheFileLocation).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.RegionalPresetDefaultCmd, v => v.menuRegionalPresetsDefault).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.RegionalPresetRussiaCmd, v => v.menuRegionalPresetsRussia).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.RegionalPresetIranCmd, v => v.menuRegionalPresetsIran).DisposeWith(disposables);
-
             this.BindCommand(ViewModel, vm => vm.ReloadCmd, v => v.menuReload).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.menuReload.IsEnabled).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.BlNewUpdate, v => v.btnNewUpdate.IsVisible).DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, vm => vm.StatusBarViewModel, v => v.contentStatusBarView.Content).DisposeWith(disposables);
-
-            _layoutBindingsDisposable.DisposeWith(disposables);
-
-            this.WhenAnyValue(v => v.ViewModel.MainGirdOrientation)
-                .ObserveOn(RxSchedulers.MainThreadScheduler)
-                .Subscribe(UpdateLayout)
-                .DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.profilesHost.Content).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.MsgViewModel, v => v.tabMsgView.Content).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.ClashProxiesViewModel, v => v.tabClashProxies.Content).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.ClashConnectionsViewModel, v => v.tabClashConnections.Content).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.IsVisible).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.IsVisible).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain.SelectedIndex).DisposeWith(disposables);
 
             ViewModel.ReadTextFromClipboardInteraction.RegisterHandler(async interaction =>
             {
@@ -169,7 +165,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
     private async Task DelegateSnackMsg(string content)
     {
-        _manager?.Show(new Avalonia.Controls.Notifications.Notification(null, content, NotificationType.Information));
+        PaperToasts.Show(toastHost, content);
         await Task.CompletedTask;
     }
 
@@ -201,7 +197,19 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
         switch (e.CloseReason)
         {
-            case WindowCloseReason.OwnerWindowClosing or WindowCloseReason.WindowClosing:
+            case WindowCloseReason.WindowClosing:
+                e.Cancel = true;
+                if (_config.UiItem.ShouldCloseMainWindowToTray())
+                {
+                    ShowHideWindow(false);
+                }
+                else
+                {
+                    await ExitNowAsync();
+                }
+                break;
+
+            case WindowCloseReason.OwnerWindowClosing:
                 e.Cancel = true;
                 ShowHideWindow(false);
                 break;
@@ -272,13 +280,60 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         ShowHideWindow(true);
     }
 
-    private void MenuCheckUpdate_Click(object? sender, RoutedEventArgs e)
+    private async void MenuCheckUpdate_Click(object? sender, RoutedEventArgs e)
     {
         _checkUpdateView ??= new CheckUpdateView();
         _checkUpdateView.ViewModel = ViewModel?.CheckUpdateViewModel;
-        DialogHost.Show(_checkUpdateView);
+        await ShowCheckUpdateAsync();
 
         AppEvents.HasUpdateNotified.Publish(false);
+    }
+
+    private async Task ShowCheckUpdateAsync()
+    {
+        if (DialogHost.IsDialogOpen(null!))
+        {
+            return;
+        }
+
+        var epoch = UsePaperDialogChrome();
+        try
+        {
+            await DialogHost.Show(_checkUpdateView);
+        }
+        finally
+        {
+            RestoreDialogChrome(epoch);
+        }
+    }
+
+    private int UsePaperDialogChrome()
+    {
+        var epoch = ++_paperDialogEpoch;
+        rootDialog.Background = Brushes.Transparent;
+        rootDialog.DialogMargin = new Thickness(0);
+        DialogHostStyle.SetBorderThickness(rootDialog, new Thickness(0));
+        DialogHostStyle.SetBorderBrush(rootDialog, Brushes.Transparent);
+        DialogHostStyle.SetCornerRadius(rootDialog, new CornerRadius(0));
+        DialogHostStyle.SetClipToBounds(rootDialog, false);
+        DialogHostStyle.SetBoxShadow(rootDialog, new BoxShadows(new BoxShadow { Color = Colors.Transparent }));
+        return epoch;
+    }
+
+    private void RestoreDialogChrome(int epoch)
+    {
+        if (epoch != _paperDialogEpoch || DialogHost.IsDialogOpen(null!))
+        {
+            return;
+        }
+
+        rootDialog.ClearValue(DialogHost.BackgroundProperty);
+        rootDialog.ClearValue(DialogHost.DialogMarginProperty);
+        rootDialog.ClearValue(DialogHostStyle.BorderThicknessProperty);
+        rootDialog.ClearValue(DialogHostStyle.BorderBrushProperty);
+        rootDialog.ClearValue(DialogHostStyle.CornerRadiusProperty);
+        rootDialog.ClearValue(DialogHostStyle.ClipToBoundsProperty);
+        rootDialog.ClearValue(DialogHostStyle.BoxShadowProperty);
     }
 
     private void MenuBackupAndRestore_Click(object? sender, RoutedEventArgs e)
@@ -288,19 +343,23 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         DialogHost.Show(_backupAndRestoreView);
     }
 
+    private async Task ExitNowAsync()
+    {
+        if (_blCloseByUser)
+        {
+            return;
+        }
+
+        _blCloseByUser = true;
+        StorageUI();
+        await AppManager.Instance.AppExitAsync(true);
+    }
+
     private async void MenuClose_Click(object? sender, RoutedEventArgs e)
     {
         try
         {
-            if (await UI.ShowYesNo(ResUI.menuExitTips) != ButtonResult.Yes)
-            {
-                return;
-            }
-
-            _blCloseByUser = true;
-            StorageUI();
-
-            await AppManager.Instance.AppExitAsync(true);
+            await ExitNowAsync();
         }
         catch
         {
@@ -344,7 +403,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
         else
         {
-            if (Utils.IsLinux() && _config.UiItem.Hide2TrayWhenClose == false)
+            if (Utils.IsLinux() && !_config.UiItem.ShouldCloseMainWindowToTray())
             {
                 WindowState = WindowState.Minimized;
                 return;
@@ -363,108 +422,110 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     protected override void OnLoaded(object? sender, RoutedEventArgs e)
     {
         base.OnLoaded(sender, e);
+        var version = Utils.GetVersionInfo();
+        txtVersion.Text = version;
+        txtAboutVersion.Text = $"{Global.AppName} {version}";
+        ShowPage(0);
         if (_config.UiItem.AutoHideStartup)
         {
             ShowHideWindow(false);
-        }
-        RestoreUI();
-    }
-
-    private void RestoreUI()
-    {
-        if (_config.UiItem.MainGirdHeight1 > 0 && _config.UiItem.MainGirdHeight2 > 0)
-        {
-            if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
-            {
-                gridMain.ColumnDefinitions[0].Width = new GridLength(_config.UiItem.MainGirdHeight1, GridUnitType.Star);
-                gridMain.ColumnDefinitions[2].Width = new GridLength(_config.UiItem.MainGirdHeight2, GridUnitType.Star);
-            }
-            else if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Vertical)
-            {
-                gridMain1.RowDefinitions[0].Height = new GridLength(_config.UiItem.MainGirdHeight1, GridUnitType.Star);
-                gridMain1.RowDefinitions[2].Height = new GridLength(_config.UiItem.MainGirdHeight2, GridUnitType.Star);
-            }
         }
     }
 
     private void StorageUI()
     {
         ConfigHandler.SaveWindowSizeItem(_config, GetType().Name, Width, Height);
+    }
 
-        if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
+    private void Nav_Checked(object? sender, RoutedEventArgs e)
+    {
+        if (_navSync || !IsLoaded || sender is not RadioButton { IsChecked: true, Tag: string tag })
         {
-            ConfigHandler.SaveMainGirdHeight(_config, gridMain.ColumnDefinitions[0].ActualWidth, gridMain.ColumnDefinitions[2].ActualWidth);
+            return;
         }
-        else if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Vertical)
+
+        if (int.TryParse(tag, out var page))
         {
-            ConfigHandler.SaveMainGirdHeight(_config, gridMain1.RowDefinitions[0].ActualHeight, gridMain1.RowDefinitions[2].ActualHeight);
+            ShowPage(page);
         }
     }
 
-    private void UpdateLayout(EGirdOrientation orientation)
+    private void ShowDetails()
     {
-        var currentLayoutDisposables = new MultipleDisposable();
-        _layoutBindingsDisposable.Create(currentLayoutDisposables);
-
-        ClearLayoutContent();
-
-        gridMain.IsVisible = orientation == EGirdOrientation.Horizontal;
-        gridMain1.IsVisible = orientation == EGirdOrientation.Vertical;
-        gridMain2.IsVisible = orientation == EGirdOrientation.Tab;
-
-        switch (orientation)
-        {
-            case EGirdOrientation.Horizontal:
-                this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.tabProfiles.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.MsgViewModel, v => v.tabMsgView.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashProxiesViewModel, v => v.tabClashProxies.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashConnectionsViewModel, v => v.tabClashConnections.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain.SelectedIndex).DisposeWith(currentLayoutDisposables);
-                break;
-
-            case EGirdOrientation.Vertical:
-                this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.tabProfiles1.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.MsgViewModel, v => v.tabMsgView1.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashProxiesViewModel, v => v.tabClashProxies1.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashConnectionsViewModel, v => v.tabClashConnections1.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies1.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections1.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain1.SelectedIndex).DisposeWith(currentLayoutDisposables);
-                break;
-
-            case EGirdOrientation.Tab:
-            default:
-                this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.tabProfiles2.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.MsgViewModel, v => v.tabMsgView2.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashProxiesViewModel, v => v.tabClashProxies2.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashConnectionsViewModel, v => v.tabClashConnections2.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies2.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections2.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(currentLayoutDisposables);
-                break;
-        }
-
-        RestoreUI();
+        _pageBeforeDetails = _page;
+        ShowPage(6);
     }
 
-    private void ClearLayoutContent()
+    private void DetailsBack_Click(object? sender, RoutedEventArgs e)
     {
-        tabProfiles.Content = null;
-        tabMsgView.Content = null;
-        tabClashProxies.Content = null;
-        tabClashConnections.Content = null;
+        ShowPage(_pageBeforeDetails);
+    }
 
-        tabProfiles1.Content = null;
-        tabMsgView1.Content = null;
-        tabClashProxies1.Content = null;
-        tabClashConnections1.Content = null;
+    private void ShowPage(int page)
+    {
+        _page = page;
+        pageServers.IsVisible = page is 0 or 1;
+        pageSubs.IsVisible = page == 2;
+        pageRouting.IsVisible = page == 3;
+        pageSettings.IsVisible = page == 4;
+        pageHelp.IsVisible = page == 5;
+        pageDetails.IsVisible = page == 6;
+        configActions.IsVisible = page == 1;
+        Grid.SetColumn(profilesHost, page == 1 ? 1 : 0);
+        Grid.SetColumnSpan(profilesHost, page == 1 ? 1 : 2);
+        ApplyCardLayout();
 
-        tabProfiles2.Content = null;
-        tabMsgView2.Content = null;
-        tabClashProxies2.Content = null;
-        tabClashConnections2.Content = null;
+        if (page == 2)
+        {
+            _ = subscriptionPage.RefreshAsync();
+        }
+
+        if (page == 6)
+        {
+            return;
+        }
+
+        _navSync = true;
+        navHome.IsChecked = page == 0;
+        navProfiles.IsChecked = page == 1;
+        navSubs.IsChecked = page == 2;
+        navRouting.IsChecked = page == 3;
+        navSettings.IsChecked = page == 4;
+        navHelp.IsChecked = page == 5;
+        _navSync = false;
+    }
+
+    private void ApplyCardLayout()
+    {
+        var card = _page == 0;
+        var views = profilesHost.GetVisualDescendants().OfType<ProfilesView>().ToList();
+        if (views.Count == 0)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                foreach (var view in profilesHost.GetVisualDescendants().OfType<ProfilesView>())
+                {
+                    view.UseCardLayout = _page == 0;
+                }
+            }, DispatcherPriority.Background);
+            return;
+        }
+
+        foreach (var view in views)
+        {
+            view.UseCardLayout = card;
+        }
+    }
+
+    private void BtnTheme_Click(object? sender, RoutedEventArgs e)
+    {
+        if (settingsPage.ThemeSetting.ViewModel is not { } theme)
+        {
+            return;
+        }
+
+        var dark = Application.Current?.ActualThemeVariant == ThemeVariant.Dark;
+        theme.CurrentTheme = dark ? nameof(ETheme.Light) : nameof(ETheme.Dark);
     }
 
     private void AddHelpMenuItem()
@@ -474,22 +535,229 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             .Where(t => t.CoreType is not ECoreType.v2fly
                         and not ECoreType.hysteria))
         {
-            var item = new MenuItem()
+            var url = it.Url?.Replace(@"/releases", "");
+            var title = string.Format(ResUI.menuWebsiteItem, it.CoreType.ToString().Replace("_", " ")).UpperFirstChar();
+            var host = string.Empty;
+            if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
             {
-                Tag = it.Url?.Replace(@"/releases", ""),
-                Header = string.Format(ResUI.menuWebsiteItem, it.CoreType.ToString().Replace("_", " ")).UpperFirstChar()
+                host = uri.Host;
+            }
+
+            var body = new StackPanel { Spacing = 2 };
+            var titleBlock = new TextBlock { Text = title };
+            titleBlock.Classes.Add("help-title");
+            body.Children.Add(titleBlock);
+            if (!string.IsNullOrEmpty(host))
+            {
+                var domain = new TextBlock { Text = host };
+                domain.Classes.Add("help-domain");
+                body.Children.Add(domain);
+            }
+
+            var item = new Button
+            {
+                Tag = url,
+                Content = body,
+                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch,
+                HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Left
             };
-            item.Click += MenuItem_Click;
-            menuHelp.Items.Add(item);
+            item.Classes.Add("help-card");
+            item.Click += HelpLink_Click;
+            helpLinks.Children.Add(item);
         }
     }
 
-    private void MenuItem_Click(object? sender, RoutedEventArgs e)
+    private void HelpLink_Click(object? sender, RoutedEventArgs e)
     {
-        if (sender is MenuItem item)
+        if (sender is Button item)
         {
             ProcUtils.ProcessStart(item.Tag?.ToString());
         }
+    }
+
+    private MenuFlyout? _trayPreview;
+    private string _previewShot = string.Empty;
+
+    private void StartPreviewWatcher()
+    {
+        if (Environment.GetEnvironmentVariable("V2RAYN_PREVIEW") != "1")
+        {
+            return;
+        }
+
+        _ = WatchPreviewAsync();
+    }
+
+    private async Task WatchPreviewAsync()
+    {
+        const string path = "/tmp/v2rayn-preview.txt";
+        while (true)
+        {
+            try
+            {
+                await Task.Delay(250);
+                if (!File.Exists(path))
+                {
+                    continue;
+                }
+
+                var shot = (await File.ReadAllTextAsync(path)).Trim();
+                if (shot.Length == 0 || shot == _previewShot)
+                {
+                    continue;
+                }
+
+                _previewShot = shot;
+                await Dispatcher.UIThread.InvokeAsync(() => ApplyPreviewShot(shot));
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog("WatchPreviewAsync", ex);
+            }
+        }
+    }
+
+    private void ApplyPreviewShot(string shot)
+    {
+        _trayPreview?.Hide();
+        settingsPage.ThemeSetting.CloseDropDowns();
+        routingPage.CloseOutboundDropDown();
+        connectionCard.CloseDropDowns();
+        PaperToasts.Clear(toastHost);
+        if (DialogHost.IsDialogOpen(null!))
+        {
+            DialogHost.Close(null);
+        }
+
+        switch (shot)
+        {
+            case "settings":
+                ShowPage(4);
+                break;
+            case "theme":
+                ShowPage(4);
+                Dispatcher.UIThread.Post(() => settingsPage.ThemeSetting.OpenThemeDropDown(), DispatcherPriority.Background);
+                break;
+            case "subs":
+                ShowPage(2);
+                break;
+            case "routing":
+                ShowPage(3);
+                break;
+            case "routing-open":
+                ShowPage(3);
+                Dispatcher.UIThread.Post(() => routingPage.OpenFirstOutbound(), DispatcherPriority.Loaded);
+                break;
+            case "update":
+                if (ViewModel is not null)
+                {
+                    ViewModel.BlNewUpdate = true;
+                }
+
+                break;
+            case "connect-on":
+                connectionCard.PreviewConnected("预览节点");
+                break;
+            case "connect-off":
+                connectionCard.HoldDisconnected();
+                break;
+            case "tray":
+                ShowTrayPreview();
+                break;
+            case "sidebar":
+                ShowPage(0);
+                connectionCard.PreviewTunAndProxy(true, (int)ESysProxyType.ForcedChange);
+                break;
+            case "proxy-open":
+                ShowPage(0);
+                connectionCard.PreviewTunAndProxy(true, (int)ESysProxyType.ForcedChange);
+                Dispatcher.UIThread.Post(() => connectionCard.OpenProxyDropDown(), DispatcherPriority.Background);
+                break;
+            case "routing-side":
+                ShowPage(0);
+                connectionCard.PreviewTunAndProxy(true, (int)ESysProxyType.ForcedChange);
+                Dispatcher.UIThread.Post(() => connectionCard.OpenRoutingDropDown(), DispatcherPriority.Background);
+                break;
+            case "toast":
+                ShowPage(0);
+                PaperToasts.Show(toastHost, "[VLESS] sg新加坡高速08|BGP| CTCU(cfyes***xyz:443)\n186 ms", pin: true);
+                PaperToasts.Show(toastHost, ResUI.SpeedtestingCompleted, pin: true);
+                break;
+            case "check-update":
+                _ = ShowCheckUpdatePreviewAsync(false);
+                break;
+            case "check-update-dark":
+                _ = ShowCheckUpdatePreviewAsync(true);
+                break;
+        }
+    }
+
+    private async Task ShowCheckUpdatePreviewAsync(bool dark)
+    {
+        if (Application.Current is not null)
+        {
+            Application.Current.RequestedThemeVariant = dark ? ThemeVariant.Dark : ThemeVariant.Light;
+        }
+
+        if (DialogHost.IsDialogOpen(null!))
+        {
+            DialogHost.Close(null);
+            await Task.Delay(250);
+        }
+
+        _checkUpdateView ??= new CheckUpdateView();
+        _checkUpdateView.ViewModel = ViewModel?.CheckUpdateViewModel;
+        _checkUpdateView.PreviewSample();
+        if (DialogHost.IsDialogOpen(null!))
+        {
+            return;
+        }
+
+        var epoch = UsePaperDialogChrome();
+        var shown = DialogHost.Show(_checkUpdateView);
+        _ = shown.ContinueWith(_ => Dispatcher.UIThread.Post(() => RestoreDialogChrome(epoch)));
+        await Task.Delay(350);
+        _checkUpdateView.SelectLastRow();
+    }
+
+    private void ShowTrayPreview()
+    {
+        var status = StatusBarViewModel.Instance;
+        var flyout = new MenuFlyout
+        {
+            Placement = PlacementMode.BottomEdgeAlignedLeft,
+        };
+
+        MenuItem Item(string header, System.Windows.Input.ICommand? command = null, bool radio = false, bool check = false)
+        {
+            return new MenuItem
+            {
+                Header = header,
+                Command = command,
+                ToggleType = radio ? MenuItemToggleType.Radio : MenuItemToggleType.None,
+                IsChecked = check,
+            };
+        }
+
+        flyout.Items.Add(Item(ShellStrings.TrayCopyProxy, status.CopyProxyCmdToClipboardCmd));
+        flyout.Items.Add(new Separator());
+        flyout.Items.Add(Item(ResUI.menuSystemProxyClear, status.SystemProxyClearCmd, true, status.BlSystemProxyClear));
+        flyout.Items.Add(Item(ResUI.menuSystemProxySet, status.SystemProxySetCmd, true, status.BlSystemProxySet));
+        flyout.Items.Add(Item(ResUI.menuSystemProxyNothing, status.SystemProxyNothingCmd, true, status.BlSystemProxyNothing));
+        flyout.Items.Add(Item(ShellStrings.TrayPac, status.SystemProxyPacCmd, true, status.BlSystemProxyPac));
+        flyout.Items.Add(new Separator());
+        var import = Item(ShellStrings.TrayImport);
+        import.Click += async (_, _) => await AddServerViaClipboardAsync();
+        flyout.Items.Add(import);
+        flyout.Items.Add(Item(ShellStrings.TrayUpdate, status.SubUpdateCmd));
+        flyout.Items.Add(Item(ShellStrings.TrayUpdateViaProxy, status.SubUpdateViaProxyCmd));
+        flyout.Items.Add(new Separator());
+        var exit = Item(ResUI.menuExit);
+        exit.Click += (_, _) => MenuClose_Click(this, new RoutedEventArgs());
+        flyout.Items.Add(exit);
+
+        _trayPreview = flyout;
+        flyout.ShowAt(trayPreviewAnchor, false);
     }
 
     #endregion UI

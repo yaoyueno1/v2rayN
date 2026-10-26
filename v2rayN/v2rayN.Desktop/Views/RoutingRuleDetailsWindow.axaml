@@ -16,10 +16,14 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <DockPanel>
+        <ScrollViewer
+            MaxHeight="250"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Auto"
+            DockPanel.Dock="Top">
         <Grid
             Margin="{StaticResource Margin4}"
             ColumnDefinitions="Auto,Auto,*"
-            DockPanel.Dock="Top"
             RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
             <TextBlock
                 Grid.Row="0"
@@ -135,8 +139,7 @@
                 Grid.Column="1"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
-                SelectionMode="Multiple,Toggle"
-                Theme="{DynamicResource CardCheckGroupListBox}" />
+                SelectionMode="Multiple,Toggle" />
             <TextBlock
                 Grid.Row="4"
                 Grid.Column="2"
@@ -159,8 +162,7 @@
                 Grid.Row="5"
                 Grid.Column="1"
                 Margin="{StaticResource Margin4}"
-                SelectionMode="Multiple,Toggle"
-                Theme="{DynamicResource CardCheckGroupListBox}" />
+                SelectionMode="Multiple,Toggle" />
             <TextBlock
                 Grid.Row="5"
                 Grid.Column="2"
@@ -192,6 +194,7 @@
                 Text="{x:Static resx:ResUI.TbRoutingTips}"
                 TextWrapping="Wrap" />
         </Grid>
+        </ScrollViewer>
 
         <StackPanel
             Margin="{StaticResource Margin4}"

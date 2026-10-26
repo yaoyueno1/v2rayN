@@ -27,8 +27,7 @@
         <StackPanel Grid.IsSharedSizeScope="True">
             <Border
                 Margin="{StaticResource Margin4}"
-                VerticalAlignment="Center"
-                Theme="{DynamicResource CardBorder}">
+                VerticalAlignment="Center">
 
                 <Grid Margin="{StaticResource Margin4}" RowDefinitions="Auto,Auto,Auto,Auto">
                     <Grid.ColumnDefinitions>
@@ -84,8 +83,7 @@
             </Border>
             <Border
                 Margin="{StaticResource Margin4}"
-                VerticalAlignment="Center"
-                Theme="{DynamicResource CardBorder}">
+                VerticalAlignment="Center">
                 <Grid Margin="{StaticResource Margin4}" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition

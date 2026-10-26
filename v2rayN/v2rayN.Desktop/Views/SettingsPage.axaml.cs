@@ -1,0 +1,89 @@
+using v2rayN.Desktop.Common;
+
+namespace v2rayN.Desktop.Views;
+
+public partial class SettingsPage : UserControl
+{
+    public ThemeSettingView ThemeSetting => themeSetting;
+
+    public event EventHandler? BackupRequested;
+    public event EventHandler? CheckUpdateRequested;
+    public event EventHandler? UwpRequested;
+
+    public SettingsPage()
+    {
+        InitializeComponent();
+        foreach (var row in themeSetting.DetachRows())
+        {
+            appearanceBoard.Children.Add(row);
+        }
+
+        btnBackup.Click += (_, _) => BackupRequested?.Invoke(this, EventArgs.Empty);
+        btnUpdate.Click += (_, _) => CheckUpdateRequested?.Invoke(this, EventArgs.Empty);
+        btnUwp.Click += (_, _) => UwpRequested?.Invoke(this, EventArgs.Empty);
+        btnClearStats.Click += async (_, _) => await ConfirmClearStatsAsync();
+        btnPresetDefault.Click += Preset_Click;
+        btnPresetRussia.Click += Preset_Click;
+        btnPresetIran.Click += Preset_Click;
+        BindCloseToTray();
+    }
+
+    private void BindCloseToTray()
+    {
+        var ui = AppManager.Instance.Config?.UiItem;
+        togCloseToTray.IsChecked = ui?.ShouldCloseMainWindowToTray() ?? true;
+        togCloseToTray.IsCheckedChanged += async (_, _) =>
+        {
+            var item = AppManager.Instance.Config?.UiItem;
+            if (item is null)
+            {
+                return;
+            }
+
+            var enabled = togCloseToTray.IsChecked == true;
+            if (item.CloseMainWindowToTray == enabled)
+            {
+                return;
+            }
+
+            item.CloseMainWindowToTray = enabled;
+            await ConfigHandler.SaveConfig(AppManager.Instance.Config);
+        };
+    }
+
+    private async Task ConfirmClearStatsAsync()
+    {
+        if (DataContext is not MainWindowViewModel vm)
+        {
+            return;
+        }
+
+        if (await UI.ShowYesNo(ShellStrings.ClearStatsConfirm, danger: true) != ButtonResult.Yes)
+        {
+            return;
+        }
+
+        vm.ClearServerStatisticsCmd.Execute(RxVoid.Default).Subscribe(_ => { }, _ => { });
+    }
+
+    private void Preset_Click(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not Button button || DataContext is not MainWindowViewModel vm)
+        {
+            return;
+        }
+
+        foreach (var preset in new[] { btnPresetDefault, btnPresetRussia, btnPresetIran })
+        {
+            preset.Classes.Remove("selected");
+        }
+
+        button.Classes.Add("selected");
+        var command = button == btnPresetRussia
+            ? vm.RegionalPresetRussiaCmd
+            : button == btnPresetIran
+                ? vm.RegionalPresetIranCmd
+                : vm.RegionalPresetDefaultCmd;
+        command.Execute(RxVoid.Default).Subscribe(_ => { }, _ => { });
+    }
+}

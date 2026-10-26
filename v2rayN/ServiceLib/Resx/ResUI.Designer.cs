@@ -203,6 +203,24 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("FailedToRunCore", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   查找类似 Local port {0} cannot be bound. It falls in the Windows excluded range {1}-{2} (Hyper-V/WinNAT). 的本地化字符串。
+        /// </summary>
+        public static string LocalPortBindExcluded {
+            get {
+                return ResourceManager.GetString("LocalPortBindExcluded", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Local port {0} cannot be bound (in use, or reserved by Hyper-V/WinNAT). 的本地化字符串。
+        /// </summary>
+        public static string LocalPortBindFailed {
+            get {
+                return ResourceManager.GetString("LocalPortBindFailed", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   查找类似 Please fill in the correct config template 的本地化字符串。

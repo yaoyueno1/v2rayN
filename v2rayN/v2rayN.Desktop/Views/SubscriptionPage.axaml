@@ -1,0 +1,101 @@
+<UserControl
+    x:Class="v2rayN.Desktop.Views.SubscriptionPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shell="clr-namespace:v2rayN.Desktop.Common"
+    xmlns:views="clr-namespace:v2rayN.Desktop.Views"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    x:DataType="vms:SubSettingViewModel"
+    mc:Ignorable="d">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="0,0,0,12">
+            <TextBlock
+                VerticalAlignment="Center"
+                Classes="page-heading"
+                Text="{x:Static shell:ShellStrings.NavSubscriptions}" />
+            <StackPanel
+                Grid.Column="1"
+                Orientation="Horizontal"
+                Spacing="4">
+                <Button
+                    x:Name="btnAdd"
+                    Classes="quiet-link"
+                    Content="{x:Static shell:ShellStrings.AddSubscription}" />
+                <Button
+                    x:Name="btnRefreshAll"
+                    Classes="quiet-link"
+                    Content="{x:Static shell:ShellStrings.RefreshAll}" />
+            </StackPanel>
+        </Grid>
+
+        <ScrollViewer>
+            <StackPanel>
+                <TextBlock
+                    x:Name="txtEmpty"
+                    Margin="4"
+                    FontSize="13"
+                    LineHeight="18"
+                    Foreground="{DynamicResource color.text.secondary}"
+                    IsVisible="False"
+                    Text="{x:Static shell:ShellStrings.EmptySubscriptions}" />
+                <ItemsControl x:Name="lstSubs">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="views:SubscriptionCard">
+                            <Border Classes="sub-card" Classes.selected="{Binding Selected}">
+                                <Grid ColumnDefinitions="3,*">
+                                    <Border Classes="sub-accent" />
+                                    <Grid
+                                        Grid.Column="1"
+                                        Margin="12"
+                                        ColumnDefinitions="*,Auto"
+                                        RowDefinitions="Auto,Auto,Auto">
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            Classes="sub-name"
+                                            Text="{Binding Title}" />
+                                        <StackPanel
+                                            Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            Spacing="4">
+                                            <Button
+                                                Classes="quiet-link"
+                                                Click="Update_Click"
+                                                Content="{x:Static shell:ShellStrings.Update}" />
+                                            <Button
+                                                Classes="quiet-link"
+                                                Click="Edit_Click"
+                                                Content="{x:Static shell:ShellStrings.Edit}" />
+                                        </StackPanel>
+                                        <TextBlock
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"
+                                            Margin="0,4,0,0"
+                                            Classes="sub-url"
+                                            Text="{Binding Url}" />
+                                        <TextBlock
+                                            Grid.Row="2"
+                                            Margin="0,4,0,0"
+                                            VerticalAlignment="Center"
+                                            Classes="sub-meta"
+                                            Text="{Binding Meta}" />
+                                        <TextBlock
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Margin="12,4,0,0"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center"
+                                            Classes="sub-count"
+                                            Text="{Binding CountText}" />
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

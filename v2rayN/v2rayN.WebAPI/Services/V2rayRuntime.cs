@@ -1277,7 +1277,7 @@ public sealed partial class V2rayRuntime(
             config.Inbound.Add(new InItem
             {
                 Protocol = nameof(EInboundProtocol.socks),
-                LocalPort = 10808,
+                LocalPort = Global.DefaultLocalPort,
                 UdpEnabled = true,
                 SniffingEnabled = true,
             });
@@ -1285,7 +1285,7 @@ public sealed partial class V2rayRuntime(
 
         if (config.Inbound[0].LocalPort is <= 0 or > 65535)
         {
-            config.Inbound[0].LocalPort = 10808;
+            config.Inbound[0].LocalPort = Global.DefaultLocalPort;
         }
     }
 

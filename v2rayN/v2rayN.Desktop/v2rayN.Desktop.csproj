@@ -27,11 +27,7 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Semi.Avalonia" />
-		<PackageReference Include="Semi.Avalonia.AvaloniaEdit" />
-		<PackageReference Include="Semi.Avalonia.DataGrid">
-			<TreatAsUsed>true</TreatAsUsed>
-		</PackageReference>
+		<PackageReference Include="Avalonia.Themes.Fluent" />
 		<PackageReference Include="ReactiveUI">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
@@ -52,6 +48,12 @@
 		<Compile Update="Views\FullConfigTemplateWindow.axaml.cs">
 		  <DependentUpon>FullConfigTemplateWindow.axaml</DependentUpon>
 		</Compile>
+		<Content Include="Assets\NotifyIcon1.ico" Link="NotifyIcon1.ico" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+		<Content Include="Assets\NotifyIcon2.ico" Link="NotifyIcon2.ico" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+		<Content Include="Assets\NotifyIcon3.ico" Link="NotifyIcon3.ico" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+		<Content Include="Assets\NotifyIcon4.ico" Link="NotifyIcon4.ico" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+		<Content Include="Assets\v2rayN.ico" Link="v2rayN.ico" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+		<Content Include="Assets\Fonts\MiSans-License.pdf" Link="MiSans-License.pdf" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
 		<None Update="v2rayN.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

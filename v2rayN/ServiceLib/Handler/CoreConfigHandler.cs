@@ -131,6 +131,7 @@ public static class CoreConfigHandler
         var initPort = AppManager.Instance.GetLocalPort(EInboundProtocol.speedtest);
         var port = Utils.GetFreePort(initPort + testItem.QueueNum);
         testItem.Port = port;
+        testItem.AllowTest = port > 0;
 
         if (context.RunCoreType == ECoreType.sing_box)
         {

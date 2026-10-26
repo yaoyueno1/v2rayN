@@ -1,0 +1,114 @@
+<UserControl
+    x:Class="v2rayN.Desktop.Views.RoutingPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shell="clr-namespace:v2rayN.Desktop.Common"
+    xmlns:views="clr-namespace:v2rayN.Desktop.Views"
+    mc:Ignorable="d">
+    <DockPanel>
+        <Grid
+            DockPanel.Dock="Top"
+            ColumnDefinitions="*,Auto"
+            RowDefinitions="Auto,Auto">
+            <TextBlock
+                VerticalAlignment="Center"
+                Classes="page-heading"
+                Text="{x:Static shell:ShellStrings.NavRouting}" />
+            <Button
+                x:Name="btnAdd"
+                Grid.Column="1"
+                Classes="add-rule"
+                VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <PathIcon
+                        Width="16"
+                        Height="16"
+                        VerticalAlignment="Center"
+                        Data="{StaticResource IconAdd}"
+                        Foreground="{Binding $parent[Button].Foreground}" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Text="{x:Static shell:ShellStrings.AddRule}" />
+                </StackPanel>
+            </Button>
+            <StackPanel
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,12,0,4"
+                Orientation="Horizontal">
+                <StackPanel x:Name="modeBar" Orientation="Horizontal" />
+                <Button
+                    x:Name="btnAdvanced"
+                    Classes="tab"
+                    Content="{x:Static shell:ShellStrings.AdvancedRouting}"
+                    VerticalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+
+        <ScrollViewer Margin="0,8,0,0">
+            <StackPanel>
+                <StackPanel
+                    Margin="4,8,0,0"
+                    Orientation="Horizontal"
+                    Spacing="12">
+                    <TextBlock
+                        x:Name="txtEmpty"
+                        VerticalAlignment="Center"
+                        FontSize="13"
+                        LineHeight="18"
+                        FontWeight="Normal"
+                        Foreground="{DynamicResource color.text.secondary}"
+                        IsVisible="False"
+                        Text="{x:Static shell:ShellStrings.EmptyRules}" />
+                    <Button
+                        x:Name="btnAddFirst"
+                        Classes="text-link add-first"
+                        Content="{x:Static shell:ShellStrings.AddFirstRule}"
+                        IsVisible="False" />
+                </StackPanel>
+                <ItemsControl x:Name="lstRules">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="views:RoutingRuleCard">
+                            <Border Classes="rule-row">
+                                <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                                    <PathIcon
+                                        Width="16"
+                                        Height="16"
+                                        VerticalAlignment="Center"
+                                        Data="{StaticResource IconRoute}"
+                                        Foreground="{DynamicResource color.text.tertiary}" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        MinWidth="0"
+                                        Margin="10,0,12,0"
+                                        VerticalAlignment="Center"
+                                        Classes="rule-label"
+                                        Text="{Binding Label}"
+                                        TextTrimming="CharacterEllipsis"
+                                        ToolTip.Tip="{Binding Pattern}" />
+                                    <ComboBox
+                                        Grid.Column="2"
+                                        Width="100"
+                                        Margin="0,0,8,0"
+                                        VerticalAlignment="Center"
+                                        Classes="paper outbound"
+                                        ItemsSource="{Binding OutboundChoices}"
+                                        SelectedItem="{Binding OutboundLabel, Mode=TwoWay}" />
+                                    <ToggleButton
+                                        Grid.Column="3"
+                                        Margin="4,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Classes="rule-switch"
+                                        IsChecked="{Binding Enabled, Mode=TwoWay}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

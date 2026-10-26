@@ -9,7 +9,7 @@ public partial class MessageBoxDialog : Window
     {
     }
 
-    public MessageBoxDialog(string caption, string message)
+    public MessageBoxDialog(string caption, string message, bool danger = false)
     {
         InitializeComponent();
 
@@ -21,6 +21,10 @@ public partial class MessageBoxDialog : Window
 
         Title = caption;
         txtMessage.Text = message;
+        if (danger)
+        {
+            btnYes.Classes.Add("danger");
+        }
 
         btnYes.Click += BtnYes_Click;
         btnNo.Click += BtnNo_Click;

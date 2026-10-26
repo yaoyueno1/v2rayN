@@ -180,6 +180,8 @@ jobs:
 
           Invoke-WebRequest -Uri "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geosite.dat" -OutFile "$bin/geosite.dat"
           Invoke-WebRequest -Uri "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geoip.dat" -OutFile "$bin/geoip.dat"
+          Copy-Item "$bin/geosite.dat" "$xrayDir/geosite.dat" -Force
+          Copy-Item "$bin/geoip.dat" "$xrayDir/geoip.dat" -Force
           Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/geoip-only-cn-private.dat" -OutFile "$bin/geoip-only-cn-private.dat"
           Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb" -OutFile "$bin/Country.mmdb"
           Invoke-WebRequest -Uri "https://github.com/MetaCubeX/meta-rules-dat/releases/latest/download/geoip.metadb" -OutFile "$bin/geoip.metadb"
