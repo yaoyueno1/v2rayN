@@ -199,7 +199,14 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         {
             case WindowCloseReason.WindowClosing:
                 e.Cancel = true;
-                await ExitNowAsync();
+                if (_config.UiItem.ShouldCloseMainWindowToTray())
+                {
+                    ShowHideWindow(false);
+                }
+                else
+                {
+                    await ExitNowAsync();
+                }
                 break;
 
             case WindowCloseReason.OwnerWindowClosing:
@@ -396,7 +403,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
         else
         {
-            if (Utils.IsLinux() && _config.UiItem.Hide2TrayWhenClose == false)
+            if (Utils.IsLinux() && !_config.UiItem.ShouldCloseMainWindowToTray())
             {
                 WindowState = WindowState.Minimized;
                 return;

@@ -1378,7 +1378,7 @@
     <value>原始 JSON，格式： { XHTTPObject }</value>
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
-    <value>關閉視窗時隱藏至托盤</value>
+    <value>關閉主視窗時最小化到托盤</value>
   </data>
   <data name="TbSettingsMixedConcurrencyCount" xml:space="preserve">
     <value>多執行緒測試時的並發數量</value>
@@ -1579,7 +1579,7 @@
     <value>不支援協定 '{0}'</value>
   </data>
   <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
-    <value>如果系統沒有託盤功能，請不要開啟</value>
+    <value>關閉後程式繼續在背景運行。側欄和托盤裡的「退出」仍會結束行程。</value>
   </data>
   <data name="TbRuleType" xml:space="preserve">
     <value>規則類型</value>

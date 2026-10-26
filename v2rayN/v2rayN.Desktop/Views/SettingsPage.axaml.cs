@@ -25,6 +25,30 @@ public partial class SettingsPage : UserControl
         btnPresetDefault.Click += Preset_Click;
         btnPresetRussia.Click += Preset_Click;
         btnPresetIran.Click += Preset_Click;
+        BindCloseToTray();
+    }
+
+    private void BindCloseToTray()
+    {
+        var ui = AppManager.Instance.Config?.UiItem;
+        togCloseToTray.IsChecked = ui?.ShouldCloseMainWindowToTray() ?? true;
+        togCloseToTray.IsCheckedChanged += async (_, _) =>
+        {
+            var item = AppManager.Instance.Config?.UiItem;
+            if (item is null)
+            {
+                return;
+            }
+
+            var enabled = togCloseToTray.IsChecked == true;
+            if (item.CloseMainWindowToTray == enabled)
+            {
+                return;
+            }
+
+            item.CloseMainWindowToTray = enabled;
+            await ConfigHandler.SaveConfig(AppManager.Instance.Config);
+        };
     }
 
     private async Task ConfirmClearStatsAsync()

@@ -180,7 +180,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         KeepOlderDedupl = _config.GuiItem.KeepOlderDedupl;
         EnableAutoAdjustMainLvColWidth = _config.UiItem.EnableAutoAdjustMainLvColWidth;
         AutoHideStartup = _config.UiItem.AutoHideStartup;
-        Hide2TrayWhenClose = _config.UiItem.Hide2TrayWhenClose;
+        Hide2TrayWhenClose = _config.UiItem.ShouldCloseMainWindowToTray();
         MacOSShowInDock = _config.UiItem.MacOSShowInDock;
         EnableDragDropSort = _config.UiItem.EnableDragDropSort;
         DoubleClick2Activate = _config.UiItem.DoubleClick2Activate;
@@ -360,6 +360,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         _config.UiItem.EnableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;
         _config.UiItem.AutoHideStartup = AutoHideStartup;
         _config.UiItem.Hide2TrayWhenClose = Hide2TrayWhenClose;
+        _config.UiItem.CloseMainWindowToTray = Hide2TrayWhenClose;
         _config.UiItem.MacOSShowInDock = MacOSShowInDock;
         _config.GuiItem.AutoUpdateInterval = AutoUpdateInterval;
         _config.UiItem.EnableDragDropSort = EnableDragDropSort;

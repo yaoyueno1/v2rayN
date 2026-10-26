@@ -34,6 +34,31 @@
 
             <TextBlock
                 Classes="group-header"
+                Text="{x:Static shell:ShellStrings.SettingsGroupWindow}" />
+            <Border
+                Classes="settings-cell"
+                Height="58"
+                MinHeight="58"
+                MaxHeight="58">
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel VerticalAlignment="Center" Spacing="0">
+                        <TextBlock Text="{x:Static shell:ShellStrings.CloseToTray}" />
+                        <TextBlock
+                            Classes="hint"
+                            Text="{x:Static shell:ShellStrings.CloseToTrayHint}" />
+                    </StackPanel>
+                    <ToggleSwitch
+                        x:Name="togCloseToTray"
+                        Grid.Column="1"
+                        MinWidth="0"
+                        VerticalAlignment="Center"
+                        OffContent=""
+                        OnContent="" />
+                </Grid>
+            </Border>
+
+            <TextBlock
+                Classes="group-header"
                 Text="{x:Static shell:ShellStrings.SettingsGroupCore}" />
             <controls:AdaptiveWrapPanel
                 x:Name="coreBoard"

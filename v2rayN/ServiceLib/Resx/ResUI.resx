@@ -1381,7 +1381,7 @@
     <value>Raw JSON, format: { XHTTP Object }</value>
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
-    <value>Hide to tray when closing the window</value>
+    <value>Minimize to the tray when closing the main window</value>
   </data>
   <data name="TbSettingsMixedConcurrencyCount" xml:space="preserve">
     <value>The number of concurrent tests during multi-test</value>
@@ -1582,7 +1582,7 @@
     <value>Not support protocol '{0}'</value>
   </data>
   <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
-    <value>If the system does not have a tray function, please do not enable it</value>
+    <value>The app keeps running in the background. Exit in the sidebar or tray still quits.</value>
   </data>
   <data name="TbRuleTypeTips" xml:space="preserve">
     <value>You can set separate rules for Routing and DNS, or select "ALL" to apply to both</value>

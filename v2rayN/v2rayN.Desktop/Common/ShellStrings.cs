@@ -96,6 +96,9 @@ public static class ShellStrings
     public static string SettingsPresetDefault => T("默认", "預設", "Default");
     public static string SettingsPresetRussia => T("俄罗斯", "俄羅斯", "Russia");
     public static string SettingsPresetIran => T("伊朗", "伊朗", "Iran");
+    public static string SettingsGroupWindow => T("窗口", "視窗", "Window");
+    public static string CloseToTray => T("关闭主窗口时最小化到托盘", "關閉主視窗時最小化到托盤", "Minimize to the tray when closing the main window");
+    public static string CloseToTrayHint => T("侧栏和托盘中的「退出」仍会结束进程", "側欄和托盤中的「退出」仍會結束行程", "Exit in the sidebar or tray still quits");
     public static string SettingsGroupCore => T("核心与网络", "核心與網路", "Core and network");
     public static string SettingsGroupData => T("数据与维护", "資料與維護", "Data and maintenance");
     public static string SettingsGroupRegion => T("区域预设", "區域預設", "Regional presets");

@@ -642,21 +642,18 @@
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            IsVisible="{Binding BlIsLinux}"
                             Text="{x:Static resx:ResUI.TbSettingsHide2TrayWhenClose}" />
                         <ToggleSwitch
                             x:Name="togHide2TrayWhenClose"
                             Grid.Row="7"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left"
-                            IsVisible="{Binding BlIsLinux}" />
+                            HorizontalAlignment="Left" />
                         <TextBlock
                             Grid.Row="7"
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            IsVisible="{Binding BlIsLinux}"
                             Text="{x:Static resx:ResUI.TbSettingsHide2TrayWhenCloseTip}" />
 
                         <TextBlock
